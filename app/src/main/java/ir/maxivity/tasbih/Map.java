@@ -18,10 +18,12 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
@@ -67,6 +69,8 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import ir.maxivity.tasbih.dataAccess.map.DownloadTask;
+import ir.maxivity.tasbih.interfaces.MapListener;
+import ir.maxivity.tasbih.mapFragments.AddLocationFragment;
 
 public class Map extends Fragment implements DownloadTask.Callback{
     private static final String TAG = Map.class.getName();
@@ -85,7 +89,6 @@ public class Map extends Fragment implements DownloadTask.Callback{
 
     // map UI element
     MapView map;
-    FloatingActionButton actionButton;
 
     // You can add some elements to a VectorElementLayer
     VectorElementLayer userMarkerLayer;
@@ -100,6 +103,12 @@ public class Map extends Fragment implements DownloadTask.Callback{
     private String lastUpdateTime;
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
+    private MapListener listener;
+
+
+    //VIEWS///
+    FloatingActionButton actionButton , addLocationButton;
+    private ImageView addLocationMarker;
 
 
     @Override
@@ -111,15 +120,40 @@ public class Map extends Fragment implements DownloadTask.Callback{
         Configuration.getInstance().setMapViewHardwareAccelerated(true);
 
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        map = view.findViewById(R.id.map);
-        actionButton = view.findViewById(R.id.focusonuser);
+        bindViews(view);
+
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 focusOnUserLocation();
             }
         });
+        addLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addLocationButton.hide();
+                addLocationMarker.setVisibility(View.VISIBLE);
+                loadChildFragment(new AddLocationFragment());
+            }
+        });
+
+
+
         return view;
+    }
+
+
+    private void bindViews(View view){
+        map = view.findViewById(R.id.map);
+        actionButton = view.findViewById(R.id.focusonuser);
+        addLocationButton = view.findViewById(R.id.add_location);
+        addLocationMarker = view.findViewById(R.id.location_marker);
+
+    }
+
+    private void loadChildFragment(Fragment fragment){
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.child_fragment , fragment).commit();
     }
 
     @Override
@@ -164,13 +198,31 @@ public class Map extends Fragment implements DownloadTask.Callback{
 
         // add Standard_day map to layer BASE_MAP_INDEX
         map.getOptions().setZoomRange(new Range(4.5f, 18f));
-        map.getLayers().insert(BASE_MAP_INDEX, NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
 
         // Setting map focal position to a fixed position and setting camera zoom
         map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );
         map.setZoom(14,0);
+
+        //map.getLayers().insert(BASE_MAP_INDEX, NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
+        map.getLayers().add(NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (MapListener) context;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
 
     private void initLocation() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
