@@ -67,12 +67,13 @@ import org.osmdroid.config.Configuration;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import ir.maxivity.tasbih.dataAccess.map.DownloadTask;
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.mapFragments.AddLocationFragment;
 
-public class Map extends Fragment implements DownloadTask.Callback{
+public class Map extends Fragment implements DownloadTask.Callback , MapListener{
     private static final String TAG = Map.class.getName();
 
     // used to track request permissions
@@ -103,7 +104,7 @@ public class Map extends Fragment implements DownloadTask.Callback{
     private String lastUpdateTime;
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
-    private MapListener listener;
+
 
 
     //VIEWS///
@@ -153,8 +154,11 @@ public class Map extends Fragment implements DownloadTask.Callback{
 
     private void loadChildFragment(Fragment fragment){
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.addToBackStack(null);
         transaction.add(R.id.child_fragment , fragment).commit();
     }
+
+
 
     @Override
     public void onStart() {
@@ -205,23 +209,6 @@ public class Map extends Fragment implements DownloadTask.Callback{
 
         //map.getLayers().insert(BASE_MAP_INDEX, NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
         map.getLayers().add(NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            listener = (MapListener) context;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
     }
 
     private void initLocation() {
@@ -466,5 +453,26 @@ public class Map extends Fragment implements DownloadTask.Callback{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onAddLocationSubmit() {
+
+    }
+
+    @Override
+    public void onAddLocationCancel() {
+        addLocationButton.show();
+
+    }
+
+    @Override
+    public void onAddLocationInfoSubmit(HashMap<String, String> fields) {
+
+    }
+
+    @Override
+    public void onAddLocationInfoCancel() {
+        getChildFragmentManager().popBackStack();
     }
 }
