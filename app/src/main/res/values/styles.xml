@@ -1,0 +1,112 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/colorAccent</item>
+
+
+        <item name="android:textColorPrimary">#FFF</item>
+
+
+        <item name="android:fontFamily">@font/font</item>
+
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+
+        <item name="colorControlHighlight">#2bc5ff</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#FFE600</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">#AD9900</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">#FFE600</item>
+
+        <item name="android:textColorPrimary">#FFF</item>
+
+        <item name="android:fontFamily">@font/font</item>
+
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+
+        <item name="colorControlHighlight">#2bc5ff</item>
+
+        <item name="windowActionBar">false</item>
+
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:actionBarTabTextStyle">@style/ActionBar.TabText</item>
+
+    </style>
+
+    <style name="PrimaryFlatButton" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+        <item name="colorControlHighlight">#FFF</item>
+        <item name="colorAccent">#FFF</item>
+    </style>
+
+    <style name="sorehbtn" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+        <item name="colorControlHighlight">#FFF</item>
+        <item name="colorAccent">#FFF</item>
+        <item name="android:background">@drawable/ic_qlist_item</item>
+        <item name="android:layout_margin">30px</item>
+
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CalendarTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">#4B4B4B</item>
+
+        <item name="android:actionBarTabTextStyle">@style/ActionBar.TabText</item>
+
+        <item name="android:textColorPrimary">#FFF</item>
+
+
+        <item name="android:fontFamily">@font/font</item>
+
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+
+        <item name="colorControlHighlight">#2bc5ff</item>
+
+        <item name="windowActionBar">false</item>
+
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="ActionBar.TabText" parent="">
+        <item name="android:textColor">#CFCFCF</item>
+    </style>
+
+</resources>

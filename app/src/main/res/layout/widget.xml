@@ -1,0 +1,149 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widgetbg"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@drawable/qudsbg_rounded"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="۱/۱/۱۴۴۵"
+                    android:textColor="#FFF"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="۱/۱/۱۳۹۸"
+                    android:textColor="#FFF"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="پنجشنبه"
+                    android:textColor="#FFF"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="۱/۱/۲۰۱۹"
+                    android:textColor="#FFF"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <include
+                layout="@layout/widgetcardview"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+
+            <include
+                layout="@layout/widgetcardview"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+
+            <include
+                layout="@layout/widgetcardview"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+
+            <include
+                layout="@layout/widgetcardview"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <include
+                layout="@layout/widgetcardview"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+
+            <include
+                layout="@layout/widgetcardview"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+
+            <include
+                layout="@layout/widgetcardview"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+
+            <include
+                layout="@layout/widgetcardview"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

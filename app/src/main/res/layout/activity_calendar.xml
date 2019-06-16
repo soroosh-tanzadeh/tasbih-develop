@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEEEEEE"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow"
+        android:orientation="vertical">
+
+        <ir.mirrajabi.persiancalendar.PersianCalendarView
+            android:id="@+id/persian_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="290sp"
+            app:pcv_colorBackground="@color/colorPrimary"
+            app:pcv_colorDayName="#bab6b6"
+            app:pcv_colorHoliday="#ffd506"
+            app:pcv_colorHolidaySelected="#f1f2f3"
+            app:pcv_colorNormalDay="#f3f4f5"
+            app:pcv_colorNormalDaySelected="#d9d9d9"
+            app:pcv_eventUnderlineColor="#02f0f0"
+            app:pcv_fontSize="20sp"
+            app:pcv_headersFontSize="14sp" />
+
+        <android.support.design.widget.TabLayout
+
+            android:id="@+id/calendar_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:tabTextColor="#FFF"
+            android:theme="@style/AppTheme">
+
+        </android.support.design.widget.TabLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/calendar_viewer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</LinearLayout>

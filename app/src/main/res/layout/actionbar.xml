@@ -1,0 +1,79 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    android:layout_width = "match_parent"
+    android:layout_height = "wrap_content"
+    android:weightSum = "1"
+    android:background="@color/colorPrimary">
+    <LinearLayout
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "0.6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:paddingTop="5dp"
+                android:text="پنجشنبه، ۱۵، اردیبهشت"
+                android:textAlignment="textEnd"
+                android:textColor="#FFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="sans-serif" />
+
+            <TextView
+                android:id="@+id/date2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="5dp"
+                android:text=" ۱، رمضان،۱۴۴۰ هجری  قمری"
+                android:textAlignment="textEnd"
+                android:textColor="#DFDFDF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:fontFamily="sans-serif" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="0dp"
+        android:layout_weight="0.4"
+        android:gravity="end">
+
+        <ImageButton
+            android:id="@+id/sharebtn"
+            style="@style/PrimaryFlatButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:theme="@style/PrimaryFlatButton"
+            app:srcCompat="@drawable/ic_share" />
+
+        <ImageButton
+            android:id="@+id/settingsbtn"
+            style="@style/PrimaryFlatButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:theme="@style/PrimaryFlatButton"
+            app:srcCompat="@drawable/ic_settings" />
+    </LinearLayout>
+</LinearLayout>
