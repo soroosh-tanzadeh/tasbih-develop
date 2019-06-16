@@ -68,6 +68,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="negativeButton">
+        <item name="android:background">@drawable/button_background_negative</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+    <style name="positiveButton">
+        <item name="android:background">@drawable/button_backround_positive</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+
     <style name="CalendarTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
