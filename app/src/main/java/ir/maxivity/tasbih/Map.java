@@ -481,6 +481,10 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
     @Override
     public void onAddLocationInfoCancel() {
         Fragment addLocation = getChildFragmentManager().findFragmentByTag(ADD_LOCATION_TAG);
-        addLocation.getFragmentManager().popBackStack();
+            if (addLocation != null) {
+                if (addLocation.getFragmentManager() != null) {
+                    addLocation.getFragmentManager().popBackStack();
+                }
+            }
     }
 }
