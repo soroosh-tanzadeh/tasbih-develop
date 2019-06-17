@@ -1,5 +1,4 @@
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,14 +40,14 @@
         app:srcCompat="@drawable/ic_add" />
 
     <ImageView
+        android:id="@+id/location_marker"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_marker_blue"
-        android:id="@+id/location_marker"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/map"
         app:layout_constraintEnd_toEndOf="@+id/map"
         app:layout_constraintStart_toStartOf="@+id/map"
-        android:visibility="gone"
         app:layout_constraintTop_toTopOf="@+id/map" />
 
 
