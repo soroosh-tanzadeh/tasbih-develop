@@ -58,7 +58,8 @@ public class AddLocationFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (MapListener) context;
+            if (getParentFragment() instanceof MapListener)
+                listener = (MapListener) getParentFragment();
         }
         catch (Exception  e){
             e.printStackTrace();

@@ -72,6 +72,7 @@ import java.util.HashMap;
 import ir.maxivity.tasbih.dataAccess.map.DownloadTask;
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.mapFragments.AddLocationFragment;
+import ir.maxivity.tasbih.mapFragments.AddLocationInfoFragment;
 
 public class Map extends Fragment implements DownloadTask.Callback , MapListener{
     private static final String TAG = Map.class.getName();
@@ -108,6 +109,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
 
     //TAGS////
     private final String ADD_LOCATION_TAG = "add location";
+    private final String ADD_LOCATION_INFO_TAG = "add location info";
 
 
 
@@ -159,6 +161,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
     private void loadChildFragment(Fragment fragment , String tag , boolean replace){
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
+        // transaction.setCustomAnimations(R.anim.enter_from_bottom , null);
         if (!replace)
         transaction.add(R.id.child_fragment , fragment , tag).commit();
         else
@@ -464,13 +467,19 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
 
     @Override
     public void onAddLocationSubmit() {
-
+        loadChildFragment(new AddLocationInfoFragment(), ADD_LOCATION_INFO_TAG, true);
     }
 
     @Override
     public void onAddLocationCancel() {
         addLocationButton.show();
-
+        addLocationMarker.setVisibility(View.GONE);
+        Fragment addLocation = getChildFragmentManager().findFragmentByTag(ADD_LOCATION_TAG);
+        if (addLocation != null) {
+            if (addLocation.getFragmentManager() != null) {
+                addLocation.getFragmentManager().popBackStack();
+            }
+        }
     }
 
     @Override
@@ -480,11 +489,6 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
 
     @Override
     public void onAddLocationInfoCancel() {
-        Fragment addLocation = getChildFragmentManager().findFragmentByTag(ADD_LOCATION_TAG);
-            if (addLocation != null) {
-                if (addLocation.getFragmentManager() != null) {
-                    addLocation.getFragmentManager().popBackStack();
-                }
-            }
+
     }
 }
