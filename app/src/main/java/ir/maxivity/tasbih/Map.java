@@ -106,6 +106,10 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
     private Boolean mRequestingLocationUpdates;
 
 
+    //TAGS////
+    private final String ADD_LOCATION_TAG = "add location";
+
+
 
     //VIEWS///
     FloatingActionButton actionButton , addLocationButton;
@@ -134,7 +138,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
             public void onClick(View view) {
                 addLocationButton.hide();
                 addLocationMarker.setVisibility(View.VISIBLE);
-                loadChildFragment(new AddLocationFragment());
+                loadChildFragment(new AddLocationFragment() , ADD_LOCATION_TAG , false);
             }
         });
 
@@ -152,10 +156,13 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
 
     }
 
-    private void loadChildFragment(Fragment fragment){
+    private void loadChildFragment(Fragment fragment , String tag , boolean replace){
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
-        transaction.add(R.id.child_fragment , fragment).commit();
+        if (!replace)
+        transaction.add(R.id.child_fragment , fragment , tag).commit();
+        else
+            transaction.replace(R.id.child_fragment , fragment , tag).commit();
     }
 
 
@@ -473,6 +480,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
 
     @Override
     public void onAddLocationInfoCancel() {
-        getChildFragmentManager().popBackStack();
+        Fragment addLocation = getChildFragmentManager().findFragmentByTag(ADD_LOCATION_TAG);
+        addLocation.getFragmentManager().popBackStack();
     }
 }
