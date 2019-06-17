@@ -132,4 +132,5 @@
     <string name="incorrect_password">رمز عبور نا درست است</string>
     <string name="field_required">باید تمامی فیلد ها را پر کنید</string>
     <string name="submit">تایید</string>
+    <string name="save">ذخیره</string>
 </resources>
