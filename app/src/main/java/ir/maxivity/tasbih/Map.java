@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -30,6 +32,8 @@ import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
@@ -44,14 +48,17 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import org.neshan.core.LngLat;
-import org.neshan.core.Range;
 import org.neshan.layers.VectorElementLayer;
-import org.neshan.services.NeshanMapStyle;
-import org.neshan.services.NeshanServices;
-import org.neshan.ui.MapView;
+import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import ir.maxivity.tasbih.interfaces.MapListener;
@@ -74,7 +81,7 @@ public class Map extends Fragment implements MapListener {
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
 
     // map UI element
-    MapView map;
+
 
     // You can add some elements to a VectorElementLayer
     VectorElementLayer userMarkerLayer;
@@ -96,6 +103,10 @@ public class Map extends Fragment implements MapListener {
     private final String ADD_LOCATION_INFO_TAG = "add location info";
 
 
+    //OSM MAP//
+    private MapView map;
+    private IMapController controller;
+    private MyLocationNewOverlay myLocationNewOverlay;
 
     //VIEWS///
     FloatingActionButton actionButton , addLocationButton;
@@ -140,6 +151,10 @@ public class Map extends Fragment implements MapListener {
         addLocationButton = view.findViewById(R.id.add_location);
         addLocationMarker = view.findViewById(R.id.location_marker);
 
+        map.setTileSource(TileSourceFactory.MAPNIK);
+        map.setBuiltInZoomControls(false);
+        map.setMultiTouchControls(true);
+
     }
 
     private void loadChildFragment(Fragment fragment , String tag , boolean replace){
@@ -157,55 +172,45 @@ public class Map extends Fragment implements MapListener {
     @Override
     public void onStart() {
         super.onStart();
-        // everything related to ui is initialized here
-        /*initLayoutReferences();*/
-        // Initializing user location
-        /*initLocation();*/
+        initLocation();
         startReceivingLocationUpdates();
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        map.onResume();
+        initMap();
         startLocationUpdates();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        map.onPause();
         stopLocationUpdates();
-    }
-
-    // Initializing layout references (views, map and map events)
-    private void initLayoutReferences() {
-        // Initializing mapView element
-        initMap();
-
-     /*   if (checkInternet()) {
-            DownloadTask downloadTask = new DownloadTask(this);
-            downloadTask.execute("https://api.neshan.org/points.geojson");
-        }*/
     }
 
 
     // Initializing map
     private void initMap(){
-        // Creating a VectorElementLayer(called userMarkerLayer) to add user marker to it and adding it to map's layers
-        userMarkerLayer = NeshanServices.createVectorElementLayer();
-        map.getLayers().add(userMarkerLayer);
 
-        // add Standard_day map to layer BASE_MAP_INDEX
-        map.getOptions().setZoomRange(new Range(4.5f, 18f));
+        controller = map.getController();
+        controller.setZoom(15);
 
-        // Setting map focal position to a fixed position and setting camera zoom
-        map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );
-        map.setZoom(14,0);
+        Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),
+                R.drawable.current_location_pic);
 
-        //map.getLayers().insert(BASE_MAP_INDEX, NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
-        map.getLayers().add(NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
+        myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getContext()) , map);
+        myLocationNewOverlay.enableMyLocation();
+        myLocationNewOverlay.setDirectionArrow(icon , icon);
+        map.getOverlays().add(myLocationNewOverlay);
+
+        controller.setCenter(myLocationNewOverlay.getMyLocation());
+        controller.animateTo(myLocationNewOverlay.getMyLocation());
     }
 
-/*
+
     private void initLocation() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         settingsClient = LocationServices.getSettingsClient(getActivity());
@@ -231,8 +236,10 @@ public class Map extends Fragment implements MapListener {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(locationRequest);
         locationSettingsRequest = builder.build();
+
+        controller.animateTo(new GeoPoint(userLocation.getLatitude() , userLocation.getLongitude()));
     }
-*/
+
 
 
     /**
@@ -252,7 +259,7 @@ public class Map extends Fragment implements MapListener {
                         //noinspection MissingPermission
                         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
 
-                        /*onLocationChange();*/
+                        onLocationChange();
                     }
                 })
                 .addOnFailureListener(getActivity(), new OnFailureListener() {
@@ -280,7 +287,7 @@ public class Map extends Fragment implements MapListener {
                                 Toast.makeText(Map.this.getContext(), errorMessage, Toast.LENGTH_LONG).show();
                         }
 
-                        /*onLocationChange();*/
+                        onLocationChange();
                     }
                 });
     }
@@ -356,11 +363,11 @@ public class Map extends Fragment implements MapListener {
     }
 
 
-/*    private void onLocationChange() {
+    private void onLocationChange() {
         if(userLocation != null) {
-            addUserMarker(new LngLat(userLocation.getLongitude(), userLocation.getLatitude()));
+
         }
-    }*/
+    }
 
 
 /*    // This method gets a LngLat as input and adds a marker on that position
@@ -400,9 +407,9 @@ public class Map extends Fragment implements MapListener {
 
     public void focusOnUserLocation() {
         if(userLocation != null) {
-            map.setFocalPointPosition(
-                    new LngLat(userLocation.getLongitude(), userLocation.getLatitude()), 0.25f);
-            map.setZoom(15, 0.25f);
+            controller.setCenter(new GeoPoint(userLocation.getLatitude() , userLocation.getLongitude()));
+            controller.setZoom(17);
+            controller.animateTo(myLocationNewOverlay.getMyLocation());
         }
     }
 
