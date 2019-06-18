@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -31,8 +30,6 @@ import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
@@ -47,34 +44,21 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.neshan.core.Bounds;
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
-import org.neshan.core.ViewportBounds;
-import org.neshan.core.ViewportPosition;
 import org.neshan.layers.VectorElementLayer;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
-import org.neshan.styles.MarkerStyle;
-import org.neshan.styles.MarkerStyleCreator;
 import org.neshan.ui.MapView;
-import org.neshan.utils.BitmapUtils;
-import org.neshan.vectorelements.Marker;
 import org.osmdroid.config.Configuration;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
-import ir.maxivity.tasbih.dataAccess.map.DownloadTask;
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.mapFragments.AddLocationFragment;
 import ir.maxivity.tasbih.mapFragments.AddLocationInfoFragment;
 
-public class Map extends Fragment implements DownloadTask.Callback , MapListener{
+public class Map extends Fragment implements MapListener {
     private static final String TAG = Map.class.getName();
 
     // used to track request permissions
@@ -174,9 +158,9 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
     public void onStart() {
         super.onStart();
         // everything related to ui is initialized here
-        initLayoutReferences();
+        /*initLayoutReferences();*/
         // Initializing user location
-        initLocation();
+        /*initLocation();*/
         startReceivingLocationUpdates();
     }
 
@@ -197,10 +181,10 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
         // Initializing mapView element
         initMap();
 
-        if (checkInternet()) {
+     /*   if (checkInternet()) {
             DownloadTask downloadTask = new DownloadTask(this);
             downloadTask.execute("https://api.neshan.org/points.geojson");
-        }
+        }*/
     }
 
 
@@ -221,6 +205,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
         map.getLayers().add(NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
     }
 
+/*
     private void initLocation() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         settingsClient = LocationServices.getSettingsClient(getActivity());
@@ -247,6 +232,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
         builder.addLocationRequest(locationRequest);
         locationSettingsRequest = builder.build();
     }
+*/
 
 
     /**
@@ -266,7 +252,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
                         //noinspection MissingPermission
                         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
 
-                        onLocationChange();
+                        /*onLocationChange();*/
                     }
                 })
                 .addOnFailureListener(getActivity(), new OnFailureListener() {
@@ -294,7 +280,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
                                 Toast.makeText(Map.this.getContext(), errorMessage, Toast.LENGTH_LONG).show();
                         }
 
-                        onLocationChange();
+                        /*onLocationChange();*/
                     }
                 });
     }
@@ -370,14 +356,14 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
     }
 
 
-    private void onLocationChange() {
+/*    private void onLocationChange() {
         if(userLocation != null) {
             addUserMarker(new LngLat(userLocation.getLongitude(), userLocation.getLatitude()));
         }
-    }
+    }*/
 
 
-    // This method gets a LngLat as input and adds a marker on that position
+/*    // This method gets a LngLat as input and adds a marker on that position
     private void addUserMarker(LngLat loc){
         // Creating marker style. We should use an object of type MarkerStyleCreator, set all features on it
         // and then call buildStyle method on it. This method returns an object of type MarkerStyle
@@ -394,9 +380,9 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
 
         // Adding user marker to userMarkerLayer, or showing marker on map!
         userMarkerLayer.add(marker);
-    }
+    }*/
 
-    // This method gets a LngLat as input and adds a marker on that position
+/*    // This method gets a LngLat as input and adds a marker on that position
     private void addPinMarker(LngLat loc){
         // Creating marker style. We should use an object of type MarkerStyleCreator, set all features on it
         // and then call buildStyle method on it. This method returns an object of type MarkerStyle
@@ -410,7 +396,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
 
         // Adding user marker to userMarkerLayer, or showing marker on map!
         userMarkerLayer.add(marker);
-    }
+    }*/
 
     public void focusOnUserLocation() {
         if(userLocation != null) {
@@ -429,6 +415,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
     }
 
 
+/*
     @Override
     public void onJsonDownloaded(JSONObject jsonObject) {
         try {
@@ -464,6 +451,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
             e.printStackTrace();
         }
     }
+*/
 
     @Override
     public void onAddLocationSubmit() {
@@ -475,11 +463,7 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
         addLocationButton.show();
         addLocationMarker.setVisibility(View.GONE);
         Fragment addLocation = getChildFragmentManager().findFragmentByTag(ADD_LOCATION_TAG);
-        if (addLocation != null) {
-            if (addLocation.getFragmentManager() != null) {
-                addLocation.getFragmentManager().popBackStack();
-            }
-        }
+        dismissChildFragment(addLocation);
     }
 
     @Override
@@ -490,5 +474,13 @@ public class Map extends Fragment implements DownloadTask.Callback , MapListener
     @Override
     public void onAddLocationInfoCancel() {
 
+    }
+
+    private void dismissChildFragment(Fragment fragment) {
+        if (fragment != null) {
+            if (fragment.getFragmentManager() != null) {
+                fragment.getFragmentManager().popBackStack();
+            }
+        }
     }
 }
