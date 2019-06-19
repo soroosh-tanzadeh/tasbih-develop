@@ -17,6 +17,7 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -25,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
@@ -107,10 +109,13 @@ public class Map extends Fragment implements MapListener {
     private MapView map;
     private IMapController controller;
     private MyLocationNewOverlay myLocationNewOverlay;
+    private boolean goToMyLocationAtFirst = false;
 
     //VIEWS///
     FloatingActionButton actionButton , addLocationButton;
     private ImageView addLocationMarker;
+    private RelativeLayout bottomSheet;
+    private BottomSheetBehavior behavior;
 
 
     @Override
@@ -121,7 +126,7 @@ public class Map extends Fragment implements MapListener {
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         Configuration.getInstance().setMapViewHardwareAccelerated(true);
 
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_map_reworked, container, false);
         bindViews(view);
 
         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +144,7 @@ public class Map extends Fragment implements MapListener {
             }
         });
 
-
+        goToMyLocationAtFirst = true;
 
         return view;
     }
@@ -150,6 +155,8 @@ public class Map extends Fragment implements MapListener {
         actionButton = view.findViewById(R.id.focusonuser);
         addLocationButton = view.findViewById(R.id.add_location);
         addLocationMarker = view.findViewById(R.id.location_marker);
+        bottomSheet = view.findViewById(R.id.bottom_sheet);
+        behavior = BottomSheetBehavior.from(bottomSheet);
 
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(false);
@@ -165,6 +172,9 @@ public class Map extends Fragment implements MapListener {
         transaction.add(R.id.child_fragment , fragment , tag).commit();
         else
             transaction.replace(R.id.child_fragment , fragment , tag).commit();
+
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
     }
 
 
@@ -223,6 +233,10 @@ public class Map extends Fragment implements MapListener {
                 userLocation = locationResult.getLastLocation();
                 lastUpdateTime = DateFormat.getTimeInstance().format(new Date());
                 onLocationChange();
+                if (goToMyLocationAtFirst) {
+                    focusOnUserLocation();
+                    goToMyLocationAtFirst = false;
+                }
             }
         };
 
@@ -236,8 +250,6 @@ public class Map extends Fragment implements MapListener {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(locationRequest);
         locationSettingsRequest = builder.build();
-
-        controller.animateTo(new GeoPoint(userLocation.getLatitude() , userLocation.getLongitude()));
     }
 
 
@@ -408,7 +420,6 @@ public class Map extends Fragment implements MapListener {
     public void focusOnUserLocation() {
         if(userLocation != null) {
             controller.setCenter(new GeoPoint(userLocation.getLatitude() , userLocation.getLongitude()));
-            controller.setZoom(17);
             controller.animateTo(myLocationNewOverlay.getMyLocation());
         }
     }
@@ -471,6 +482,7 @@ public class Map extends Fragment implements MapListener {
         addLocationMarker.setVisibility(View.GONE);
         Fragment addLocation = getChildFragmentManager().findFragmentByTag(ADD_LOCATION_TAG);
         dismissChildFragment(addLocation);
+        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
