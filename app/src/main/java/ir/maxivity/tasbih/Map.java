@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.mapFragments.AddLocationFragment;
@@ -157,6 +159,26 @@ public class Map extends Fragment implements MapListener {
         addLocationMarker = view.findViewById(R.id.location_marker);
         bottomSheet = view.findViewById(R.id.bottom_sheet);
         behavior = BottomSheetBehavior.from(bottomSheet);
+
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int state) {
+                if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+                    addLocationButton.show();
+                    if (getCurrentFragment() instanceof AddLocationFragment) {
+                        dismissChildFragment(ADD_LOCATION_TAG);
+                    }
+                    if (getCurrentFragment() instanceof AddLocationInfoFragment) {
+                        dismissChildFragment(ADD_LOCATION_INFO_TAG);
+                    }
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
 
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(false);
@@ -480,26 +502,43 @@ public class Map extends Fragment implements MapListener {
     public void onAddLocationCancel() {
         addLocationButton.show();
         addLocationMarker.setVisibility(View.GONE);
-        Fragment addLocation = getChildFragmentManager().findFragmentByTag(ADD_LOCATION_TAG);
-        dismissChildFragment(addLocation);
+        dismissChildFragment(ADD_LOCATION_TAG);
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
     public void onAddLocationInfoSubmit(HashMap<String, String> fields) {
-
+        //todo send request to server
+        addLocationButton.show();
+        dismissChildFragment(ADD_LOCATION_INFO_TAG);
     }
 
     @Override
     public void onAddLocationInfoCancel() {
-
+        addLocationButton.show();
+        dismissChildFragment(ADD_LOCATION_INFO_TAG);
     }
 
-    private void dismissChildFragment(Fragment fragment) {
+    private void dismissChildFragment(String tag) {
+        Fragment fragment = getChildFragmentManager().findFragmentByTag(tag);
         if (fragment != null) {
             if (fragment.getFragmentManager() != null) {
                 fragment.getFragmentManager().popBackStack();
             }
         }
+    }
+
+    private Fragment getCurrentFragment() {
+        FragmentManager manager = getChildFragmentManager();
+        List<Fragment> fragments = manager.getFragments();
+
+        if (fragments != null) {
+            for (Fragment fragment : fragments) {
+                if (fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
+
     }
 }
