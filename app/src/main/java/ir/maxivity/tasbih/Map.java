@@ -115,9 +115,10 @@ public class Map extends Fragment implements MapListener {
 
     //VIEWS///
     FloatingActionButton actionButton , addLocationButton;
-    private ImageView addLocationMarker;
+    private ImageView addLocationMarker, filterImage;
     private RelativeLayout bottomSheet;
     private BottomSheetBehavior behavior;
+    private RelativeLayout searchBar;
 
 
     @Override
@@ -159,18 +160,27 @@ public class Map extends Fragment implements MapListener {
         addLocationMarker = view.findViewById(R.id.location_marker);
         bottomSheet = view.findViewById(R.id.bottom_sheet);
         behavior = BottomSheetBehavior.from(bottomSheet);
+        searchBar = view.findViewById(R.id.search_bar_wrapper);
+        filterImage = view.findViewById(R.id.filter_icon);
 
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int state) {
                 if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+                    searchBar.setVisibility(View.VISIBLE);
                     addLocationButton.show();
                     if (getCurrentFragment() instanceof AddLocationFragment) {
                         dismissChildFragment(ADD_LOCATION_TAG);
+                        addLocationMarker.setVisibility(View.GONE);
                     }
                     if (getCurrentFragment() instanceof AddLocationInfoFragment) {
                         dismissChildFragment(ADD_LOCATION_INFO_TAG);
+                        addLocationMarker.setVisibility(View.GONE);
                     }
+                }
+
+                if (state == BottomSheetBehavior.STATE_EXPANDED) {
+                    searchBar.setVisibility(View.GONE);
                 }
             }
 
@@ -214,6 +224,7 @@ public class Map extends Fragment implements MapListener {
         map.onResume();
         initMap();
         startLocationUpdates();
+        focusOnUserLocation();
     }
 
     @Override

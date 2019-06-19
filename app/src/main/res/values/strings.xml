@@ -133,4 +133,15 @@
     <string name="field_required">باید تمامی فیلد ها را پر کنید</string>
     <string name="submit">تایید</string>
     <string name="save">ذخیره</string>
+    <string name="restaurant">رستوران</string>
+    <string name="hotel">هتل</string>
+    <string name="coffee_shop">کافی شاپ</string>
+    <string name="religious_places">نهاد مذهبی</string>
+    <string name="hospital">بیمارستان</string>
+    <string name="university">دانشگاه</string>
+    <string name="residency">اقامتگاه بومی</string>
+    <string name="dentistry">دندان پزشکی</string>
+    <string name="shop">فروشگاه</string>
+    <string name="gym">باشگاه</string>
+    <string name="other">سایر</string>
 </resources>
