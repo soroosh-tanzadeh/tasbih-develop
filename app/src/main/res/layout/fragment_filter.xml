@@ -11,18 +11,16 @@
         android:id="@+id/recent_filter_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true">
+        android:padding="8dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="80dp"
-                android:layout_height="140dp">
+                android:layout_width="@dimen/recent_filter_width"
+                android:layout_height="@dimen/recent_filter_height">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -42,8 +40,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="80dp"
-                android:layout_height="140dp">
+                android:layout_width="@dimen/recent_filter_width"
+                android:layout_height="@dimen/recent_filter_height">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -65,8 +63,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="80dp"
-                android:layout_height="140dp">
+                android:layout_width="@dimen/recent_filter_width"
+                android:layout_height="@dimen/recent_filter_height">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -86,8 +84,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="80dp"
-                android:layout_height="140dp">
+                android:layout_width="@dimen/recent_filter_width"
+                android:layout_height="@dimen/recent_filter_height">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -107,8 +105,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="80dp"
-                android:layout_height="140dp">
+                android:layout_width="@dimen/recent_filter_width"
+                android:layout_height="@dimen/recent_filter_height">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -184,7 +182,6 @@
                         android:background="@drawable/university" />
 
                 </RelativeLayout>
-
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="60dp"
@@ -210,7 +207,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -239,7 +235,6 @@
                         android:background="@drawable/shop" />
 
                 </RelativeLayout>
-
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="60dp"
@@ -265,7 +260,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -294,7 +288,6 @@
                         android:background="@drawable/gym" />
 
                 </RelativeLayout>
-
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="60dp"

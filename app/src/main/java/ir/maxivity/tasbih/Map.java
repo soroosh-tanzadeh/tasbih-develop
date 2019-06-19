@@ -68,6 +68,7 @@ import java.util.List;
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.mapFragments.AddLocationFragment;
 import ir.maxivity.tasbih.mapFragments.AddLocationInfoFragment;
+import ir.maxivity.tasbih.mapFragments.FilterFragment;
 
 public class Map extends Fragment implements MapListener {
     private static final String TAG = Map.class.getName();
@@ -105,6 +106,7 @@ public class Map extends Fragment implements MapListener {
     //TAGS////
     private final String ADD_LOCATION_TAG = "add location";
     private final String ADD_LOCATION_INFO_TAG = "add location info";
+    private final String FILTER_FRAGMENT = "filter fragment";
 
 
     //OSM MAP//
@@ -143,6 +145,10 @@ public class Map extends Fragment implements MapListener {
             public void onClick(View view) {
                 addLocationButton.hide();
                 addLocationMarker.setVisibility(View.VISIBLE);
+                searchBar.setVisibility(View.GONE);
+                if (getCurrentFragment() instanceof FilterFragment) {
+                    dismissChildFragment(FILTER_FRAGMENT);
+                }
                 loadChildFragment(new AddLocationFragment() , ADD_LOCATION_TAG , false);
             }
         });
@@ -163,6 +169,17 @@ public class Map extends Fragment implements MapListener {
         searchBar = view.findViewById(R.id.search_bar_wrapper);
         filterImage = view.findViewById(R.id.filter_icon);
 
+        filterImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchBar.setVisibility(View.VISIBLE);
+                if (getCurrentFragment() instanceof FilterFragment) {
+                    dismissChildFragment(FILTER_FRAGMENT);
+                } else
+                    loadChildFragment(new FilterFragment(), FILTER_FRAGMENT, true);
+            }
+        });
+
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int state) {
@@ -177,11 +194,11 @@ public class Map extends Fragment implements MapListener {
                         dismissChildFragment(ADD_LOCATION_INFO_TAG);
                         addLocationMarker.setVisibility(View.GONE);
                     }
+                    if (getCurrentFragment() instanceof FilterFragment) {
+                        dismissChildFragment(FILTER_FRAGMENT);
+                    }
                 }
 
-                if (state == BottomSheetBehavior.STATE_EXPANDED) {
-                    searchBar.setVisibility(View.GONE);
-                }
             }
 
             @Override
@@ -528,6 +545,11 @@ public class Map extends Fragment implements MapListener {
     public void onAddLocationInfoCancel() {
         addLocationButton.show();
         dismissChildFragment(ADD_LOCATION_INFO_TAG);
+    }
+
+    @Override
+    public void onSelectFilter() {
+
     }
 
     private void dismissChildFragment(String tag) {
