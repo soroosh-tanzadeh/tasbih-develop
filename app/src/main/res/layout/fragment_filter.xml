@@ -201,7 +201,7 @@
                         android:layout_height="50dp"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@id/residency_txt"
-                        android:layout_marginRight="32dp"
+                        android:layout_marginRight="15dp"
                         android:background="@drawable/residency" />
 
                 </RelativeLayout>
@@ -307,7 +307,7 @@
                         android:layout_height="50dp"
                         android:layout_marginRight="82dp"
                         android:layout_toLeftOf="@id/other_txt"
-                        android:background="@drawable/residency" />
+                        android:background="@drawable/ic_more_ic_nav" />
 
                 </RelativeLayout>
 
