@@ -11,7 +11,6 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,7 +23,7 @@ import co.ronash.pushe.Pushe;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
 import ir.maxivity.tasbih.tools.CustomGestureDetector;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     @SuppressLint("ClickableViewAccessibility")

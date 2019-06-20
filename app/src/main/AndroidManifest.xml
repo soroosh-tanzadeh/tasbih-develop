@@ -69,6 +69,7 @@
             android:supportsRtl="true" />
         <activity android:name=".ZekrCounter" />
         <activity android:name=".Qiblah_compass" />
+        <activity android:name=".BaseActivity" />
     </application>
 
 </manifest>
