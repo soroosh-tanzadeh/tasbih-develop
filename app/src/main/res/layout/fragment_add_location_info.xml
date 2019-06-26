@@ -76,6 +76,17 @@
                 android:id="@+id/category_dropDown"
                 android:background="@drawable/ic_category"
                 />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/category_dropDown"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="left"
+                android:layoutDirection="rtl"
+                android:id="@+id/category_spinner" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -124,8 +135,25 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="افزدون تصویر"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/add_box_outline" />
+
 
         </RelativeLayout>
         <RelativeLayout
