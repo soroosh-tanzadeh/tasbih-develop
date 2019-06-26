@@ -48,7 +48,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/home_location_name"
@@ -70,7 +70,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="8dp"
                 android:id="@+id/category_dropDown"
@@ -79,12 +79,12 @@
 
             <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_toLeftOf="@id/category_dropDown"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="16dp"
-                android:gravity="left"
+                android:gravity="center"
                 android:layoutDirection="rtl"
                 android:id="@+id/category_spinner" />
         </RelativeLayout>
@@ -95,7 +95,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/ic_web"
@@ -117,7 +117,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="8dp"
                 android:id="@+id/phone_image"
