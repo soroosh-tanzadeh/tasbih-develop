@@ -57,6 +57,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
@@ -114,6 +115,7 @@ public class Map extends Fragment implements MapListener {
     private IMapController controller;
     private MyLocationNewOverlay myLocationNewOverlay;
     private boolean goToMyLocationAtFirst = false;
+    private Marker newLocationMarker;
 
     //VIEWS///
     FloatingActionButton actionButton , addLocationButton;
@@ -193,6 +195,7 @@ public class Map extends Fragment implements MapListener {
                     if (getCurrentFragment() instanceof AddLocationInfoFragment) {
                         dismissChildFragment(ADD_LOCATION_INFO_TAG);
                         addLocationMarker.setVisibility(View.GONE);
+                        addOrRemoveNewLocationMarker(true, newLocationMarker);
                     }
                     if (getCurrentFragment() instanceof FilterFragment) {
                         dismissChildFragment(FILTER_FRAGMENT);
@@ -259,7 +262,7 @@ public class Map extends Fragment implements MapListener {
         controller.setZoom(15);
 
         Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),
-                R.drawable.current_location_pic);
+                R.drawable.circle_16);
 
         myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getContext()) , map);
         myLocationNewOverlay.enableMyLocation();
@@ -268,6 +271,23 @@ public class Map extends Fragment implements MapListener {
 
         controller.setCenter(myLocationNewOverlay.getMyLocation());
         controller.animateTo(myLocationNewOverlay.getMyLocation());
+
+    }
+
+    private void addOrRemoveNewLocationMarker(boolean remove, Marker marker) {
+        if (remove)
+            map.getOverlays().remove(marker);
+        else
+            map.getOverlays().add(marker);
+    }
+
+    private Marker createMarker(GeoPoint position, int drawable) {
+        Marker marker = new Marker(map);
+        marker.setPosition(position);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        marker.setIcon(getResources().getDrawable(drawable));
+
+        return marker;
     }
 
 
@@ -524,6 +544,13 @@ public class Map extends Fragment implements MapListener {
     @Override
     public void onAddLocationSubmit() {
         loadChildFragment(new AddLocationInfoFragment(), ADD_LOCATION_INFO_TAG, true);
+
+        newLocationMarker = createMarker(new GeoPoint(map.getMapCenter().getLatitude()
+                        , map.getMapCenter().getLongitude())
+                , R.drawable.marker2);
+        addLocationMarker.setVisibility(View.GONE);
+
+        addOrRemoveNewLocationMarker(false, newLocationMarker);
     }
 
     @Override
@@ -532,6 +559,8 @@ public class Map extends Fragment implements MapListener {
         addLocationMarker.setVisibility(View.GONE);
         dismissChildFragment(ADD_LOCATION_TAG);
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        addOrRemoveNewLocationMarker(true, newLocationMarker);
     }
 
     @Override
@@ -545,6 +574,8 @@ public class Map extends Fragment implements MapListener {
     public void onAddLocationInfoCancel() {
         addLocationButton.show();
         dismissChildFragment(ADD_LOCATION_INFO_TAG);
+        addLocationMarker.setVisibility(View.VISIBLE);
+        addOrRemoveNewLocationMarker(true, newLocationMarker);
     }
 
     @Override
