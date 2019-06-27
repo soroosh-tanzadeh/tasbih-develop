@@ -1,5 +1,7 @@
 package ir.maxivity.tasbih.interfaces;
 
+import java.util.ArrayList;
+
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetQuranText;
 import okhttp3.RequestBody;
@@ -13,7 +15,7 @@ public interface API {
 
     @Multipart
     @POST("get-places.php")
-    Call<GetPlaces> getPlaces(@Part("data") RequestBody body);
+    Call<ArrayList<GetPlaces.response>> getPlaces(@Part("data") RequestBody body);
 
     @POST("get-qurantext.php")
     Call<GetQuranText> getQuranText(@Body int sura);

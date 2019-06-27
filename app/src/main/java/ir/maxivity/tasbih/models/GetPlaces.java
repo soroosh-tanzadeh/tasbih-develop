@@ -8,7 +8,7 @@ public class GetPlaces {
     public ArrayList<response> places = new ArrayList<>();
 
 
-    class response {
+    public class response {
         public String id;
         public String user_id;
         public String img_address;

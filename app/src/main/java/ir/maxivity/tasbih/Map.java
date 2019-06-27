@@ -63,6 +63,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +81,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Map extends Fragment implements MapListener {
-    private static final String TAG = Map.class.getName();
+    private static final String TAG = "FUCK MAP";
 
     // used to track request permissions
     final int REQUEST_CODE = 123;
@@ -477,21 +478,17 @@ public class Map extends Fragment implements MapListener {
         String data = gson.toJson(body);
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-        main.application.api.getPlaces(RequestBody.create(JSON, data)).enqueue(new Callback<GetPlaces>() {
+        main.application.api.getPlaces(RequestBody.create(JSON, data)).enqueue(new Callback<ArrayList<GetPlaces.response>>() {
             @Override
-            public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        Log.v("FUCK MAP", response.body().places + "");
-                    }
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+            public void onResponse(Call<ArrayList<GetPlaces.response>> call, Response<ArrayList<GetPlaces.response>> response) {
+                if (response.isSuccessful()) {
+                    Log.v(TAG, "body : " + response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<GetPlaces> call, Throwable t) {
-                Log.v("FUCK MAP", "fail = " + t.getMessage());
+            public void onFailure(Call<ArrayList<GetPlaces.response>> call, Throwable t) {
+                Log.v(TAG, "faile : " + t.getMessage());
             }
         });
     }
