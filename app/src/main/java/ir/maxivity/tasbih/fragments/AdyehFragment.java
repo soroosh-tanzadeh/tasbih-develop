@@ -22,16 +22,14 @@ import java.io.InputStream;
 import ir.maxivity.tasbih.R;
 import ir.maxivity.tasbih.adapters.QuranAdapter;
 
-public class QuranFragment extends Fragment {
+public class AdyehFragment extends Fragment {
 
-    private JSONArray qurans;
+    private JSONArray adyeh;
     private View root;
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         root = inflater.inflate(R.layout.quran_fragment_layout, container, false);
         initViews();
         return root;
@@ -41,7 +39,7 @@ public class QuranFragment extends Fragment {
         RecyclerView recyclerView = root.findViewById(R.id.quran_recycler);
         EditText search = root.findViewById(R.id.search_surah_input);
 
-        final QuranAdapter adapter = new QuranAdapter(getContext(), qurans);
+        final QuranAdapter adapter = new QuranAdapter(getContext(), adyeh);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnSurahClickListener(new QuranAdapter.OnSurahClick() {
@@ -72,19 +70,19 @@ public class QuranFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
         try {
-            qurans = new JSONArray(readJsonFromAssets());
+            adyeh = new JSONArray(readJsonFromAssets());
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-
     private String readJsonFromAssets() {
         String json = null;
         try {
-            InputStream inputStream = getActivity().getAssets().open("surah_list.json");
+            InputStream inputStream = getActivity().getAssets().open("doa.json");
             int size = inputStream.available();
             byte[] buffer = new byte[size];
             inputStream.read(buffer);

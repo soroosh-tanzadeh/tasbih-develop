@@ -1,14 +1,15 @@
 package ir.maxivity.tasbih;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import ir.maxivity.tasbih.calendarTabs.SectionsPagerAdapter;
+import ir.maxivity.tasbih.fragments.AdyehFragment;
+import ir.maxivity.tasbih.fragments.QuranFragment;
 import ir.maxivity.tasbih.tools.HeaderNav;
 
-public class QuranAdyeh extends AppCompatActivity {
+public class QuranAdyeh extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,8 @@ public class QuranAdyeh extends AppCompatActivity {
 
     public void setupViewerPager(ViewPager vp){
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        sectionsPagerAdapter.addFragment(new Quran_frag(),"اعدیه");
-        sectionsPagerAdapter.addFragment(new Quran_frag(),"قرآن");
+        sectionsPagerAdapter.addFragment(new AdyehFragment(), getString(R.string.adyeh));
+        sectionsPagerAdapter.addFragment(new QuranFragment(), getString(R.string.quran));
         vp.setAdapter(sectionsPagerAdapter);
     }
 }
