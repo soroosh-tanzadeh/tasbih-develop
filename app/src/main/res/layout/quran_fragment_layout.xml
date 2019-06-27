@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/search_surah_input"
-        android:layout_margin="8dp"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:id="@+id/quran_recycler" />
 </RelativeLayout>

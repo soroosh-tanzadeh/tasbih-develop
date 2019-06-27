@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/ic_qlist_item"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="الفاتحه"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:id="@+id/quran_name"
+        android:fontFamily="@font/neirizi" />
+
+</RelativeLayout>
