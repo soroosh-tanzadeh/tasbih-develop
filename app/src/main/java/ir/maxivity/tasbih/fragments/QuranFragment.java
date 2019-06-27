@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import ir.maxivity.tasbih.R;
-import ir.maxivity.tasbih.adapters.QuranAdapter;
+import ir.maxivity.tasbih.adapters.QuranAdyehAdapter;
 
 public class QuranFragment extends Fragment {
 
@@ -41,10 +41,10 @@ public class QuranFragment extends Fragment {
         RecyclerView recyclerView = root.findViewById(R.id.quran_recycler);
         EditText search = root.findViewById(R.id.search_surah_input);
 
-        final QuranAdapter adapter = new QuranAdapter(getContext(), qurans);
+        final QuranAdyehAdapter adapter = new QuranAdyehAdapter(getContext(), qurans);
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnSurahClickListener(new QuranAdapter.OnSurahClick() {
+        adapter.setOnSurahClickListener(new QuranAdyehAdapter.OnSurahClick() {
             @Override
             public void onClick(int id) {
                 Toast.makeText(getContext(), "id = " + id, Toast.LENGTH_SHORT).show();

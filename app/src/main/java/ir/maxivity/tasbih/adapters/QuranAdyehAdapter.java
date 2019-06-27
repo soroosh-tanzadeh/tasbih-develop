@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import ir.maxivity.tasbih.R;
 
-public class QuranAdapter extends RecyclerView.Adapter<QuranAdapter.QuranViewHolder>
+public class QuranAdyehAdapter extends RecyclerView.Adapter<QuranAdyehAdapter.QuranViewHolder>
         implements Filterable {
 
     private Context context;
@@ -27,7 +27,7 @@ public class QuranAdapter extends RecyclerView.Adapter<QuranAdapter.QuranViewHol
     private ArrayList<ListItemObject> items = new ArrayList<>();
     private ArrayList<ListItemObject> itemsFilter = new ArrayList<>();
 
-    public QuranAdapter(Context context, JSONArray quran) {
+    public QuranAdyehAdapter(Context context, JSONArray quran) {
         this.context = context;
         this.quran = quran;
 
