@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -70,6 +71,13 @@ import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.mapFragments.AddLocationFragment;
 import ir.maxivity.tasbih.mapFragments.AddLocationInfoFragment;
 import ir.maxivity.tasbih.mapFragments.FilterFragment;
+import ir.maxivity.tasbih.models.GetPlaces;
+import ir.maxivity.tasbih.models.GetPlacesBody;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Map extends Fragment implements MapListener {
     private static final String TAG = Map.class.getName();
@@ -449,6 +457,43 @@ public class Map extends Fragment implements MapListener {
         if(userLocation != null) {
 
         }
+
+        try {
+
+            getPlaces();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void getPlaces() throws NullPointerException {
+        MainActivity main = (MainActivity) getActivity();
+        GetPlacesBody body = new GetPlacesBody("4",
+                map.getMapCenter().getLatitude() + "",
+                map.getMapCenter().getLongitude() + "");
+
+        Gson gson = new Gson();
+        String data = gson.toJson(body);
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+        main.application.api.getPlaces(RequestBody.create(JSON, data)).enqueue(new Callback<GetPlaces>() {
+            @Override
+            public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        Log.v("FUCK MAP", response.body().places + "");
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetPlaces> call, Throwable t) {
+                Log.v("FUCK MAP", "fail = " + t.getMessage());
+            }
+        });
     }
 
 

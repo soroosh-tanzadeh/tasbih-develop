@@ -4,13 +4,8 @@ import java.util.ArrayList;
 
 public class GetPlaces {
 
-    private Body data;
 
-    public GetPlaces(Body data) {
-        this.data = data;
-    }
-
-    ArrayList<response> places = new ArrayList<>();
+    public ArrayList<response> places = new ArrayList<>();
 
 
     class response {
@@ -28,9 +23,4 @@ public class GetPlaces {
         public String lon;
     }
 
-    class Body {
-        public String distance;
-        public String ulat;
-        public String ulong;
-    }
 }

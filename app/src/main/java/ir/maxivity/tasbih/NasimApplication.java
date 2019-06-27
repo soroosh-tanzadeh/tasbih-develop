@@ -8,7 +8,7 @@ import ir.maxivity.tasbih.network.APIHelper;
 public class NasimApplication extends Application {
 
     private final static String BASE_URL = "http://tasbih.maxivityteam.ir/tasbih/WebService/";
-    private API api;
+    public API api;
 
     @Override
     public void onCreate() {
