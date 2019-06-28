@@ -44,7 +44,7 @@ public class AdyehFragment extends Fragment {
 
         adapter.setOnSurahClickListener(new QuranAdyehAdapter.OnSurahClick() {
             @Override
-            public void onClick(int id) {
+            public void onClick(int id, String name) {
                 Toast.makeText(getContext(), "id = " + id, Toast.LENGTH_SHORT).show();
             }
         });

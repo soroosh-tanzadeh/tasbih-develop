@@ -1,5 +1,6 @@
 package ir.maxivity.tasbih.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import ir.maxivity.tasbih.QuranAdyehTextActivity;
 import ir.maxivity.tasbih.R;
 import ir.maxivity.tasbih.adapters.QuranAdyehAdapter;
 
@@ -46,8 +48,13 @@ public class QuranFragment extends Fragment {
 
         adapter.setOnSurahClickListener(new QuranAdyehAdapter.OnSurahClick() {
             @Override
-            public void onClick(int id) {
+            public void onClick(int id, String name) {
                 Toast.makeText(getContext(), "id = " + id, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), QuranAdyehTextActivity.class);
+                intent.putExtra("ID", id);
+                intent.putExtra("NAME", name);
+                intent.putExtra("QURAN", true);
+                startActivity(intent);
             }
         });
 
