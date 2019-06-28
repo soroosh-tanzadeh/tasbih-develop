@@ -4,7 +4,8 @@
     package="ir.maxivity.tasbih">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,20 +17,22 @@
     <uses-feature android:name="android.hardware.wifi" />
 
     <application
+        android:name=".NasimApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".NasimApplication"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ZekrsList"></activity>
+        <activity android:name=".QuranAdyehTextActivity"></activity>
+        <activity android:name=".ZekrsList" />
         <activity android:name=".QuranAdyeh" />
         <activity android:name=".MessagesList" />
         <activity android:name=".SendMessage" />
-        <activity android:name=".Login"
-            android:windowSoftInputMode="adjustResize|adjustPan"  />
+        <activity
+            android:name=".Login"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".Calendar"
             android:theme="@style/CalendarTheme" />

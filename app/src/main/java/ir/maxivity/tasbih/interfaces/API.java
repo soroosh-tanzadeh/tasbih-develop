@@ -18,5 +18,5 @@ public interface API {
     Call<ArrayList<GetPlaces.response>> getPlaces(@Part("data") RequestBody body);
 
     @POST("get-qurantext.php")
-    Call<GetQuranText> getQuranText(@Body int sura);
+    Call<ArrayList<GetQuranText>> getQuranText(@Body int sura);
 }
