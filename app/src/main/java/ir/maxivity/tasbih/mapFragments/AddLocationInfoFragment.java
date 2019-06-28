@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ir.maxivity.tasbih.R;
+import ir.maxivity.tasbih.adapters.CategorySpinnerAdapter;
 import ir.maxivity.tasbih.interfaces.MapListener;
 
 /**
@@ -52,14 +53,31 @@ public class AddLocationInfoFragment extends Fragment {
         websiteAddress = root.findViewById(R.id.website_edt);
         phoneNumber = root.findViewById(R.id.phone_edt_txt);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_item,
-                categoryList());
+      /*  ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(),
+                R.layout.category_spinner_layout,
+                R.id.category_item_txt,
+                categoryList());*/
 
+        CategorySpinnerAdapter adapter = new CategorySpinnerAdapter(getContext(), R.layout.category_spinner_layout, categoryList());
+/*
         arrayAdapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
+                .simple_spinner_dropdown_item);*/
 
-        category.setAdapter(arrayAdapter);
+        category.setAdapter(adapter);
+
+        category.setSelection(0);
+
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                category.setSelection(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
