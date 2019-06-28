@@ -146,4 +146,19 @@
     <string name="other">سایر</string>
     <string name="adyeh">ادعیه</string>
     <string name="quran">قرآن</string>
+
+
+    <string-array name="category_list">
+        <item>@string/restaurant</item>
+        <item>@string/hotel</item>
+        <item>@string/coffee_shop</item>
+        <item>@string/hospital</item>
+        <item>@string/religious_places</item>
+        <item>@string/residency</item>
+        <item>@string/university</item>
+        <item>@string/dentistry</item>
+        <item>@string/shop</item>
+        <item>@string/gym</item>
+        <item>@string/other</item>
+    </string-array>
 </resources>
