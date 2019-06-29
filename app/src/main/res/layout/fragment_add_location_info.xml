@@ -62,6 +62,7 @@
                 android:layout_marginLeft="16dp"
                 app:backgroundTint="@color/gray_400"
                 android:id="@+id/location_name_edt"
+                android:textColor="@color/gray_800"
                 />
         </RelativeLayout>
         <RelativeLayout
@@ -110,6 +111,7 @@
                 android:layout_marginLeft="16dp"
                 app:backgroundTint="@color/gray_400"
                 android:id="@+id/website_edt"
+                android:textColor="@color/gray_800"
                 />
         </RelativeLayout>
         <RelativeLayout
@@ -134,6 +136,7 @@
                 app:backgroundTint="@color/gray_400"
                 android:id="@+id/phone_edt_txt"
                 android:inputType="number"
+                android:textColor="@color/gray_800"
                 />
         </RelativeLayout>
         <RelativeLayout
