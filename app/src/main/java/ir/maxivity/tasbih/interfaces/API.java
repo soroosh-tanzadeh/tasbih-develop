@@ -2,6 +2,7 @@ package ir.maxivity.tasbih.interfaces;
 
 import java.util.ArrayList;
 
+import ir.maxivity.tasbih.models.AddNewPlaceResponse;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetQuranText;
 import ir.maxivity.tasbih.models.LoginResponse;
@@ -28,5 +29,5 @@ public interface API {
 
     @Multipart
     @POST("new-place.php")
-    String addPlace(@Part("data") RequestBody body);
+    Call<AddNewPlaceResponse> addPlace(@Part("data") RequestBody body);
 }
