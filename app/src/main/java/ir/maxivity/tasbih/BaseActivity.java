@@ -13,4 +13,12 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         application = (NasimApplication) getApplication();
     }
+
+
+    public NasimDialog showLoadingDialog() {
+        NasimDialog dialog = new NasimDialog(this, NasimDialogTypes.PROGRESS_TYPE);
+        dialog.setDialogTitle(getString(R.string.waiting));
+        dialog.setCancelable(false);
+        return dialog;
+    }
 }
