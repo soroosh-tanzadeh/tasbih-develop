@@ -2,8 +2,11 @@ package tools;
 
 import android.support.annotation.NonNull;
 
+import okhttp3.MediaType;
+
 public class Utilities {
 
+    public static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static String numberConvert_Fa2En(@NonNull String rawStr) {
         StringBuffer stringBuffer = new StringBuffer();
