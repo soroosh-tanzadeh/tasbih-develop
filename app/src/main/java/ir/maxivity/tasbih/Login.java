@@ -1,29 +1,24 @@
 package ir.maxivity.tasbih;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
-import ir.maxivity.tasbih.dataAccess.DBConnection;
-import ir.maxivity.tasbih.dataAccess.DataFileAccess;
-import ir.maxivity.tasbih.dataAccess.LocalDB;
 import ir.maxivity.tasbih.dataAccess.VerficationResult;
+import ir.maxivity.tasbih.models.LoginResponse;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import tools.Utilities;
 
-public class Login extends AppCompatActivity {
+public class Login extends BaseActivity {
 
+    private static final String TAG = "FUCK LOGIN";
     private EditText phonenumber;
     private EditText verificationcode;
     private Button sendVirificationbtn;
@@ -39,6 +34,7 @@ public class Login extends AppCompatActivity {
         phonenumber = findViewById(R.id.phonenumber_input);
         verificationcode = findViewById(R.id.verification_input);
         sendVirificationbtn = findViewById(R.id.submitVerification_code);
+        sendVirificationbtn.setVisibility(View.GONE);
         login_submit = findViewById(R.id.login_submit);
         phonenumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -46,7 +42,7 @@ public class Login extends AppCompatActivity {
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             }
         });
-        final DataFileAccess fileAccess = new DataFileAccess(this);
+       /* final DataFileAccess fileAccess = new DataFileAccess(this);
         try {
             final LocalDB[] localDB = {fileAccess.readLocalDB()};
             if (true) {
@@ -161,7 +157,47 @@ public class Login extends AppCompatActivity {
             }
         } catch (Exception ex) {
             Log.e("Login Page", ex.getMessage());
-        }
+        }*/
+
+        login_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginRequest(phonenumber.getText().toString());
+            }
+        });
+    }
+
+    private void loginRequest(String phone) {
+
+        String body = application.createBody(phone);
+        final NasimDialog dialog = showLoadingDialog();
+        dialog.show();
+        application.api.doLogin(RequestBody.create(Utilities.JSON, body)).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                dialog.dismiss();
+                try {
+                    if (response.isSuccessful()) {
+                        if (response.body().resultcode == 1) {
+                            application.setToken(response.body().data);
+                            application.setUserId(response.body().user_id);
+                            Intent intent = new Intent(Login.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                dialog.dismiss();
+                Log.v(TAG, "fail : " + t.getMessage());
+            }
+        });
     }
 
     @Override
