@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
 import ir.maxivity.tasbih.interfaces.API;
 import ir.maxivity.tasbih.network.APIHelper;
 
@@ -53,6 +55,9 @@ public class NasimApplication extends Application {
     }
 
 
-
+    public <T> String createBody(T body) {
+        Gson gson = new Gson();
+        return gson.toJson(body);
+    }
 
 }
