@@ -71,6 +71,8 @@ import ir.maxivity.tasbih.fragments.mapFragments.AddLocationFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.AddLocationInfoFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.FilterFragment;
 import ir.maxivity.tasbih.interfaces.MapListener;
+import ir.maxivity.tasbih.models.AddNewLocationBody;
+import ir.maxivity.tasbih.models.AddNewPlaceResponse;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetPlacesBody;
 import okhttp3.RequestBody;
@@ -126,7 +128,7 @@ public class Map extends Fragment implements MapListener {
     private Marker newLocationMarker;
 
     //VIEWS///
-    FloatingActionButton actionButton , addLocationButton;
+    FloatingActionButton actionButton, addLocationButton;
     private ImageView addLocationMarker, filterImage;
     private RelativeLayout bottomSheet;
     private BottomSheetBehavior behavior;
@@ -159,7 +161,7 @@ public class Map extends Fragment implements MapListener {
                 if (getCurrentFragment() instanceof FilterFragment) {
                     dismissChildFragment(FILTER_FRAGMENT);
                 }
-                loadChildFragment(new AddLocationFragment() , ADD_LOCATION_TAG , false);
+                loadChildFragment(new AddLocationFragment(), ADD_LOCATION_TAG, false);
             }
         });
 
@@ -169,7 +171,7 @@ public class Map extends Fragment implements MapListener {
     }
 
 
-    private void bindViews(View view){
+    private void bindViews(View view) {
         map = view.findViewById(R.id.map);
         actionButton = view.findViewById(R.id.focusonuser);
         addLocationButton = view.findViewById(R.id.add_location);
@@ -224,19 +226,18 @@ public class Map extends Fragment implements MapListener {
 
     }
 
-    private void loadChildFragment(Fragment fragment , String tag , boolean replace){
+    private void loadChildFragment(Fragment fragment, String tag, boolean replace) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
         // transaction.setCustomAnimations(R.anim.enter_from_bottom , null);
         if (!replace)
-        transaction.add(R.id.child_fragment , fragment , tag).commit();
+            transaction.add(R.id.child_fragment, fragment, tag).commit();
         else
-            transaction.replace(R.id.child_fragment , fragment , tag).commit();
+            transaction.replace(R.id.child_fragment, fragment, tag).commit();
 
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
     }
-
 
 
     @Override
@@ -247,7 +248,7 @@ public class Map extends Fragment implements MapListener {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         map.onResume();
         initMap();
@@ -264,7 +265,7 @@ public class Map extends Fragment implements MapListener {
 
 
     // Initializing map
-    private void initMap(){
+    private void initMap() {
 
         controller = map.getController();
         controller.setZoom(15);
@@ -272,9 +273,9 @@ public class Map extends Fragment implements MapListener {
         Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),
                 R.drawable.circle_16);
 
-        myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getContext()) , map);
+        myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getContext()), map);
         myLocationNewOverlay.enableMyLocation();
-        myLocationNewOverlay.setDirectionArrow(icon , icon);
+        myLocationNewOverlay.setDirectionArrow(icon, icon);
         map.getOverlays().add(myLocationNewOverlay);
 
         controller.setCenter(myLocationNewOverlay.getMyLocation());
@@ -329,7 +330,6 @@ public class Map extends Fragment implements MapListener {
         builder.addLocationRequest(locationRequest);
         locationSettingsRequest = builder.build();
     }
-
 
 
     /**
@@ -454,7 +454,7 @@ public class Map extends Fragment implements MapListener {
 
 
     private void onLocationChange() {
-        if(userLocation != null) {
+        if (userLocation != null) {
 
         }
 
@@ -526,8 +526,8 @@ public class Map extends Fragment implements MapListener {
     }*/
 
     public void focusOnUserLocation() {
-        if(userLocation != null) {
-            controller.setCenter(new GeoPoint(userLocation.getLatitude() , userLocation.getLongitude()));
+        if (userLocation != null) {
+            controller.setCenter(new GeoPoint(userLocation.getLatitude(), userLocation.getLongitude()));
             controller.animateTo(myLocationNewOverlay.getMyLocation());
         }
     }
@@ -591,6 +591,50 @@ public class Map extends Fragment implements MapListener {
         addOrRemoveNewLocationMarker(false, newLocationMarker);
     }
 
+    private void addNewLocationRequest(HashMap<String, String> fields) throws NullPointerException {
+        MainActivity main = (MainActivity) getActivity();
+        AddNewLocationBody body = new AddNewLocationBody();
+        body.img_address = fields.get("img_address");
+        body.img_documents = fields.get("img_documents");
+        body.description = fields.get("description");
+        body.place_name = fields.get("place_name");
+        body.phone = fields.get("phone");
+        body.web_address = fields.get("web_address");
+        body.lat = newLocationMarker.getPosition().getLatitude() + "";
+        body.lon = newLocationMarker.getPosition().getLongitude() + "";
+        body.user_id = main.application.getUserId();
+
+        final NasimDialog dialog = main.showLoadingDialog();
+        dialog.show();
+        main.application.api.addPlace(RequestBody.create(Utilities.JSON
+                , Utilities.createBody(body)))
+                .enqueue(new Callback<AddNewPlaceResponse>() {
+                    @Override
+                    public void onResponse(Call<AddNewPlaceResponse> call
+                            , Response<AddNewPlaceResponse> response) {
+                        dialog.dismiss();
+                        dismissChildFragment(ADD_LOCATION_INFO_TAG);
+                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        addLocationButton.show();
+                        addOrRemoveNewLocationMarker(true, newLocationMarker);
+
+                        if (response.isSuccessful()) {
+                            Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AddNewPlaceResponse> call, Throwable t) {
+                        Log.v(TAG, "fail add : " + t.getMessage());
+                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        addLocationButton.show();
+                        dialog.dismiss();
+                    }
+                });
+
+    }
+
     @Override
     public void onAddLocationCancel() {
         addLocationButton.show();
@@ -604,8 +648,9 @@ public class Map extends Fragment implements MapListener {
     @Override
     public void onAddLocationInfoSubmit(HashMap<String, String> fields) {
         //todo send request to server
-        addLocationButton.show();
-        dismissChildFragment(ADD_LOCATION_INFO_TAG);
+    /*    addLocationButton.show();
+        dismissChildFragment(ADD_LOCATION_INFO_TAG);*/
+        addNewLocationRequest(fields);
     }
 
     @Override
