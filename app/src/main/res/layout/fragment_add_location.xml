@@ -8,7 +8,7 @@
     android:layout_marginTop="8dp"
     android:orientation="horizontal"
     android:background="@color/white"
-    tools:context=".mapFragments.AddLocationFragment">
+    tools:context=".fragments.mapFragments.AddLocationFragment">
 
 
         <Button
