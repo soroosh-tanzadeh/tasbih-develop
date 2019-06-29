@@ -6,17 +6,17 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 import ir.maxivity.tasbih.models.GetQuranText;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tools.Utilities;
+
+import static tools.Utilities.JSON;
+import static tools.Utilities.createBody;
 
 public class QuranAdyehTextActivity extends BaseActivity {
 
@@ -69,11 +69,8 @@ public class QuranAdyehTextActivity extends BaseActivity {
 
     private void getSuraText() {
 
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        Gson gson = new Gson();
-        String data = gson.toJson(id);
 
-        application.api.getQuranText(RequestBody.create(JSON, data)).enqueue(new Callback<ArrayList<GetQuranText>>() {
+        application.api.getQuranText(RequestBody.create(JSON, createBody(id))).enqueue(new Callback<ArrayList<GetQuranText>>() {
             @Override
             public void onResponse(Call<ArrayList<GetQuranText>> call, Response<ArrayList<GetQuranText>> response) {
                 try {

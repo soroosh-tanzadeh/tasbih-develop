@@ -169,7 +169,7 @@ public class Login extends BaseActivity {
 
     private void loginRequest(String phone) {
 
-        String body = application.createBody(phone);
+        String body = Utilities.createBody(phone);
         final NasimDialog dialog = showLoadingDialog();
         dialog.show();
         application.api.doLogin(RequestBody.create(Utilities.JSON, body)).enqueue(new Callback<LoginResponse>() {

@@ -45,7 +45,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -74,11 +73,11 @@ import ir.maxivity.tasbih.mapFragments.AddLocationInfoFragment;
 import ir.maxivity.tasbih.mapFragments.FilterFragment;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetPlacesBody;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tools.Utilities;
 
 public class Map extends Fragment implements MapListener {
     private static final String TAG = "FUCK MAP";
@@ -89,11 +88,11 @@ public class Map extends Fragment implements MapListener {
     final int BASE_MAP_INDEX = 0;
 
     // location updates interval - 1 sec
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     // fastest updates interval - 1 sec
     // location updates will be received if another app is requesting the locations
     // than your app can handle
-    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
 
     // map UI element
 
@@ -474,11 +473,8 @@ public class Map extends Fragment implements MapListener {
                 map.getMapCenter().getLatitude() + "",
                 map.getMapCenter().getLongitude() + "");
 
-        Gson gson = new Gson();
-        String data = gson.toJson(body);
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-        main.application.api.getPlaces(RequestBody.create(JSON, data)).enqueue(new Callback<ArrayList<GetPlaces.response>>() {
+        main.application.api.getPlaces(RequestBody.create(Utilities.JSON, Utilities.createBody(body))).enqueue(new Callback<ArrayList<GetPlaces.response>>() {
             @Override
             public void onResponse(Call<ArrayList<GetPlaces.response>> call, Response<ArrayList<GetPlaces.response>> response) {
                 if (response.isSuccessful()) {
