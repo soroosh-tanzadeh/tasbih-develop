@@ -2,6 +2,8 @@ package tools;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+
 import okhttp3.MediaType;
 
 public class Utilities {
@@ -42,5 +44,12 @@ public class Utilities {
         }
         return String.valueOf(stringBuffer);
     }
+
+
+    public static <T> String createBody(T body) {
+        Gson gson = new Gson();
+        return gson.toJson(body);
+    }
+
 
 }
