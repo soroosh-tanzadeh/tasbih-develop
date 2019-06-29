@@ -1,4 +1,4 @@
-package ir.maxivity.tasbih.mapFragments;
+package ir.maxivity.tasbih.fragments.mapFragments;
 
 
 import android.content.Context;
@@ -53,15 +53,7 @@ public class AddLocationInfoFragment extends Fragment {
         websiteAddress = root.findViewById(R.id.website_edt);
         phoneNumber = root.findViewById(R.id.phone_edt_txt);
 
-      /*  ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(),
-                R.layout.category_spinner_layout,
-                R.id.category_item_txt,
-                categoryList());*/
-
         CategorySpinnerAdapter adapter = new CategorySpinnerAdapter(getContext(), R.layout.category_spinner_layout, categoryList());
-/*
-        arrayAdapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);*/
 
         category.setAdapter(adapter);
 

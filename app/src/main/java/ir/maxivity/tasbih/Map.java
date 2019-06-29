@@ -67,10 +67,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import ir.maxivity.tasbih.fragments.mapFragments.AddLocationFragment;
+import ir.maxivity.tasbih.fragments.mapFragments.AddLocationInfoFragment;
+import ir.maxivity.tasbih.fragments.mapFragments.FilterFragment;
 import ir.maxivity.tasbih.interfaces.MapListener;
-import ir.maxivity.tasbih.mapFragments.AddLocationFragment;
-import ir.maxivity.tasbih.mapFragments.AddLocationInfoFragment;
-import ir.maxivity.tasbih.mapFragments.FilterFragment;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetPlacesBody;
 import okhttp3.RequestBody;

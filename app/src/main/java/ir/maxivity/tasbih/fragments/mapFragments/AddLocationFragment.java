@@ -1,4 +1,4 @@
-package ir.maxivity.tasbih.mapFragments;
+package ir.maxivity.tasbih.fragments.mapFragments;
 
 
 import android.content.Context;
