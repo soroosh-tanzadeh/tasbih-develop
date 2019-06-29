@@ -146,6 +146,7 @@
     <string name="other">سایر</string>
     <string name="adyeh">ادعیه</string>
     <string name="quran">قرآن</string>
+    <string name="waiting">لطفا شکیبا باشید...</string>
 
 
     <string-array name="category_list">
