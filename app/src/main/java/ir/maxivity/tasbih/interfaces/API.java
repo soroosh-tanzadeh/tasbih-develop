@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetQuranText;
+import ir.maxivity.tasbih.models.LoginResponse;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Multipart;
@@ -19,4 +20,13 @@ public interface API {
     @Multipart
     @POST("get-qurantext.php")
     Call<ArrayList<GetQuranText>> getQuranText(@Part("sura") RequestBody body);
+
+
+    @Multipart
+    @POST("doLogin.php")
+    Call<LoginResponse> doLogin(@Part("phone") RequestBody body);
+
+    @Multipart
+    @POST("new-place.php")
+    String addPlace(@Part("data") RequestBody body);
 }
