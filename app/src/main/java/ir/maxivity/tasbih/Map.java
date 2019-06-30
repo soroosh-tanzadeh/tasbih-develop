@@ -62,7 +62,6 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -474,17 +473,18 @@ public class Map extends Fragment implements MapListener {
                 map.getMapCenter().getLongitude() + "");
 
 
-        main.application.api.getPlaces(RequestBody.create(Utilities.JSON, Utilities.createBody(body))).enqueue(new Callback<ArrayList<GetPlaces.response>>() {
+        main.application.api.getPlaces(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
+                .enqueue(new Callback<GetPlaces.response>() {
             @Override
-            public void onResponse(Call<ArrayList<GetPlaces.response>> call, Response<ArrayList<GetPlaces.response>> response) {
+            public void onResponse(Call<GetPlaces.response> call, Response<GetPlaces.response> response) {
                 if (response.isSuccessful()) {
                     Log.v(TAG, "body : " + response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<GetPlaces.response>> call, Throwable t) {
-                Log.v(TAG, "faile : " + t.getMessage());
+            public void onFailure(Call<GetPlaces.response> call, Throwable t) {
+                Log.v(TAG, "body : " + t.getMessage());
             }
         });
     }
