@@ -147,6 +147,7 @@
     <string name="adyeh">ادعیه</string>
     <string name="quran">قرآن</string>
     <string name="waiting">لطفا شکیبا باشید...</string>
+    <string name="cannot_retrieve_image">فعلا قادر به بارگزاری عکس نیستیم</string>
 
 
     <string-array name="category_list">

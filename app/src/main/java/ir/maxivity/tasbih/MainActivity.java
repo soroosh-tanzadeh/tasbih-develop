@@ -10,8 +10,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +27,7 @@ import ir.maxivity.tasbih.tools.CustomGestureDetector;
 
 public class MainActivity extends BaseActivity {
 
+    private DrawerLayout drawerLayout;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -35,7 +38,7 @@ public class MainActivity extends BaseActivity {
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_drawer_layout);
         final Fragment start = new Start_freg();
         final Fragment home = new Podcasts();
         final Fragment map = new Map();
@@ -46,6 +49,8 @@ public class MainActivity extends BaseActivity {
         View actionbarview = getSupportActionBar().getCustomView();
         ImageButton share_btn = actionbarview.findViewById(R.id.sharebtn);
         ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
+        drawerLayout = findViewById(R.id.drawer_layout);
+
 
         share_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,8 +72,9 @@ public class MainActivity extends BaseActivity {
         settings_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Sidebar.class);
-                startActivity(i);
+                /*Intent i = new Intent(MainActivity.this, Sidebar.class);
+                startActivity(i);*/
+                drawerLayout.openDrawer(Gravity.RIGHT);
             }
         });
 
