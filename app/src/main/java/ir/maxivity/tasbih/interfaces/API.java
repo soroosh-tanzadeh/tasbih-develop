@@ -16,7 +16,7 @@ public interface API {
 
     @Multipart
     @POST("get-places.php")
-    Call<ArrayList<GetPlaces.response>> getPlaces(@Part("data") RequestBody body);
+    Call<GetPlaces.response> getPlaces(@Part("data") RequestBody body);
 
     @Multipart
     @POST("get-qurantext.php")
