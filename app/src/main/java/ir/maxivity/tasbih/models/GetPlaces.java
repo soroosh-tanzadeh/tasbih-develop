@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class GetPlaces {
 
-
-    public ArrayList<response> places = new ArrayList<>();
+    public int result;
+    public ArrayList<response> data = new ArrayList<>();
 
 
     public class response {
