@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".QuranAdyehTextActivity"></activity>
+        <activity android:name=".ZiaratOnlineActivity"></activity>
+        <activity android:name=".QuranAdyehTextActivity" />
         <activity android:name=".ZekrsList" />
         <activity android:name=".QuranAdyeh" />
         <activity android:name=".MessagesList" />
@@ -36,7 +37,6 @@
         <activity
             android:name=".Calendar"
             android:theme="@style/CalendarTheme" />
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
