@@ -24,6 +24,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         Button showqiblah_btn =  view.findViewById(R.id.showqiblah_btn);
         Button showquran_btn =  view.findViewById(R.id.showquran_btn);
         Button showzekrcounter_btn =  view.findViewById(R.id.showzekrcounter_btn);
+        Button showZiaratBtn = view.findViewById(R.id.showziartonline_btn);
 
         showqiblah_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +46,14 @@ public class BottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), ZekrsList.class);
+                startActivity(i);
+            }
+        });
+
+        showZiaratBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), ZiaratOnlineActivity.class);
                 startActivity(i);
             }
         });
