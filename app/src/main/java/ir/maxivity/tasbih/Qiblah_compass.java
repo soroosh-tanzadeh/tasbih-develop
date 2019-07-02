@@ -2,34 +2,43 @@ package ir.maxivity.tasbih;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import tools.Alert;
+import tools.Compass;
 import tools.LocationService;
 
 
 public class
-Qiblah_compass extends AppCompatActivity implements SensorEventListener {
+Qiblah_compass extends BaseActivity {
 
-    TextView degree;
-    ImageView compass;
+    private TextView degree;
+    private ImageView compassImage;
+    private LinearLayout compassWrapper;
+    private float currentAzimuth = 0f;
+    private Compass compass;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_qiblah_compass);
         degree = findViewById(R.id.qiblah_dir);
-        compass = findViewById(R.id.qiblah_compass);
+        compassImage = findViewById(R.id.qiblah_compass);
+        compassWrapper = findViewById(R.id.compass_wrapper);
+
+        setupCompass();
+
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LocationService.locationRcode);
@@ -49,6 +58,44 @@ Qiblah_compass extends AppCompatActivity implements SensorEventListener {
 
     }
 
+    private void setupCompass() {
+        compass = new Compass(this);
+        Compass.CompassListener listener = new Compass.CompassListener() {
+            @Override
+            public void onNewAzimuth(float azimuth) {
+                adjustView(azimuth);
+            }
+        };
+
+        compass.setListener(listener);
+    }
+
+    private void adjustView(float azimuth) {
+        Animation animator = new RotateAnimation(-currentAzimuth, -azimuth,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+
+        currentAzimuth = azimuth;
+
+        animator.setDuration(500);
+        animator.setRepeatCount(0);
+        animator.setFillAfter(true);
+
+        compassWrapper.startAnimation(animator);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        compass.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        compass.stop();
+    }
+
     private void smoothRotation(final int degree) {
         Thread t = new Thread(new Runnable() {
             @Override
@@ -61,7 +108,7 @@ Qiblah_compass extends AppCompatActivity implements SensorEventListener {
                             Qiblah_compass.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    compass.setRotation(finalI);
+                                    compassWrapper.setRotation(finalI);
                                 }
                             });
                         } catch (InterruptedException e) {
@@ -76,7 +123,7 @@ Qiblah_compass extends AppCompatActivity implements SensorEventListener {
                             Qiblah_compass.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    compass.setRotation(finalI);
+                                    compassWrapper.setRotation(finalI);
                                 }
                             });
                         } catch (InterruptedException e) {
@@ -111,19 +158,11 @@ Qiblah_compass extends AppCompatActivity implements SensorEventListener {
                 @Override
                 public void run() {
                     degree.setText(Qiblah);
-                    smoothRotation((int) toDeg);
+                    // smoothRotation((int) toDeg);
                 }
             });
         }
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
 
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
 }
