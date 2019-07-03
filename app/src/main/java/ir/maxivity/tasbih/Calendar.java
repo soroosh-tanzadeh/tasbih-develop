@@ -5,14 +5,16 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ir.maxivity.tasbih.calendarTabs.EventsList;
 import ir.maxivity.tasbih.calendarTabs.SectionsPagerAdapter;
 import ir.maxivity.tasbih.calendarTabs.Today_tab;
+import ir.maxivity.tasbih.models.PersianDateSerializable;
 import ir.mirrajabi.persiancalendar.PersianCalendarView;
 import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
 import ir.mirrajabi.persiancalendar.core.interfaces.OnDayClickedListener;
@@ -20,8 +22,9 @@ import ir.mirrajabi.persiancalendar.core.models.CalendarEvent;
 import ir.mirrajabi.persiancalendar.core.models.PersianDate;
 
 
-public class Calendar extends AppCompatActivity {
+public class Calendar extends BaseActivity {
 
+    PersianCalendarHandler calendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class Calendar extends AppCompatActivity {
                 R.anim.fixed_anime);
         final PersianCalendarView persianCalendarView = findViewById(R.id.persian_calendar);
         final PersianCalendarHandler calendar = persianCalendarView.getCalendar();
+        this.calendar = calendar;
         final PersianDate today = calendar.getToday(); // get today date
 
         setupViewerPager(viewPager,today,calendar); // setup pageview
@@ -79,7 +83,6 @@ public class Calendar extends AppCompatActivity {
                 setupViewerPager(viewPager,date,calendar);
 
 
-
                 // Select Today Tab
                 TabLayout.Tab tab = tabLayout.getTabAt(1);
                 tab.select();
@@ -93,21 +96,37 @@ public class Calendar extends AppCompatActivity {
         });
     }
 
+
     private void setupViewerPager(ViewPager viewPager,PersianDate date,PersianCalendarHandler pch){
         SectionsPagerAdapter sectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        Today_tab todayTab = new Today_tab();
-        todayTab.setPersinaDate(date);
+        /*Today_tab todayTab = new Today_tab();
+        todayTab.setPersinaDate(date);*/
 
         List<CalendarEvent> eventsList = pch.getAllEventsForDay(date);
 
-        EventsList events_frag = new EventsList();
-        events_frag.setEvents(eventsList);
+        ArrayList<String> events = new ArrayList<>();
 
+        for (CalendarEvent event : eventsList) {
+            events.add(event.getTitle());
+        }
+
+        EventsList events_frag = EventsList.newIstance(events);
+
+        Today_tab today_tab = Today_tab.newInstance(new PersianDateSerializable(date));
+
+
+        Log.v("FUCK CALENDAR : ", calendar.getWeekDayName(date) + " " + calendar.formatNumber(date.getDayOfMonth())
+                + " " + calendar.getMonthName(date));
         ////// Adding Fragments to Pager Adapter
         sectionPagerAdapter.addFragment(events_frag,"مناسبت ها");
-        sectionPagerAdapter.addFragment(todayTab,"امروز");
-
+        sectionPagerAdapter.addFragment(today_tab, "روز");
         viewPager.setAdapter(sectionPagerAdapter);
+
+
+     /*   events_frag.setEventTexts(events);
+        today_tab.setupViews(new PersianDateSerializable(date));*/
+
+        viewPager.getAdapter().notifyDataSetChanged();
     }
 
     @Override

@@ -99,7 +99,7 @@
         "Responsive elevation and dynamic elevation offsets.\n\n"
 
         "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "to user input (e.g., normal, focused, and pressed) or system eventsCalendar. These elevation "
         "changes are consistently implemented using dynamic elevation offsets.\n"
         "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
         "to the component’s resting state. They ensure that elevation changes are consistent "

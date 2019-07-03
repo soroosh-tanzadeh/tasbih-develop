@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ir.maxivity.tasbih.R;
+import ir.maxivity.tasbih.models.PersianDateSerializable;
 import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
 import ir.mirrajabi.persiancalendar.core.models.CivilDate;
 import ir.mirrajabi.persiancalendar.core.models.IslamicDate;
@@ -20,7 +22,8 @@ public class Today_tab extends Fragment {
 
     View view;
 
-    private PersianDate date;
+    private PersianDateSerializable date;
+    private final static String DATE_KEY = "DATE";
 
 
         String[] iMonthNames = { "محرم", "صفر", "ربیع‌الاول",
@@ -38,19 +41,44 @@ public class Today_tab extends Fragment {
         return this.view;
     }
 
+    public static Today_tab newInstance(PersianDateSerializable date) {
+        Today_tab today_tab = new Today_tab();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("DATE", date);
+        today_tab.setArguments(bundle);
+
+        return today_tab;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            date = (PersianDateSerializable) getArguments().getSerializable(DATE_KEY);
+        }
+    }
+
     public void setPersinaDate(PersianDate date) {
-        this.date = date;
+        this.date.date = date;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupViews(date);
+    }
+
+
+    public void setupViews(PersianDateSerializable date) {
         if (date != null) {
             final TextView daytext = view.findViewById(R.id.today_text);
             PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(getContext());
 
-            daytext.setText(calendar.getWeekDayName(this.date) + " " + calendar.formatNumber(this.date.getDayOfMonth())
-                    + " " + calendar.getMonthName(this.date));
+            daytext.setText(calendar.getWeekDayName(date.date) + " " + calendar.formatNumber(date.date.getDayOfMonth())
+                    + " " + calendar.getMonthName(date.date));
+
+            Log.v("FUCK TODAy : ", calendar.getWeekDayName(date.date) + " " + calendar.formatNumber(date.date.getDayOfMonth())
+                    + " " + calendar.getMonthName(date.date));
 
             final TextView cday = this.view.findViewById(R.id.interday);
             final TextView cyear = this.view.findViewById(R.id.inter_year);
@@ -60,8 +88,8 @@ public class Today_tab extends Fragment {
             final TextView amonth = this.view.findViewById(R.id.arabic_month);
             final TextView ayear = this.view.findViewById(R.id.arabic_year);
 
-            CivilDate civilDate = DateConverter.persianToCivil(this.date);
-            IslamicDate islamicDate = DateConverter.persianToIslamic(this.date);
+            CivilDate civilDate = DateConverter.persianToCivil(date.date);
+            IslamicDate islamicDate = DateConverter.persianToIslamic(date.date);
 
             cday.setText(calendar.formatNumber(civilDate.getDayOfMonth()) + "");
             cmounth.setText(eMonthNames[civilDate.getMonth()]);
@@ -73,7 +101,4 @@ public class Today_tab extends Fragment {
         }
     }
 
-    public static class EventsList extends Fragment {
-
-    }
 }

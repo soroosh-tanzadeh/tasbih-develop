@@ -1,5 +1,6 @@
 package ir.maxivity.tasbih.calendarTabs;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,5 +40,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         return fragmentList.size();
     }
 
-
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
 }
