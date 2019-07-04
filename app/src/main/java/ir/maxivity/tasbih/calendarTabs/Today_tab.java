@@ -34,7 +34,7 @@ public class Today_tab extends Fragment {
 
         String[] iMonthNames = { "محرم", "صفر", "ربیع‌الاول",
                 "ربیع‌الاخر", "جمادی‌الاول", "جمادی ‌الاخر", "رجب",
-                "شعبان", "رمضان", "شوال", "ذی‌الغعده", "ذی‌الحجه" };
+                "شعبان", "رمضان", "شوال", "ذی‌القعده", "ذی‌الحجه"};
 
         String[] eMonthNames = {
                 "ژانویه", "فوریه", "مارس", "آوریل", "مه", "ژوئن", "ژوئیه", "اوت","سپتامبر","اکتبر","نوامبر","دسامبر"
@@ -92,11 +92,11 @@ public class Today_tab extends Fragment {
             IslamicDate islamicDate = DateConverter.persianToIslamic(date.date);
 
             cday.setText(calendar.formatNumber(civilDate.getDayOfMonth()) + "");
-            cmounth.setText(eMonthNames[civilDate.getMonth()]);
+            cmounth.setText(eMonthNames[civilDate.getMonth() - 1]);
             cyear.setText(calendar.formatNumber(civilDate.getYear()) + "");
 
             aday.setText(calendar.formatNumber(islamicDate.getDayOfMonth()) + "");
-            amonth.setText(iMonthNames[islamicDate.getMonth()]);
+            amonth.setText(iMonthNames[islamicDate.getMonth() - 1]);
             ayear.setText(calendar.formatNumber(islamicDate.getYear()) + "");
         }
     }
