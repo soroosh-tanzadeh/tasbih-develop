@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import ir.mirrajabi.persiancalendar.core.models.CalendarEvent;
 public class EventsList extends Fragment {
 
     LinearLayout view;
+    TextView textView;
 
     private List<CalendarEvent> eventsCalendar;
     private ArrayList<String> events;
@@ -30,6 +30,8 @@ public class EventsList extends Fragment {
         this.view = new LinearLayout(getContext());
         this.view.setOrientation(LinearLayout.VERTICAL);
         this.view.setPadding(64,64,64,64);
+        textView = new TextView(getContext());
+        this.view.addView(textView);
         return this.view;
     }
 
@@ -52,10 +54,6 @@ public class EventsList extends Fragment {
         }
     }
 
-    public void setEventsCalendar(List<CalendarEvent> eventsCalendar) {
-        this.eventsCalendar = eventsCalendar;
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -65,17 +63,16 @@ public class EventsList extends Fragment {
 
 
     public void setEventTexts(ArrayList<String> events) {
-
-
-        Log.v("FUCK Event : ", events.get(0));
+        StringBuilder event = new StringBuilder();
         if (events != null) {
             if (!events.isEmpty()) {
                 for (int i = 0; i < events.size(); i++) {
-                    TextView t = new TextView(getContext());
-                    t.setText(events.get(i));
-                    this.view.addView(t);
+                    event.append(events.get(i));
+                    event.append("\n");
                 }
             }
         }
+        textView.setText(event.toString());
+
     }
 }
