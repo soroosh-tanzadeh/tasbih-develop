@@ -15,7 +15,6 @@ import ir.maxivity.tasbih.models.PersianDateSerializable;
 import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
 import ir.mirrajabi.persiancalendar.core.models.CivilDate;
 import ir.mirrajabi.persiancalendar.core.models.IslamicDate;
-import ir.mirrajabi.persiancalendar.core.models.PersianDate;
 import ir.mirrajabi.persiancalendar.helpers.DateConverter;
 
 public class Today_tab extends Fragment {
@@ -24,6 +23,13 @@ public class Today_tab extends Fragment {
 
     private PersianDateSerializable date;
     private final static String DATE_KEY = "DATE";
+    TextView cday;
+    TextView cyear;
+    TextView cmounth;
+    TextView aday;
+    TextView amonth;
+    TextView ayear;
+    TextView daytext;
 
 
         String[] iMonthNames = { "محرم", "صفر", "ربیع‌الاول",
@@ -38,6 +44,7 @@ public class Today_tab extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.frag_calendar_tab, container, false);
+        initViews();
         return this.view;
     }
 
@@ -46,7 +53,6 @@ public class Today_tab extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("DATE", date);
         today_tab.setArguments(bundle);
-
         return today_tab;
     }
 
@@ -58,10 +64,6 @@ public class Today_tab extends Fragment {
         }
     }
 
-    public void setPersinaDate(PersianDate date) {
-        this.date.date = date;
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -69,25 +71,23 @@ public class Today_tab extends Fragment {
     }
 
 
+    private void initViews() {
+        cday = this.view.findViewById(R.id.interday);
+        cyear = this.view.findViewById(R.id.inter_year);
+        cmounth = this.view.findViewById(R.id.inter_month);
+        aday = this.view.findViewById(R.id.arabic_day);
+        amonth = this.view.findViewById(R.id.arabic_month);
+        ayear = this.view.findViewById(R.id.arabic_year);
+        daytext = this.view.findViewById(R.id.today_text);
+    }
+
     public void setupViews(PersianDateSerializable date) {
         if (date != null) {
-            final TextView daytext = view.findViewById(R.id.today_text);
             PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(getContext());
-
             daytext.setText(calendar.getWeekDayName(date.date) + " " + calendar.formatNumber(date.date.getDayOfMonth())
                     + " " + calendar.getMonthName(date.date));
-
             Log.v("FUCK TODAy : ", calendar.getWeekDayName(date.date) + " " + calendar.formatNumber(date.date.getDayOfMonth())
                     + " " + calendar.getMonthName(date.date));
-
-            final TextView cday = this.view.findViewById(R.id.interday);
-            final TextView cyear = this.view.findViewById(R.id.inter_year);
-            final TextView cmounth = this.view.findViewById(R.id.inter_month);
-
-            final TextView aday = this.view.findViewById(R.id.arabic_day);
-            final TextView amonth = this.view.findViewById(R.id.arabic_month);
-            final TextView ayear = this.view.findViewById(R.id.arabic_year);
-
             CivilDate civilDate = DateConverter.persianToCivil(date.date);
             IslamicDate islamicDate = DateConverter.persianToIslamic(date.date);
 
