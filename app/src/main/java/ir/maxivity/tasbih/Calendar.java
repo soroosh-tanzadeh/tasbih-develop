@@ -25,12 +25,15 @@ import ir.mirrajabi.persiancalendar.core.models.PersianDate;
 public class Calendar extends BaseActivity {
 
     PersianCalendarHandler calendar;
+    private ViewPager viewPager;
+    private EventsList events_frag;
+    private Today_tab todayTab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        final ViewPager viewPager = findViewById(R.id.calendar_viewer);
+        viewPager = findViewById(R.id.calendar_viewer);
 
         final LinearLayout l = findViewById(R.id.tab_container);
         this.overridePendingTransition(R.anim.slide_right,
@@ -40,7 +43,7 @@ public class Calendar extends BaseActivity {
         this.calendar = calendar;
         final PersianDate today = calendar.getToday(); // get today date
 
-        setupViewerPager(viewPager,today,calendar); // setup pageview
+        setupViewerPager(today, calendar); // setup pageview
 
         final TabLayout tabLayout = findViewById(R.id.calendar_tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -53,54 +56,24 @@ public class Calendar extends BaseActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_events_tab);
         tabLayout.getTabAt(0).getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
 
-        tabLayout.setOnTabSelectedListener(
-                new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
-
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        super.onTabSelected(tab);
-               //         int tabIconColor = ContextCompat.getColor(Calendar.this, R.color.white);
-             //           tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                    }
-
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-                        super.onTabUnselected(tab);
-  //                      int tabIconColor = ContextCompat.getColor(Calendar.this, R.color.unselectedcolor);
-//                        tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-                        super.onTabReselected(tab);
-                    }
-                });
-
         persianCalendarView.setOnDayClickedListener(new OnDayClickedListener() {
             @Override
             public void onClick(final PersianDate date) {
-                // Setup Page View with selected date
-                setupViewerPager(viewPager,date,calendar);
+                todayTab.setupViews(new PersianDateSerializable(date));
+                List<CalendarEvent> eventsList = calendar.getAllEventsForDay(date);
+                ArrayList<String> events = new ArrayList<>();
 
-
-                // Select Today Tab
-                TabLayout.Tab tab = tabLayout.getTabAt(1);
-                tab.select();
-                tabLayout.setupWithViewPager(viewPager);
-                tabLayout.getTabAt(1).setIcon(R.drawable.ic_today_tab);
-                tabLayout.getTabAt(1).getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                tabLayout.getTabAt(0).setIcon(R.drawable.ic_events_tab);
-                tabLayout.getTabAt(0).getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-
+                for (CalendarEvent event : eventsList) {
+                    events.add(event.getTitle());
+                }
+                events_frag.setEventTexts(events);
             }
         });
     }
 
 
-    private void setupViewerPager(ViewPager viewPager,PersianDate date,PersianCalendarHandler pch){
+    private void setupViewerPager(PersianDate date, PersianCalendarHandler pch) {
         SectionsPagerAdapter sectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        /*Today_tab todayTab = new Today_tab();
-        todayTab.setPersinaDate(date);*/
 
         List<CalendarEvent> eventsList = pch.getAllEventsForDay(date);
 
@@ -110,23 +83,18 @@ public class Calendar extends BaseActivity {
             events.add(event.getTitle());
         }
 
-        EventsList events_frag = EventsList.newIstance(events);
+        events_frag = EventsList.newIstance(events);
 
-        Today_tab today_tab = Today_tab.newInstance(new PersianDateSerializable(date));
+        todayTab = Today_tab.newInstance(new PersianDateSerializable(date));
 
 
         Log.v("FUCK CALENDAR : ", calendar.getWeekDayName(date) + " " + calendar.formatNumber(date.getDayOfMonth())
                 + " " + calendar.getMonthName(date));
         ////// Adding Fragments to Pager Adapter
         sectionPagerAdapter.addFragment(events_frag,"مناسبت ها");
-        sectionPagerAdapter.addFragment(today_tab, "روز");
+        sectionPagerAdapter.addFragment(todayTab, "روز");
         viewPager.setAdapter(sectionPagerAdapter);
 
-
-     /*   events_frag.setEventTexts(events);
-        today_tab.setupViews(new PersianDateSerializable(date));*/
-
-        viewPager.getAdapter().notifyDataSetChanged();
     }
 
     @Override
