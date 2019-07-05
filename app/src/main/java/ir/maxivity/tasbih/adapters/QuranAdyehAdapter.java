@@ -55,12 +55,6 @@ public class QuranAdyehAdapter extends RecyclerView.Adapter<QuranAdyehAdapter.Qu
 
     @Override
     public void onBindViewHolder(@NonNull QuranViewHolder quranViewHolder, int i) {
-      /*  try {
-            quranViewHolder.setData(quran.getJSONObject(i));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
         quranViewHolder.setListData(itemsFilter.get(i));
     }
 
@@ -113,25 +107,6 @@ public class QuranAdyehAdapter extends RecyclerView.Adapter<QuranAdyehAdapter.Qu
             super(itemView);
             quranName = itemView.findViewById(R.id.quran_name);
         }
-
-        /*public void setData(final JSONObject object) {
-            try {
-                String name = object.getString("arabic");
-                quranName.setText(name);
-                quranName.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            listener.onClick(Integer.parseInt(object.getString("id")));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }*/
 
         public void setListData(final ListItemObject object) {
             quranName.setText(object.name);
