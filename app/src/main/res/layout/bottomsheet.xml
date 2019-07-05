@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tableLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -54,7 +53,7 @@
                 android:background="#EEEEEE"
                 android:drawableTop="@drawable/ic_map_fea"
                 android:elevation="0dp"
-                android:text="نقشه"
+                android:text="@string/map"
                 android:textColor="#000"
                 android:theme="@style/PrimaryFlatButton" />
 
@@ -69,10 +68,10 @@
                 android:background="#EEEEEE"
                 android:drawableTop="@drawable/ic_msgs"
                 android:elevation="0dp"
-                android:text="پیام ها"
+                android:text="@string/messages"
                 android:textColor="#000"
                 android:theme="@style/PrimaryFlatButton"
-                android:tooltipText="پیام ها" />
+                android:tooltipText="@string/messages" />
 
             <Button
                 android:id="@+id/showpodcast_btn"
@@ -85,7 +84,7 @@
                 android:background="#EEEEEE"
                 android:drawableTop="@drawable/ic_podcast_fea"
                 android:elevation="0dp"
-                android:text="پادکست"
+                android:text="@string/podcast"
                 android:textColor="#000"
                 android:theme="@style/PrimaryFlatButton" />
 
@@ -106,7 +105,7 @@
                 android:background="#EEEEEE"
                 android:drawableTop="@drawable/ic_ziartonline_fea"
                 android:elevation="0dp"
-                android:text="زیارت آنلاین"
+                android:text="@string/online_pray"
                 android:textColor="#000"
                 android:theme="@style/PrimaryFlatButton" />
 
@@ -121,7 +120,7 @@
                 android:background="#EEEEEE"
                 android:drawableTop="@drawable/ic_zekrcounter_fea"
                 android:elevation="0dp"
-                android:text="ذکر شمار"
+                android:text="@string/zekr_counter"
                 android:textColor="#000"
                 android:theme="@style/PrimaryFlatButton" />
 
@@ -136,7 +135,7 @@
                 android:background="#EEEEEE"
                 android:drawableTop="@drawable/ic_quran"
                 android:elevation="0dp"
-                android:text="قرآن و اعدیه"
+                android:text="@string/quran_adyeh"
                 android:textColor="#000"
                 android:theme="@style/PrimaryFlatButton"
                 android:tooltipText="پیام ها" />
@@ -157,7 +156,7 @@
                 android:background="#EEEEEE"
                 android:drawableTop="@drawable/qeblah_ic_fea"
                 android:elevation="0dp"
-                android:text="قبله‌نما"
+                android:text="@string/qibla_compass"
                 android:textColor="#000"
                 android:theme="@style/PrimaryFlatButton" />
         </TableRow>

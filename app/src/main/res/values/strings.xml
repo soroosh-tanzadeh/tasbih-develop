@@ -151,6 +151,13 @@
     <string name="settings">تنظیمات</string>
     <string name="favorite">علاقه مندی ها</string>
     <string name="logout">خروج</string>
+    <string name="messages">پیام ها</string>
+    <string name="map">نقشه</string>
+    <string name="podcast">پادکست</string>
+    <string name="online_pray">زیارت آنلاین</string>
+    <string name="zekr_counter">ذکر شمار</string>
+    <string name="quran_adyeh">قرآن و اعدیه</string>
+    <string name="qibla_compass">قبله‌نما</string>
 
 
     <string-array name="category_list">
