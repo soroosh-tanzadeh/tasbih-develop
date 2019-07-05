@@ -25,36 +25,40 @@ public class BottomSheet extends BottomSheetDialogFragment {
         Button showquran_btn =  view.findViewById(R.id.showquran_btn);
         Button showzekrcounter_btn =  view.findViewById(R.id.showzekrcounter_btn);
         Button showZiaratBtn = view.findViewById(R.id.showziartonline_btn);
+        Button showMsgBtn = view.findViewById(R.id.showmsg_btn);
 
         showqiblah_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), Qiblah_compass.class);
-                startActivity(i);
+                navigate(Qiblah_compass.class);
             }
         });
 
         showquran_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), QuranAdyeh.class);
-                startActivity(i);
+                navigate(QuranAdyeh.class);
             }
         });
 
         showzekrcounter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), ZekrsList.class);
-                startActivity(i);
+                navigate(ZekrsList.class);
             }
         });
 
         showZiaratBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), ZiaratOnlineActivity.class);
-                startActivity(i);
+                navigate(ZiaratOnlineActivity.class);
+            }
+        });
+
+        showMsgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigate(MessagesActivity.class);
             }
         });
 
@@ -99,5 +103,10 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 }
             });
         }
+    }
+
+    private void navigate(Class<?> classOf) {
+        Intent i = new Intent(getActivity(), classOf);
+        startActivity(i);
     }
 }
