@@ -130,6 +130,7 @@ public class AddLocationInfoFragment extends Fragment {
         infoFieldMap.put("description", category.getSelectedItem().toString());
         infoFieldMap.put("phone", phoneNumber.getText().toString());
         infoFieldMap.put("web_address", websiteAddress.getText().toString());
+        infoFieldMap.put("type", category.getSelectedItemPosition() + 1 + "");
     }
 
     private List<String> categoryList() {
