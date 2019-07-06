@@ -1,5 +1,6 @@
 package ir.maxivity.tasbih.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GetPlaces {
@@ -8,7 +9,9 @@ public class GetPlaces {
     public ArrayList<response> data = new ArrayList<>();
 
 
-    public class response {
+    public class response implements Serializable {
+        private static final long serialVersionUID = -7060210544600464481L;
+
         public String id;
         public String user_id;
         public String img_address;
