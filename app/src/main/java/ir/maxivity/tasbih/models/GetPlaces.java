@@ -21,6 +21,7 @@ public class GetPlaces {
         public String indate;
         public String lat;
         public String lon;
+        public String type;
     }
 
 }
