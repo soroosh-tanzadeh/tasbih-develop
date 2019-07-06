@@ -62,6 +62,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -112,6 +113,8 @@ public class Map extends Fragment implements MapListener {
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
 
+    private Boolean onAddLocationProgress = false;
+
 
     //TAGS////
     private final String ADD_LOCATION_TAG = "add location";
@@ -125,6 +128,8 @@ public class Map extends Fragment implements MapListener {
     private MyLocationNewOverlay myLocationNewOverlay;
     private boolean goToMyLocationAtFirst = false;
     private Marker newLocationMarker;
+    private ArrayList<Marker> mapMarkers;
+    private static final int MAP_ZOOM = 15;
 
     //VIEWS///
     FloatingActionButton actionButton, addLocationButton;
@@ -144,6 +149,8 @@ public class Map extends Fragment implements MapListener {
 
         View view = inflater.inflate(R.layout.fragment_map_reworked, container, false);
         bindViews(view);
+
+        mapMarkers = new ArrayList<>();
 
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,7 +274,7 @@ public class Map extends Fragment implements MapListener {
     private void initMap() {
 
         controller = map.getController();
-        controller.setZoom(15);
+        controller.setZoom(MAP_ZOOM);
 
         Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),
                 R.drawable.circle_16);
@@ -280,6 +287,7 @@ public class Map extends Fragment implements MapListener {
         controller.setCenter(myLocationNewOverlay.getMyLocation());
         controller.animateTo(myLocationNewOverlay.getMyLocation());
 
+        onMarkersClickAction();
     }
 
     private void addOrRemoveNewLocationMarker(boolean remove, Marker marker) {
@@ -287,14 +295,16 @@ public class Map extends Fragment implements MapListener {
             map.getOverlays().remove(marker);
         else
             map.getOverlays().add(marker);
+        map.invalidate();
+
     }
 
-    private Marker createMarker(GeoPoint position, int drawable) {
+    private Marker createMarker(GeoPoint position, int drawable, String id) {
         Marker marker = new Marker(map);
         marker.setPosition(position);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         marker.setIcon(getResources().getDrawable(drawable));
-
+        marker.setId(id);
         return marker;
     }
 
@@ -458,7 +468,7 @@ public class Map extends Fragment implements MapListener {
         }
 
         try {
-
+            if (!onAddLocationProgress)
             getPlaces();
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -467,63 +477,53 @@ public class Map extends Fragment implements MapListener {
     }
 
     private void getPlaces() throws NullPointerException {
-        MainActivity main = (MainActivity) getActivity();
-        GetPlacesBody body = new GetPlacesBody("4",
+        final MainActivity main = (MainActivity) getActivity();
+        GetPlacesBody body = new GetPlacesBody("200",
                 map.getMapCenter().getLatitude() + "",
                 map.getMapCenter().getLongitude() + "");
 
 
         main.application.api.getPlaces(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
-                .enqueue(new Callback<GetPlaces.response>() {
+                .enqueue(new Callback<GetPlaces>() {
             @Override
-            public void onResponse(Call<GetPlaces.response> call, Response<GetPlaces.response> response) {
+            public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
                 if (response.isSuccessful()) {
-                    Log.v(TAG, "body : " + response.body());
+                    if (response.body().result == 1) {
+                        map.getOverlays().clear();
+                        map.getOverlays().add(myLocationNewOverlay);
+                        map.invalidate();
+                        mapMarkers.clear();
+                        for (GetPlaces.response res : response.body().data) {
+                            Double lat = Double.parseDouble(res.lat);
+                            Double lon = Double.parseDouble(res.lon);
+                            Marker marker = createMarker(new GeoPoint(lat, lon), R.drawable.ic_t_pin_coffeeshop, res.id);
+                            mapMarkers.add(marker);
+                            addOrRemoveNewLocationMarker(false, marker);
+                            onMarkersClickAction();
+                        }
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<GetPlaces.response> call, Throwable t) {
+            public void onFailure(Call<GetPlaces> call, Throwable t) {
                 Log.v(TAG, "body : " + t.getMessage());
             }
         });
     }
 
 
-/*    // This method gets a LngLat as input and adds a marker on that position
-    private void addUserMarker(LngLat loc){
-        // Creating marker style. We should use an object of type MarkerStyleCreator, set all features on it
-        // and then call buildStyle method on it. This method returns an object of type MarkerStyle
-        MarkerStyleCreator markStCr = new MarkerStyleCreator();
-        markStCr.setSize(30f);
-        markStCr.setBitmap(BitmapUtils.createBitmapFromAndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker_blue)));
-        MarkerStyle markSt = markStCr.buildStyle();
-
-        // Creating user marker
-        Marker marker = new Marker(loc, markSt);
-
-        // Clearing userMarkerLayer
-        userMarkerLayer.clear();
-
-        // Adding user marker to userMarkerLayer, or showing marker on map!
-        userMarkerLayer.add(marker);
-    }*/
-
-/*    // This method gets a LngLat as input and adds a marker on that position
-    private void addPinMarker(LngLat loc){
-        // Creating marker style. We should use an object of type MarkerStyleCreator, set all features on it
-        // and then call buildStyle method on it. This method returns an object of type MarkerStyle
-        MarkerStyleCreator markStCr = new MarkerStyleCreator();
-        markStCr.setSize(30f);
-        markStCr.setBitmap(BitmapUtils.createBitmapFromAndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.t_pin_coffeeshop)));
-        MarkerStyle markSt = markStCr.buildStyle();
-
-        // Creating user marker
-        Marker marker = new Marker(loc, markSt);
-
-        // Adding user marker to userMarkerLayer, or showing marker on map!
-        userMarkerLayer.add(marker);
-    }*/
+    private void onMarkersClickAction() {
+        for (Marker marker : mapMarkers) {
+            marker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker, MapView mapView) {
+                    Log.v(TAG, "marker :" + marker.getId());
+                    return true;
+                }
+            });
+        }
+    }
 
     public void focusOnUserLocation() {
         if (userLocation != null) {
@@ -540,52 +540,13 @@ public class Map extends Fragment implements MapListener {
         return networkInfo != null;
     }
 
-
-/*
-    @Override
-    public void onJsonDownloaded(JSONObject jsonObject) {
-        try {
-            JSONArray features = jsonObject.getJSONArray("features");
-            // variable for creating bound
-            // min = south-west
-            // max = north-east
-            double minLat = Double.MAX_VALUE;
-            double minLng = Double.MAX_VALUE;
-            double maxLat = Double.MIN_VALUE;
-            double maxLng = Double.MIN_VALUE;
-            for (int i = 0; i < features.length(); i++) {
-                JSONObject geometry = features.getJSONObject(i).getJSONObject("geometry");
-                JSONArray coordinates = geometry.getJSONArray("coordinates");
-                LngLat lngLat = new LngLat(coordinates.getDouble(0), coordinates.getDouble(1));
-
-                // validating min and max
-                minLat = Math.min(lngLat.getY(), minLat);
-                minLng = Math.min(lngLat.getX(), minLng);
-                maxLat = Math.max(lngLat.getY(), maxLat);
-                maxLng = Math.max(lngLat.getX(), maxLng);
-
-                addPinMarker(lngLat);
-            }
-            map.moveToCameraBounds(
-                    new Bounds(new LngLat(minLng, minLat), new LngLat(maxLng, maxLat)),
-                    new ViewportBounds(
-                            new ViewportPosition(0,0),
-                            new ViewportPosition(map.getWidth(),map.getHeight())
-                    ),
-                    true, 0.25f);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
     @Override
     public void onAddLocationSubmit() {
         loadChildFragment(new AddLocationInfoFragment(), ADD_LOCATION_INFO_TAG, true);
 
         newLocationMarker = createMarker(new GeoPoint(map.getMapCenter().getLatitude()
                         , map.getMapCenter().getLongitude())
-                , R.drawable.marker2);
+                , R.drawable.marker2, "-1");
         addLocationMarker.setVisibility(View.GONE);
 
         addOrRemoveNewLocationMarker(false, newLocationMarker);
@@ -603,6 +564,7 @@ public class Map extends Fragment implements MapListener {
         body.lat = newLocationMarker.getPosition().getLatitude() + "";
         body.lon = newLocationMarker.getPosition().getLongitude() + "";
         body.user_id = main.application.getUserId();
+        body.type = fields.get("type");
 
         final NasimDialog dialog = main.showLoadingDialog();
         dialog.show();
