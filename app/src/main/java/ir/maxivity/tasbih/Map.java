@@ -70,6 +70,7 @@ import java.util.List;
 import ir.maxivity.tasbih.fragments.mapFragments.AddLocationFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.AddLocationInfoFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.FilterFragment;
+import ir.maxivity.tasbih.fragments.mapFragments.LocationInfoFragment;
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.models.AddNewLocationBody;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
@@ -120,6 +121,8 @@ public class Map extends Fragment implements MapListener {
     private final String ADD_LOCATION_TAG = "add location";
     private final String ADD_LOCATION_INFO_TAG = "add location info";
     private final String FILTER_FRAGMENT = "filter fragment";
+    private final String LOCATION_INFO_FRAGMENT = "location info fragment";
+
 
 
     //OSM MAP//
@@ -216,6 +219,16 @@ public class Map extends Fragment implements MapListener {
                     if (getCurrentFragment() instanceof FilterFragment) {
                         dismissChildFragment(FILTER_FRAGMENT);
                     }
+
+                    if (getCurrentFragment() instanceof LocationInfoFragment) {
+                        dismissChildFragment(LOCATION_INFO_FRAGMENT);
+                        addLocationButton.show();
+                        actionButton.show();
+                    }
+                }
+
+                if (state == BottomSheetBehavior.STATE_EXPANDED) {
+
                 }
 
             }
@@ -512,6 +525,33 @@ public class Map extends Fragment implements MapListener {
         });
     }
 
+    private void getPlaceById(final String id) throws NullPointerException {
+        final MainActivity main = (MainActivity) getActivity();
+
+
+        main.application.api.getPlace(RequestBody.create(Utilities.JSON, Utilities.createBody(id)))
+                .enqueue(new Callback<GetPlaces>() {
+                    @Override
+                    public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().result == 1) {
+                                for (GetPlaces.response res : response.body().data) {
+                                    if (res.id.equals(id)) {
+                                        loadChildFragment(LocationInfoFragment.newInstance(res), LOCATION_INFO_FRAGMENT, false);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GetPlaces> call, Throwable t) {
+                        Log.v(TAG, "body : " + t.getMessage());
+                    }
+                });
+    }
+
 
     private void onMarkersClickAction() {
         for (Marker marker : mapMarkers) {
@@ -519,6 +559,13 @@ public class Map extends Fragment implements MapListener {
                 @Override
                 public boolean onMarkerClick(Marker marker, MapView mapView) {
                     Log.v(TAG, "marker :" + marker.getId());
+                    try {
+                        getPlaceById(marker.getId());
+                        addLocationButton.hide();
+                        actionButton.hide();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
                     return true;
                 }
             });
@@ -625,6 +672,21 @@ public class Map extends Fragment implements MapListener {
 
     @Override
     public void onSelectFilter() {
+
+    }
+
+    @Override
+    public void onFavoritePlaceClick(String id) {
+
+    }
+
+    @Override
+    public void onAddEventClick(String id) {
+
+    }
+
+    @Override
+    public void onEditSubmit(HashMap<String, String> fields) {
 
     }
 
