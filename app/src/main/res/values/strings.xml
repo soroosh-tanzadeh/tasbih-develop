@@ -161,6 +161,7 @@
     <string name="ok">باشه</string>
     <string name="request_failure_text">مشکلی پیش آمده بعدا دوباره تلاش کنید</string>
     <string name="mosque">مسجد</string>
+    <string name="edit">ویرایش</string>
 
 
     <string-array name="category_list">
