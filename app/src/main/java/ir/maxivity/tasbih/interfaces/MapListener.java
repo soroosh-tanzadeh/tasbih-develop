@@ -11,5 +11,11 @@ public interface MapListener {
 
     void onSelectFilter();
 
+    void onFavoritePlaceClick(String id);
+
+    void onAddEventClick(String id);
+
+    void onEditSubmit(HashMap<String, String> fields);
+
 
 }
