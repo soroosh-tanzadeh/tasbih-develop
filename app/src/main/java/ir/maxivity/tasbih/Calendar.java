@@ -2,13 +2,17 @@ package ir.maxivity.tasbih;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ir.maxivity.tasbih.calendarTabs.EventsList;
@@ -19,21 +23,27 @@ import ir.mirrajabi.persiancalendar.PersianCalendarView;
 import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
 import ir.mirrajabi.persiancalendar.core.interfaces.OnDayClickedListener;
 import ir.mirrajabi.persiancalendar.core.models.CalendarEvent;
+import ir.mirrajabi.persiancalendar.core.models.CivilDate;
 import ir.mirrajabi.persiancalendar.core.models.PersianDate;
+import ir.mirrajabi.persiancalendar.helpers.DateConverter;
 
 
 public class Calendar extends BaseActivity {
 
+    private static final String TAG = "FUCK CALENDAR";
     PersianCalendarHandler calendar;
     private ViewPager viewPager;
     private EventsList events_frag;
     private Today_tab todayTab;
+    private PersianDate currentSelectedDate;
+    private FloatingActionButton addEvent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
         viewPager = findViewById(R.id.calendar_viewer);
+        addEvent = findViewById(R.id.add_event);
 
         final LinearLayout l = findViewById(R.id.tab_container);
         this.overridePendingTransition(R.anim.slide_right,
@@ -42,7 +52,7 @@ public class Calendar extends BaseActivity {
         final PersianCalendarHandler calendar = persianCalendarView.getCalendar();
         this.calendar = calendar;
         final PersianDate today = calendar.getToday(); // get today date
-
+        currentSelectedDate = today;
         setupViewerPager(today, calendar); // setup pageview
 
         final TabLayout tabLayout = findViewById(R.id.calendar_tabs);
@@ -59,6 +69,7 @@ public class Calendar extends BaseActivity {
         persianCalendarView.setOnDayClickedListener(new OnDayClickedListener() {
             @Override
             public void onClick(final PersianDate date) {
+                currentSelectedDate = date;
                 todayTab.setupViews(new PersianDateSerializable(date));
                 List<CalendarEvent> eventsList = calendar.getAllEventsForDay(date);
                 ArrayList<String> events = new ArrayList<>();
@@ -67,6 +78,17 @@ public class Calendar extends BaseActivity {
                     events.add(event.getTitle());
                 }
                 events_frag.setEventTexts(events);
+            }
+        });
+
+        addEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CivilDate date = DateConverter.persianToCivil(currentSelectedDate);
+                Date d = new GregorianCalendar(date.getYear(), date.getMonth() - 1, date.getDayOfMonth()).getTime();
+
+                Log.v(TAG, d.getTime() + "");
+
             }
         });
     }
