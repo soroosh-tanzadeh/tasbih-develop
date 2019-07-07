@@ -37,6 +37,6 @@ public interface API {
     Call<GetMessages> getMessages();
 
     @Multipart
-    @POST("get_place")
+    @POST("get-place.php")
     Call<GetPlaces> getPlace(@Part("s") RequestBody body);
 }
