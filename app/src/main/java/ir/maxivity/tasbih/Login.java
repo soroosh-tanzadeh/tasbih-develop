@@ -162,7 +162,15 @@ public class Login extends BaseActivity {
         login_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginRequest(phonenumber.getText().toString());
+                //todo move authorization out of the click
+                if (application.getToken() == null)
+                    loginRequest(phonenumber.getText().toString());
+                else {
+                    Log.v(TAG, "user id : " + application.getUserId());
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
     }
