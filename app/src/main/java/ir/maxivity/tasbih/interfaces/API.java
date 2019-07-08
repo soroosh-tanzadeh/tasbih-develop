@@ -2,7 +2,9 @@ package ir.maxivity.tasbih.interfaces;
 
 import java.util.ArrayList;
 
+import ir.maxivity.tasbih.models.AddFavortiePlace;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
+import ir.maxivity.tasbih.models.GetFavoritePlaces;
 import ir.maxivity.tasbih.models.GetMessages;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetQuranText;
@@ -39,4 +41,16 @@ public interface API {
     @Multipart
     @POST("get-place.php")
     Call<GetPlaces> getPlace(@Part("s") RequestBody body);
+
+    @Multipart
+    @POST("add-favorite-place.php")
+    Call<AddFavortiePlace> addFavoritePlace(@Part("user_id") String user_id
+            , @Part("pass") String pass
+            , @Part("place_id") String place_id);
+
+    @Multipart
+    @POST("get-favorite-places.php")
+    Call<GetFavoritePlaces> getFavoritePlaces(@Part("user_id") String user_id
+            , @Part("pass") String pass);
+
 }
