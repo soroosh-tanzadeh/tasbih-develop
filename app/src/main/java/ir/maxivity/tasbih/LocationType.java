@@ -1,7 +1,7 @@
 package ir.maxivity.tasbih;
 
 public enum LocationType {
-    COFEESHOP,
+    COFFEESHOP,
     HOSPITAL,
     GYM,
     DENTISTRY,
