@@ -74,6 +74,7 @@ import ir.maxivity.tasbih.fragments.mapFragments.LocationInfoFragment;
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.models.AddNewLocationBody;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
+import ir.maxivity.tasbih.models.GetPlaceBody;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetPlacesBody;
 import okhttp3.RequestBody;
@@ -122,7 +123,6 @@ public class Map extends Fragment implements MapListener {
     private final String ADD_LOCATION_INFO_TAG = "add location info";
     private final String FILTER_FRAGMENT = "filter fragment";
     private final String LOCATION_INFO_FRAGMENT = "location info fragment";
-
 
 
     //OSM MAP//
@@ -212,9 +212,8 @@ public class Map extends Fragment implements MapListener {
                         addLocationMarker.setVisibility(View.GONE);
                     }
                     if (getCurrentFragment() instanceof AddLocationInfoFragment) {
-                        dismissChildFragment(ADD_LOCATION_INFO_TAG);
-                        addLocationMarker.setVisibility(View.GONE);
-                        addOrRemoveNewLocationMarker(true, newLocationMarker);
+                        onAddLocationInfoCancel();
+                        onAddLocationCancel();
                     }
                     if (getCurrentFragment() instanceof FilterFragment) {
                         dismissChildFragment(FILTER_FRAGMENT);
@@ -482,7 +481,7 @@ public class Map extends Fragment implements MapListener {
 
         try {
             if (!onAddLocationProgress)
-            getPlaces();
+                getPlaces();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -498,49 +497,47 @@ public class Map extends Fragment implements MapListener {
 
         main.application.api.getPlaces(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
                 .enqueue(new Callback<GetPlaces>() {
-            @Override
-            public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
-                if (response.isSuccessful()) {
-                    if (response.body().result == 1) {
-                        map.getOverlays().clear();
-                        map.getOverlays().add(myLocationNewOverlay);
-                        map.invalidate();
-                        mapMarkers.clear();
-                        for (GetPlaces.response res : response.body().data) {
-                            Double lat = Double.parseDouble(res.lat);
-                            Double lon = Double.parseDouble(res.lon);
-                            Marker marker = createMarker(new GeoPoint(lat, lon), R.drawable.ic_t_pin_coffeeshop, res.id);
-                            mapMarkers.add(marker);
-                            addOrRemoveNewLocationMarker(false, marker);
-                            onMarkersClickAction();
+                    @Override
+                    public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().result == 1) {
+                                map.getOverlays().clear();
+                                map.getOverlays().add(myLocationNewOverlay);
+                                map.invalidate();
+                                mapMarkers.clear();
+                                for (GetPlaces.response res : response.body().data) {
+                                    Double lat = Double.parseDouble(res.lat);
+                                    Double lon = Double.parseDouble(res.lon);
+                                    Marker marker = createMarker(new GeoPoint(lat, lon),
+                                            Utilities.getMarkerOnType(Utilities.getLocationType(Integer.parseInt(res.type))),
+                                            res.id);
+                                    mapMarkers.add(marker);
+                                    addOrRemoveNewLocationMarker(false, marker);
+                                    onMarkersClickAction();
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<GetPlaces> call, Throwable t) {
-                Log.v(TAG, "body : " + t.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Call<GetPlaces> call, Throwable t) {
+                        Log.v(TAG, "body : " + t.getMessage());
+                    }
+                });
     }
 
     private void getPlaceById(final String id) throws NullPointerException {
         final MainActivity main = (MainActivity) getActivity();
+        GetPlaceBody body = new GetPlaceBody();
+        body.id = id;
 
-
-        main.application.api.getPlace(RequestBody.create(Utilities.JSON, Utilities.createBody(id)))
+        main.application.api.getPlace(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
                 .enqueue(new Callback<GetPlaces>() {
                     @Override
                     public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
                         if (response.isSuccessful()) {
                             if (response.body().result == 1) {
-                                for (GetPlaces.response res : response.body().data) {
-                                    if (res.id.equals(id)) {
-                                        loadChildFragment(LocationInfoFragment.newInstance(res), LOCATION_INFO_FRAGMENT, false);
-                                    }
-                                }
-
+                                loadChildFragment(LocationInfoFragment.newInstance(response.body().data.get(0)), LOCATION_INFO_FRAGMENT, false);
                             }
                         }
                     }
@@ -560,6 +557,9 @@ public class Map extends Fragment implements MapListener {
                 public boolean onMarkerClick(Marker marker, MapView mapView) {
                     Log.v(TAG, "marker :" + marker.getId());
                     try {
+                        if (getCurrentFragment() instanceof AddLocationFragment) {
+                            dismissChildFragment(ADD_LOCATION_TAG);
+                        }
                         getPlaceById(marker.getId());
                         addLocationButton.hide();
                         actionButton.hide();
@@ -664,7 +664,7 @@ public class Map extends Fragment implements MapListener {
 
     @Override
     public void onAddLocationInfoCancel() {
-        addLocationButton.show();
+        //addLocationButton.show();
         dismissChildFragment(ADD_LOCATION_INFO_TAG);
         addLocationMarker.setVisibility(View.VISIBLE);
         addOrRemoveNewLocationMarker(true, newLocationMarker);
