@@ -103,7 +103,7 @@ public class Utilities {
     public static int getMarkerOnType(LocationType type) {
         switch (type) {
             case COFFEESHOP:
-                return R.drawable.t_pin_coffeeshop;
+                return R.drawable.ic_t_pin_coffeeshop;
             case HOSPITAL:
                 return R.drawable.hospital_marker;
             case GYM:
