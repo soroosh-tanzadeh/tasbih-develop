@@ -13,6 +13,8 @@ import com.pixplicity.sharp.Sharp;
 import java.io.IOException;
 import java.io.InputStream;
 
+import ir.maxivity.tasbih.LocationType;
+import ir.maxivity.tasbih.R;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -96,6 +98,54 @@ public class Utilities {
     public static Bitmap base64ToBitmap(String base64) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+
+    public static int getMarkerOnType(LocationType type) {
+        switch (type) {
+            case COFFEESHOP:
+                return R.drawable.t_pin_coffeeshop;
+            case HOSPITAL:
+                return R.drawable.hospital_marker;
+            case GYM:
+                return R.drawable.gym_marker;
+            case DENTISTRY:
+                return R.drawable.dentistry_marker;
+            case SHOP:
+                return R.drawable.shop_marker;
+            case HOTEL:
+                return R.drawable.hotel_marker;
+            case OTHER:
+                return R.drawable.t_pin_coffeeshop;
+            case UNIVERSITY:
+                return R.drawable.university_marker;
+            case MOSQUE:
+                return R.drawable.mosque;
+            default:
+                return R.drawable.marker2;
+        }
+    }
+
+    public static LocationType getLocationType(int type) {
+        switch (type) {
+            case 1:
+                return LocationType.COFFEESHOP;
+            case 2:
+                return LocationType.HOSPITAL;
+            case 3:
+                return LocationType.GYM;
+            case 4:
+                return LocationType.DENTISTRY;
+            case 5:
+                return LocationType.HOTEL;
+            case 6:
+                return LocationType.MOSQUE;
+            case 7:
+                return LocationType.UNIVERSITY;
+            case 8:
+                return LocationType.SHOP;
+            default:
+                return LocationType.OTHER;
+        }
     }
 
 }
