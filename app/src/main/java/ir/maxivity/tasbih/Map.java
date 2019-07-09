@@ -19,6 +19,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -67,24 +68,28 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import ir.maxivity.tasbih.fragments.mapFragments.AddEventDialogFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.AddLocationFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.AddLocationInfoFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.FilterFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.LocationInfoFragment;
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.models.AddFavortiePlace;
+import ir.maxivity.tasbih.models.AddNewEvent;
+import ir.maxivity.tasbih.models.AddNewEventBody;
 import ir.maxivity.tasbih.models.AddNewLocationBody;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
 import ir.maxivity.tasbih.models.GetPlaceBody;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetPlacesBody;
+import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tools.Utilities;
 
-public class Map extends Fragment implements MapListener {
+public class Map extends Fragment implements MapListener, AddEventDialogFragment.OnSubmitButtonClick {
     private static final String TAG = "FUCK MAP";
 
     // used to track request permissions
@@ -480,8 +485,12 @@ public class Map extends Fragment implements MapListener {
     private void addFavoritePlaceRequest(String id) throws NullPointerException {
         final MainActivity main = (MainActivity) getActivity();
         final NasimDialog dialog = main.showLoadingDialog();
+
+        RequestBody pass = RequestBody.create(MediaType.parse("text/plain"), "R&K7v2t9tQ*Pez@p");
+        RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), main.application.getUserId());
+        RequestBody place_id = RequestBody.create(MediaType.parse("text/plain"), id);
         dialog.show();
-        main.application.api.addFavoritePlace(main.application.getUserId(), "R&K7v2t9tQ*Pez@p", id)
+        main.application.api.addFavoritePlace(user_id, pass, place_id)
                 .enqueue(new Callback<AddFavortiePlace>() {
                     @Override
                     public void onResponse(Call<AddFavortiePlace> call, Response<AddFavortiePlace> response) {
@@ -712,8 +721,38 @@ public class Map extends Fragment implements MapListener {
     }
 
     @Override
-    public void onAddEventClick(String id) {
+    public void onAddEventClick(final String id) {
+        DialogFragment dialogFragment = AddEventDialogFragment.newInstance(id);
+        dialogFragment.show(getChildFragmentManager(), "EVENT DIALOG FRAGMENT");
+    }
 
+    private void addEventRequest(String id, HashMap<String, String> fields) throws NullPointerException {
+        final MainActivity main = (MainActivity) getActivity();
+        final NasimDialog dialog = main.showLoadingDialog();
+        dialog.show();
+        AddNewEventBody body = new AddNewEventBody();
+        body.disable = fields.get(AddEventDialogFragment.MAP_STATUS_KEY);
+        body.place_id = id;
+        body.text = fields.get(AddEventDialogFragment.MAP_TEXT_KEY);
+        body.thumbnail = fields.get(AddEventDialogFragment.MAP_IMAGE_KEY);
+
+        main.application.api.addnewEvent(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
+                .enqueue(new Callback<AddNewEvent>() {
+                    @Override
+                    public void onResponse(Call<AddNewEvent> call, Response<AddNewEvent> response) {
+                        dialog.dismiss();
+                        dismissEventDialogFragment();
+                        if (response.isSuccessful()) {
+                        }
+                        Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<AddNewEvent> call, Throwable t) {
+                        dialog.dismiss();
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override
@@ -730,6 +769,14 @@ public class Map extends Fragment implements MapListener {
         }
     }
 
+    private void dismissEventDialogFragment() {
+        Fragment prev = getChildFragmentManager().findFragmentByTag("EVENT DIALOG FRAGMENT");
+        if (prev != null) {
+            DialogFragment df = (DialogFragment) prev;
+            df.dismiss();
+        }
+    }
+
     private Fragment getCurrentFragment() {
         FragmentManager manager = getChildFragmentManager();
         List<Fragment> fragments = manager.getFragments();
@@ -742,5 +789,14 @@ public class Map extends Fragment implements MapListener {
         }
         return null;
 
+    }
+
+    @Override
+    public void onSubmitEventClick(String id, HashMap<String, String> fields) {
+        try {
+            addEventRequest(id, fields);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 }
