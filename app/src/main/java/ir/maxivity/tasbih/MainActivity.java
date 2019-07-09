@@ -18,16 +18,19 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import org.osmdroid.config.Configuration;
 
 import co.ronash.pushe.Pushe;
+import ir.maxivity.tasbih.activities.FavoritePlacesActivity;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
 import ir.maxivity.tasbih.tools.CustomGestureDetector;
 
 public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
+    private RelativeLayout favoriteSection;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -172,6 +175,18 @@ public class MainActivity extends BaseActivity {
             }
         });
         bottomNavigationView.setSelectedItemId(R.id.navigation_start);
+        initViews();
+    }
+
+    private void initViews() {
+        favoriteSection = findViewById(R.id.favorite_wrapper);
+        favoriteSection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, FavoritePlacesActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
