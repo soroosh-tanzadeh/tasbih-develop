@@ -164,6 +164,10 @@
     <string name="edit">ویرایش</string>
     <string name="add_successfully">با موفقیت اضاف شد</string>
     <string name="favorite_empty_list">شما هیچ مکانی را به علاقه مندی ها اضافه نکردید</string>
+    <string name="add_event_title">اطلاعات رویداد را وارد کنید</string>
+    <string name="add_image">افزودن تصویر</string>
+    <string name="enable_event">رویداد فعال</string>
+    <string name="disable_event">رویداد غیر فعال</string>
 
 
     <string-array name="category_list">
