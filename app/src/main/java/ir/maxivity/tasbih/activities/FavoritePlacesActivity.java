@@ -14,6 +14,7 @@ import ir.maxivity.tasbih.adapters.FavoritePlaceAdapter;
 import ir.maxivity.tasbih.models.GetFavoritePlaces;
 import ir.maxivity.tasbih.models.GetPlaceBody;
 import ir.maxivity.tasbih.models.GetPlaces;
+import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +38,8 @@ public class FavoritePlacesActivity extends BaseActivity {
         empty = findViewById(R.id.empty_list);
         adapter = new FavoritePlaceAdapter(this, places);
         dialog = showLoadingDialog();
+
+        getSupportActionBar().setTitle("علاقه مندی ها");
     }
 
     @Override
@@ -52,7 +55,9 @@ public class FavoritePlacesActivity extends BaseActivity {
 
     private void getFavoritePlaces() throws NullPointerException {
         dialog.show();
-        application.api.getFavoritePlaces(application.getUserId(), "R&K7v2t9tQ*Pez@p").enqueue(new Callback<GetFavoritePlaces>() {
+        RequestBody pass = RequestBody.create(MediaType.parse("text/plain"), "R&K7v2t9tQ*Pez@p");
+        RequestBody userId = RequestBody.create(MediaType.parse("text/plain"), application.getUserId());
+        application.api.getFavoritePlaces(userId, pass).enqueue(new Callback<GetFavoritePlaces>() {
             @Override
             public void onResponse(Call<GetFavoritePlaces> call, Response<GetFavoritePlaces> response) {
                 if (response.isSuccessful()) {
@@ -60,7 +65,6 @@ public class FavoritePlacesActivity extends BaseActivity {
                         for (GetFavoritePlaces.FavoriteResponse res : response.body().data) {
                             getPlacesById(res.place_id);
                         }
-                        adapter.updateData(places);
                         if (places.size() > 0) {
                             empty.setVisibility(View.GONE);
                         }
@@ -91,6 +95,8 @@ public class FavoritePlacesActivity extends BaseActivity {
                             if (response.body().result == 1) {
                                 places.add(response.body().data.get(0));
                             }
+                            adapter.updateData(places);
+                            favoriteList.setAdapter(adapter);
                         }
                     }
 
