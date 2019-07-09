@@ -162,6 +162,8 @@
     <string name="request_failure_text">مشکلی پیش آمده بعدا دوباره تلاش کنید</string>
     <string name="mosque">مسجد</string>
     <string name="edit">ویرایش</string>
+    <string name="add_successfully">با موفقیت اضاف شد</string>
+    <string name="favorite_empty_list">شما هیچ مکانی را به علاقه مندی ها اضافه نکردید</string>
 
 
     <string-array name="category_list">

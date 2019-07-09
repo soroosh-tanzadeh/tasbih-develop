@@ -96,5 +96,4 @@ dependencies {
     implementation 'com.pixplicity.sharp:library:1.1.0'
 
 
-
 }

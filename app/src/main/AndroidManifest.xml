@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MessagesActivity"></activity>
+        <activity android:name=".activities.FavoritePlacesActivity"></activity>
+        <activity android:name=".MessagesActivity" />
         <activity android:name=".ZiaratOnlineActivity" />
         <activity android:name=".QuranAdyehTextActivity" />
         <activity android:name=".ZekrsList" />
