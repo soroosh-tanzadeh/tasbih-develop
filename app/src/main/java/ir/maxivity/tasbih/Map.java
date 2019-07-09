@@ -72,6 +72,7 @@ import ir.maxivity.tasbih.fragments.mapFragments.AddLocationInfoFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.FilterFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.LocationInfoFragment;
 import ir.maxivity.tasbih.interfaces.MapListener;
+import ir.maxivity.tasbih.models.AddFavortiePlace;
 import ir.maxivity.tasbih.models.AddNewLocationBody;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
 import ir.maxivity.tasbih.models.GetPlaceBody;
@@ -171,6 +172,8 @@ public class Map extends Fragment implements MapListener {
                     dismissChildFragment(FILTER_FRAGMENT);
                 }
                 loadChildFragment(new AddLocationFragment(), ADD_LOCATION_TAG, false);
+
+                onAddLocationProgress = true;
             }
         });
 
@@ -210,6 +213,7 @@ public class Map extends Fragment implements MapListener {
                     if (getCurrentFragment() instanceof AddLocationFragment) {
                         dismissChildFragment(ADD_LOCATION_TAG);
                         addLocationMarker.setVisibility(View.GONE);
+                        onAddLocationProgress = false;
                     }
                     if (getCurrentFragment() instanceof AddLocationInfoFragment) {
                         onAddLocationInfoCancel();
@@ -473,6 +477,31 @@ public class Map extends Fragment implements MapListener {
         startActivity(intent);
     }
 
+    private void addFavoritePlaceRequest(String id) throws NullPointerException {
+        final MainActivity main = (MainActivity) getActivity();
+        final NasimDialog dialog = main.showLoadingDialog();
+        dialog.show();
+        main.application.api.addFavoritePlace(main.application.getUserId(), "R&K7v2t9tQ*Pez@p", id)
+                .enqueue(new Callback<AddFavortiePlace>() {
+                    @Override
+                    public void onResponse(Call<AddFavortiePlace> call, Response<AddFavortiePlace> response) {
+                        dialog.dismiss();
+                        if (response.isSuccessful()) {
+                            if (response.body().result == 1) {
+                                Toast.makeText(getContext(), getString(R.string.add_successfully), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), response.body().data, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AddFavortiePlace> call, Throwable t) {
+                        dialog.dismiss();
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
     private void onLocationChange() {
         if (userLocation != null) {
@@ -652,6 +681,8 @@ public class Map extends Fragment implements MapListener {
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         addOrRemoveNewLocationMarker(true, newLocationMarker);
+
+        onAddLocationProgress = false;
     }
 
     @Override
@@ -677,7 +708,7 @@ public class Map extends Fragment implements MapListener {
 
     @Override
     public void onFavoritePlaceClick(String id) {
-
+        addFavoritePlaceRequest(id);
     }
 
     @Override
