@@ -3,6 +3,7 @@ package ir.maxivity.tasbih.interfaces;
 import java.util.ArrayList;
 
 import ir.maxivity.tasbih.models.AddFavortiePlace;
+import ir.maxivity.tasbih.models.AddNewEvent;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
 import ir.maxivity.tasbih.models.GetFavoritePlaces;
 import ir.maxivity.tasbih.models.GetMessages;
@@ -44,13 +45,18 @@ public interface API {
 
     @Multipart
     @POST("add-favorite-place.php")
-    Call<AddFavortiePlace> addFavoritePlace(@Part("user_id") String user_id
-            , @Part("pass") String pass
-            , @Part("place_id") String place_id);
+    Call<AddFavortiePlace> addFavoritePlace(@Part("user_id") RequestBody user_id
+            , @Part("pass") RequestBody pass
+            , @Part("place_id") RequestBody place_id);
 
     @Multipart
     @POST("get-favorite-places.php")
-    Call<GetFavoritePlaces> getFavoritePlaces(@Part("user_id") String user_id
-            , @Part("pass") String pass);
+    Call<GetFavoritePlaces> getFavoritePlaces(@Part("user_id") RequestBody user_id
+            , @Part("pass") RequestBody pass);
+
+
+    @Multipart
+    @POST("new-event.php")
+    Call<AddNewEvent> addnewEvent(@Part("data") RequestBody body);
 
 }
