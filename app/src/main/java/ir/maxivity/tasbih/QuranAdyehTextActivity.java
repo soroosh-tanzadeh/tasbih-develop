@@ -52,10 +52,10 @@ public class QuranAdyehTextActivity extends BaseActivity {
         super.onResume();
     }
 
-    private void setContentText(ArrayList<GetQuranText> quranTexts) {
+    private void setContentText(ArrayList<GetQuranText.QuranResponse> quranTexts) {
         StringBuilder builder = new StringBuilder();
 
-        for (GetQuranText quran : quranTexts) {
+        for (GetQuranText.QuranResponse quran : quranTexts) {
             builder.append(quran.text);
             builder.append(" (");
             builder.append(Utilities.numberConvert_En2Fa(quran.aya));
@@ -69,14 +69,12 @@ public class QuranAdyehTextActivity extends BaseActivity {
 
     private void getSuraText() {
 
-
-        application.api.getQuranText(RequestBody.create(JSON, createBody(id))).enqueue(new Callback<ArrayList<GetQuranText>>() {
+        application.api.getQuranText(RequestBody.create(JSON, createBody(id))).enqueue(new Callback<GetQuranText>() {
             @Override
-            public void onResponse(Call<ArrayList<GetQuranText>> call, Response<ArrayList<GetQuranText>> response) {
+            public void onResponse(Call<GetQuranText> call, Response<GetQuranText> response) {
                 try {
-
                     if (response.isSuccessful()) {
-                        setContentText(response.body());
+                        setContentText(response.body().data);
                     }
                 } catch (NullPointerException e) {
                     e.printStackTrace();
@@ -85,7 +83,7 @@ public class QuranAdyehTextActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<GetQuranText>> call, Throwable t) {
+            public void onFailure(Call<GetQuranText> call, Throwable t) {
                 Log.v(TAG, "fail : " + t.getMessage());
             }
         });
