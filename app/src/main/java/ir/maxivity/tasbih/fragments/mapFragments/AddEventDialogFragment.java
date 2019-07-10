@@ -91,7 +91,7 @@ public class AddEventDialogFragment extends DialogFragment {
         eventImage = root.findViewById(R.id.event_image);
         eventText = root.findViewById(R.id.event_text);
         submit = root.findViewById(R.id.submit_event);
-
+        fields.put(MAP_STATUS_KEY, "0");
 
         status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
