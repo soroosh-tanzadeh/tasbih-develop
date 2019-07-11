@@ -1,7 +1,5 @@
 package ir.maxivity.tasbih.interfaces;
 
-import java.util.ArrayList;
-
 import ir.maxivity.tasbih.models.AddFavortiePlace;
 import ir.maxivity.tasbih.models.AddNewEvent;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
@@ -25,7 +23,7 @@ public interface API {
 
     @Multipart
     @POST("get-qurantext.php")
-    Call<ArrayList<GetQuranText>> getQuranText(@Part("sura") RequestBody body);
+    Call<GetQuranText> getQuranText(@Part("sura") RequestBody body);
 
 
     @Multipart
