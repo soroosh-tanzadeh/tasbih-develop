@@ -26,6 +26,7 @@ import okhttp3.Response;
 public class Utilities {
 
     public static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public static MediaType TEXT = MediaType.parse("text/plain");
 
     public static String numberConvert_Fa2En(@NonNull String rawStr) {
         StringBuffer stringBuffer = new StringBuffer();
@@ -119,7 +120,7 @@ public class Utilities {
             case UNIVERSITY:
                 return R.drawable.university_marker;
             case MOSQUE:
-                return R.drawable.mosque;
+                return R.drawable.mosque_marker;
             default:
                 return R.drawable.marker2;
         }
