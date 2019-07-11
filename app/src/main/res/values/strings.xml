@@ -168,6 +168,9 @@
     <string name="add_image">افزودن تصویر</string>
     <string name="enable_event">رویداد فعال</string>
     <string name="disable_event">رویداد غیر فعال</string>
+    <string name="persian_language">زبان فارسی</string>
+    <string name="arabic_language">زبان عربی</string>
+    <string name="select_language_warning">لطفا یک زبان را انتخاب کنید</string>
 
 
     <string-array name="category_list">
