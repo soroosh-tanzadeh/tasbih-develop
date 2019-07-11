@@ -190,6 +190,7 @@ public class Map extends Fragment implements MapListener, AddEventDialogFragment
 
     private void bindViews(View view) {
         map = view.findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK);
         actionButton = view.findViewById(R.id.focusonuser);
         addLocationButton = view.findViewById(R.id.add_location);
         addLocationMarker = view.findViewById(R.id.location_marker);
