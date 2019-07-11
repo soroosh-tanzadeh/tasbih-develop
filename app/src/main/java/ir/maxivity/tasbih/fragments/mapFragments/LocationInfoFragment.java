@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,7 +36,7 @@ public class LocationInfoFragment extends Fragment {
     private RelativeLayout bottomSheet;
     private ImageView arrow, locationImage;
     private TextView name, description, persianName;
-    private TextView locationName, locationAddress, locationWebsite, locationPhone;
+    private EditText locationName, locationAddress, locationWebsite, locationPhone;
     private BottomSheetBehavior behavior;
     private Button editBtn, addEventBtn;
     private LinearLayout webSiteWrapper, addFavoritePlaceWrapper;
@@ -86,6 +87,11 @@ public class LocationInfoFragment extends Fragment {
         editBtn = view.findViewById(R.id.edit_btn);
         addEventBtn = view.findViewById(R.id.add_event_btn);
         webSiteWrapper = view.findViewById(R.id.website_wrapper);
+
+        locationPhone.setEnabled(false);
+        locationWebsite.setEnabled(false);
+        locationAddress.setEnabled(false);
+        locationName.setEnabled(false);
 
 
         viewActions();
@@ -142,6 +148,21 @@ public class LocationInfoFragment extends Fragment {
             }
         });
 
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editPhase();
+            }
+        });
+    }
+
+    private void editPhase() {
+        locationName.setEnabled(true);
+        locationAddress.setEnabled(true);
+        locationWebsite.setEnabled(true);
+        locationPhone.setEnabled(true);
+
+        editBtn.setText("ذخیره");
     }
 
     @Override
