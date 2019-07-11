@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import ir.maxivity.tasbih.dataAccess.VerficationResult;
 import ir.maxivity.tasbih.models.LoginResponse;
@@ -23,6 +25,7 @@ public class Login extends BaseActivity {
     private EditText verificationcode;
     private Button sendVirificationbtn;
     private Button login_submit;
+    private TextView loginLater;
 
     private VerficationResult verficationResult;
 
@@ -173,6 +176,15 @@ public class Login extends BaseActivity {
 
             }
         });
+
+        loginLater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                application.setLoginLater(true);
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loginRequest(String phone) {
@@ -180,7 +192,7 @@ public class Login extends BaseActivity {
         String body = Utilities.createBody(phone);
         final NasimDialog dialog = showLoadingDialog();
         dialog.show();
-        application.api.doLogin(RequestBody.create(Utilities.JSON, body)).enqueue(new Callback<LoginResponse>() {
+        application.api.doLogin(RequestBody.create(Utilities.TEXT, body)).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 dialog.dismiss();
@@ -189,13 +201,18 @@ public class Login extends BaseActivity {
                         if (response.body().resultcode == 1) {
                             application.setToken(response.body().data);
                             application.setUserId(response.body().user_id);
+                            application.setLoginLater(false);
+                            Toast.makeText(getApplicationContext(), "result ok going to main", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Login.this, MainActivity.class);
                             startActivity(intent);
+                        } else {
+                            Toast.makeText(getApplicationContext(), response.body().msg, Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 } catch (NullPointerException e) {
                     e.printStackTrace();
-
+                    Toast.makeText(getApplicationContext(), "some thing is null from server", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -204,6 +221,7 @@ public class Login extends BaseActivity {
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 dialog.dismiss();
                 Log.v(TAG, "fail : " + t.getMessage());
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
