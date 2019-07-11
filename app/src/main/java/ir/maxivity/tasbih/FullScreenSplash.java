@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.io.IOException;
 
+import ir.maxivity.tasbih.activities.SelectLanguageActivity;
 import ir.maxivity.tasbih.dataAccess.DataFileAccess;
 import ir.maxivity.tasbih.dataAccess.LocalDB;
 
@@ -55,7 +56,7 @@ public class FullScreenSplash extends AppCompatActivity {
             FullScreenSplash.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(FullScreenSplash.this,Login.class);
+                    Intent intent = new Intent(FullScreenSplash.this, SelectLanguageActivity.class);
                     FullScreenSplash.oppend = 1;
                     startActivity(intent);
                     finish();
