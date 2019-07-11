@@ -13,6 +13,8 @@ public class NasimApplication extends Application {
     public API api;
     private final String PREF_TOKEN_KEY = "TOKEN";
     private final String PREF_USER_ID_KEY = "USER_ID";
+    private final String PREF_LANGUAGE_KEY = "LANGUAGE";
+    private final String PREF_LOGIN_LATER_KEY = "LOGIN_LATER";
     private final String MAIN_PREF_NAME = "NASIM_PREF_FILE";
 
 
@@ -52,6 +54,29 @@ public class NasimApplication extends Application {
         return sharedPreferences.getString(PREF_USER_ID_KEY, null);
     }
 
+    public void setLanguage(String language) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_LANGUAGE_KEY, language);
+        editor.apply();
+    }
+
+    public String getLanguage() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(PREF_LANGUAGE_KEY, null);
+    }
+
+    public void setLoginLater(boolean loginLater) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PREF_LOGIN_LATER_KEY, loginLater);
+        editor.apply();
+    }
+
+    public boolean getLoginLater() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getBoolean(PREF_LOGIN_LATER_KEY, false);
+    }
 
 
 }
