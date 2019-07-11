@@ -100,14 +100,15 @@
                     android:layout_marginRight="16dp"
                     android:background="@drawable/ic_location_blue" />
 
-                <TextView
+                <EditText
                     android:id="@+id/location_name_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
                     android:layout_toLeftOf="@id/location_icon"
                     android:textColor="@color/gray_900"
+                    android:background="@android:color/transparent"
                     android:textSize="16sp" />
             </RelativeLayout>
 
@@ -125,14 +126,15 @@
                     android:layout_marginRight="16dp"
                     android:background="@drawable/address_icon_blue" />
 
-                <TextView
+                <EditText
                     android:id="@+id/address_name_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
                     android:layout_toLeftOf="@id/location_address"
                     android:textColor="@color/gray_900"
+                    android:background="@android:color/transparent"
                     android:textSize="16sp" />
             </RelativeLayout>
 
@@ -150,14 +152,15 @@
                     android:layout_marginRight="16dp"
                     android:background="@drawable/ic_earth_blue" />
 
-                <TextView
+                <EditText
                     android:id="@+id/website_name_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
                     android:layout_toLeftOf="@id/location_website_icon"
                     android:textColor="@color/gray_900"
+                    android:background="@android:color/transparent"
                     android:textSize="16sp" />
             </RelativeLayout>
 
@@ -175,14 +178,15 @@
                     android:layout_marginRight="16dp"
                     android:background="@drawable/phone_message_blue" />
 
-                <TextView
+                <EditText
                     android:id="@+id/phone_number_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
                     android:layout_toLeftOf="@id/phone_icon"
                     android:textColor="@color/gray_900"
+                    android:background="@android:color/transparent"
                     android:textSize="16sp" />
             </RelativeLayout>
 
