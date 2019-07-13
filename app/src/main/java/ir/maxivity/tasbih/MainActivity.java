@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,20 +18,23 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 
 import org.osmdroid.config.Configuration;
 
 import co.ronash.pushe.Pushe;
 import ir.maxivity.tasbih.activities.FavoritePlacesActivity;
+import ir.maxivity.tasbih.adapters.DrawerListAdapter;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
+import ir.maxivity.tasbih.tools.CreateDrawerItem;
 import ir.maxivity.tasbih.tools.CustomGestureDetector;
 
 public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
-    private RelativeLayout favoriteSection;
+    private ListView drawerItemList;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -179,19 +183,60 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViews() {
-        favoriteSection = findViewById(R.id.favorite_wrapper);
-        favoriteSection.setOnClickListener(new View.OnClickListener() {
+        drawerItemList = findViewById(R.id.drawer_item_list);
+
+        final CreateDrawerItem items = new CreateDrawerItem(this, "guest", application.getLoginLater());
+
+        DrawerListAdapter adapter = new DrawerListAdapter(this, R.layout.drawer_item_layout, items.getItems());
+
+        drawerItemList.setAdapter(adapter);
+
+        drawerItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, FavoritePlacesActivity.class);
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (items.getItems().get(i).getText() == getString(R.string.favorite)) {
+                    Intent intent = new Intent(MainActivity.this, FavoritePlacesActivity.class);
+                    startActivity(intent);
+                }
+                if (items.getItems().get(i).getText() == getString(R.string.sign_up)) {
+                    finish();
+                    Intent intent = new Intent(MainActivity.this, Login.class);
+                    startActivity(intent);
+                }
             }
         });
+
     }
+
+
+    boolean doubleBackPressed = false;
+
+    private void doubleBackPress() {
+        if (doubleBackPressed) {
+            System.exit(0);
+            return;
+        }
+        this.doubleBackPressed = true;
+        showShortToast(getString(R.string.double_back_pressed));
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackPressed = false;
+            }
+        }, 2000);
+    }
+
 
     @Override
     public void onBackPressed() {
-        System.exit(0);
+
+        if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+            drawerLayout.closeDrawer(Gravity.RIGHT);
+        } else
+            doubleBackPress();
+
     }
 
     private void loadFragment(Fragment fragment) {
