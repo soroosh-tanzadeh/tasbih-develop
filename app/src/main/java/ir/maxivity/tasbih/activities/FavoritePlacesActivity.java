@@ -68,6 +68,7 @@ public class FavoritePlacesActivity extends BaseActivity {
                         if (places.size() > 0) {
                             empty.setVisibility(View.GONE);
                         }
+                        dialog.dismiss();
                     } else {
                         empty.setVisibility(View.VISIBLE);
                         dialog.dismiss();
