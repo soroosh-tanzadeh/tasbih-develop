@@ -32,103 +32,12 @@
                 android:id="@+id/top_banner"
                 android:background="@drawable/aliresize" />
 
-            <RelativeLayout
+            <ListView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/profile_wrapper">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/user"
-                    android:id="@+id/profile_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/profile_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:text="olala1373@gmail.com" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/favorite_wrapper">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/ic_fave"
-                    android:id="@+id/fave_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/fave_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/favorite" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/setting_wrapper">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/ic_settings_blue"
-                    android:id="@+id/setting_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/setting_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/settings" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/logout_wrapper">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/ic_logout"
-                    android:id="@+id/logout_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/logout_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/logout" />
-
-
-            </RelativeLayout>
-
+                android:layout_height="match_parent"
+                android:id="@+id/drawer_item_list"
+                android:divider="@null"
+                android:dividerHeight="0dp" />
 
         </LinearLayout>
 
