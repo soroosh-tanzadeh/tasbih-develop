@@ -39,6 +39,7 @@ public class Login extends BaseActivity {
         sendVirificationbtn = findViewById(R.id.submitVerification_code);
         sendVirificationbtn.setVisibility(View.GONE);
         login_submit = findViewById(R.id.login_submit);
+        loginLater = findViewById(R.id.login_later);
         phonenumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
