@@ -171,6 +171,9 @@
     <string name="persian_language">فارسی</string>
     <string name="arabic_language">العربی</string>
     <string name="select_language_warning">لطفا یک زبان را انتخاب کنید</string>
+    <string name="my_places">مکان های من</string>
+    <string name="sign_up">ثبت نام</string>
+    <string name="double_back_pressed">برای خروج دکمه بازگشت را دوباره لمس کنید.</string>
 
 
     <string-array name="category_list">
