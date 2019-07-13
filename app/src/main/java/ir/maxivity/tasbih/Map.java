@@ -142,7 +142,7 @@ public class Map extends Fragment implements MapListener, AddEventDialogFragment
     private boolean goToMyLocationAtFirst = false;
     private Marker newLocationMarker;
     private ArrayList<Marker> mapMarkers;
-    private static final int MAP_ZOOM = 15;
+    private static final double MAP_ZOOM = 16.5;
 
     //VIEWS///
     FloatingActionButton actionButton, addLocationButton;
