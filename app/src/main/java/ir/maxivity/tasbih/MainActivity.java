@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.osmdroid.config.Configuration;
 
@@ -30,6 +31,7 @@ import ir.maxivity.tasbih.adapters.DrawerListAdapter;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
 import ir.maxivity.tasbih.tools.CreateDrawerItem;
 import ir.maxivity.tasbih.tools.CustomGestureDetector;
+import tools.Utilities;
 
 public class MainActivity extends BaseActivity {
 
@@ -56,6 +58,12 @@ public class MainActivity extends BaseActivity {
         View actionbarview = getSupportActionBar().getCustomView();
         ImageButton share_btn = actionbarview.findViewById(R.id.sharebtn);
         ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
+        TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
+        TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
+
+        persianDate.setText(Utilities.getTodayJalaliDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this));
+
         drawerLayout = findViewById(R.id.drawer_layout);
 
 
