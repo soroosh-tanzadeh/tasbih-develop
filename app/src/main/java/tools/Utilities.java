@@ -15,6 +15,10 @@ import java.io.InputStream;
 
 import ir.maxivity.tasbih.LocationType;
 import ir.maxivity.tasbih.R;
+import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
+import ir.mirrajabi.persiancalendar.core.models.IslamicDate;
+import ir.mirrajabi.persiancalendar.core.models.PersianDate;
+import ir.mirrajabi.persiancalendar.helpers.DateConverter;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -147,6 +151,32 @@ public class Utilities {
             default:
                 return LocationType.OTHER;
         }
+    }
+
+    public static String getTodayJalaliDate(Context context) {
+        PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
+        PersianDate date = calendar.getToday();
+        String space = " ";
+
+        return calendar.getWeekDayName(date) + space +
+                calendar.formatNumber(date.getDayOfMonth()) + space +
+                calendar.getMonthName(date);
+    }
+
+    public static String getTodayIslamicDate(Context context) {
+        PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
+        PersianDate date = calendar.getToday();
+        IslamicDate islamicDate = DateConverter.persianToIslamic(date);
+
+        String[] iMonthNames = {"محرم", "صفر", "ربیع‌الاول",
+                "ربیع‌الاخر", "جمادی‌الاول", "جمادی ‌الاخر", "رجب",
+                "شعبان", "رمضان", "شوال", "ذی‌القعده", "ذی‌الحجه"};
+        String space = " ";
+
+        return calendar.formatNumber(islamicDate.getDayOfMonth() + "") + space +
+                iMonthNames[islamicDate.getMonth() - 1] + space +
+                islamicDate.getYear();
+
     }
 
 }
