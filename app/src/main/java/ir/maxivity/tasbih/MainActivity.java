@@ -27,6 +27,7 @@ import org.osmdroid.config.Configuration;
 
 import co.ronash.pushe.Pushe;
 import ir.maxivity.tasbih.activities.FavoritePlacesActivity;
+import ir.maxivity.tasbih.activities.MyPlacesActivity;
 import ir.maxivity.tasbih.adapters.DrawerListAdapter;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
 import ir.maxivity.tasbih.tools.CreateDrawerItem;
@@ -203,13 +204,27 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (items.getItems().get(i).getText() == getString(R.string.favorite)) {
-                    Intent intent = new Intent(MainActivity.this, FavoritePlacesActivity.class);
-                    startActivity(intent);
+                    if (application.getLoginLater()) {
+                        NasimDialog dialog = guestUserSignUpDialog(MainActivity.this);
+                        dialog.show();
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, FavoritePlacesActivity.class);
+                        startActivity(intent);
+                    }
                 }
                 if (items.getItems().get(i).getText() == getString(R.string.sign_up)) {
                     finish();
                     Intent intent = new Intent(MainActivity.this, Login.class);
                     startActivity(intent);
+                }
+                if (items.getItems().get(i).getText() == getString(R.string.my_places)) {
+                    if (application.getLoginLater()) {
+                        NasimDialog dialog = guestUserSignUpDialog(MainActivity.this);
+                        dialog.show();
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, MyPlacesActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });
