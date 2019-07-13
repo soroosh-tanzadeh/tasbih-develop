@@ -33,7 +33,7 @@ public class NasimDialog extends Dialog {
     private AVLoadingIndicatorView avi;
 
     public NasimDialog(@NonNull Context context, NasimDialogTypes dialogType) {
-        super(context, R.style.randoDialogTheme);
+        super(context, R.style.nasimDialogTheme);
         this.dialogType = dialogType;
         this.context = context;
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
