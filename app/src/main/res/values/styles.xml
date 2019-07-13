@@ -15,9 +15,9 @@
 
         <item name="android:fontFamily">@font/font</item>
 
-        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <!--        <item name="colorButtonNormal">@color/colorPrimary</item>
 
-        <item name="colorControlHighlight">#2bc5ff</item>
+                <item name="colorControlHighlight">#2bc5ff</item>-->
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light">
