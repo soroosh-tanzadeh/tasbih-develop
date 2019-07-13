@@ -55,9 +55,13 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import org.neshan.layers.VectorElementLayer;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.events.MapEventsReceiver;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -310,6 +314,59 @@ public class Map extends Fragment implements MapListener, AddEventDialogFragment
         controller.animateTo(myLocationNewOverlay.getMyLocation());
 
         onMarkersClickAction();
+        mapEventReceiver();
+        mapListener();
+    }
+
+    private void mapListener() {
+        map.addMapListener(new org.osmdroid.events.MapListener() {
+            @Override
+            public boolean onScroll(ScrollEvent event) {
+                if (getCurrentFragment() instanceof FilterFragment) {
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    dismissChildFragment(FILTER_FRAGMENT);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onZoom(ZoomEvent event) {
+                if (getCurrentFragment() instanceof FilterFragment) {
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    dismissChildFragment(FILTER_FRAGMENT);
+                }
+                return false;
+            }
+        });
+    }
+
+    private void mapEventReceiver() {
+        MapEventsReceiver receiver = new MapEventsReceiver() {
+            @Override
+            public boolean singleTapConfirmedHelper(GeoPoint p) {
+                Log.v(TAG, "on map click");
+                if (getCurrentFragment() instanceof FilterFragment) {
+                    Log.v(TAG, "current fragment is not this");
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    dismissChildFragment(FILTER_FRAGMENT);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean longPressHelper(GeoPoint p) {
+                Log.v(TAG, "on map long click");
+                if (getCurrentFragment() instanceof FilterFragment) {
+                    Log.v(TAG, "current fragment is not this");
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    dismissChildFragment(FILTER_FRAGMENT);
+                }
+                return false;
+            }
+        };
+
+        MapEventsOverlay overlay = new MapEventsOverlay(getContext(), receiver);
+        map.getOverlays().add(overlay);
     }
 
     private void addOrRemoveNewLocationMarker(boolean remove, Marker marker) {
