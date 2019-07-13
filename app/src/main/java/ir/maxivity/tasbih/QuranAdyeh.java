@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import ir.maxivity.tasbih.calendarTabs.SectionsPagerAdapter;
 import ir.maxivity.tasbih.fragments.AdyehFragment;
 import ir.maxivity.tasbih.fragments.QuranFragment;
-import ir.maxivity.tasbih.tools.HeaderNav;
 
 public class QuranAdyeh extends BaseActivity {
 
@@ -15,8 +14,10 @@ public class QuranAdyeh extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quran_adyeh);
-        HeaderNav hn = new HeaderNav();
-        hn.loadHeadernav(this);
+        /*HeaderNav hn = new HeaderNav();
+        hn.loadHeadernav(this);*/
+        getSupportActionBar().setTitle("قرآن و ادعیه");
+
         ViewPager viewPager = findViewById(R.id.qa_viewerpager);
         TabLayout tabLayout = findViewById(R.id.qa_tablayout);
 
