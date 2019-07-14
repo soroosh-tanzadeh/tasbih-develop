@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +48,6 @@ public class QuranFragment extends Fragment {
         adapter.setOnSurahClickListener(new QuranAdyehAdapter.OnSurahClick() {
             @Override
             public void onClick(int id, String name) {
-                Toast.makeText(getContext(), "id = " + id, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), QuranAdyehTextActivity.class);
                 intent.putExtra("ID", id);
                 intent.putExtra("NAME", name);
