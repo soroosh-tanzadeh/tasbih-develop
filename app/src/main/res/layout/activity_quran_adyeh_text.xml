@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_header_name"
-        android:text="الحمد"
+        android:text=""
         android:gravity="center"
         android:textColor="@color/md_green_600"
         android:fontFamily="@font/neirizi_font"
@@ -41,7 +41,47 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@color/gold">
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/player_seek_bar"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/player_seek_bar"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ic_stop"
+                android:layout_marginRight="16dp"
+                android:id="@+id/stop_btn" />
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_play2"
+                android:layout_marginRight="16dp"
+                android:id="@+id/play_btn" />
+
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ic_pause"
+                android:id="@+id/pause_btn" />
+
+
+        </LinearLayout>
 
 
     </RelativeLayout>
