@@ -26,7 +26,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.MyPlacesActivity"></activity>
+        <activity android:name=".activities.AddReminderActivity"></activity>
+        <activity android:name=".activities.BackgroundsActivity" />
+        <activity android:name=".activities.MyPlacesActivity" />
         <activity android:name=".activities.SelectLanguageActivity" />
         <activity android:name=".activities.FavoritePlacesActivity" />
         <activity android:name=".MessagesActivity" />
@@ -83,6 +85,14 @@
         <activity android:name=".ZekrCounter" />
         <activity android:name=".Qiblah_compass" />
         <activity android:name=".BaseActivity" />
+
+        <receiver android:name=".reminderTools.AlarmReceiver" />
+
+        <receiver android:name=".reminderTools.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
