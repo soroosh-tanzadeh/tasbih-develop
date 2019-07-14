@@ -153,6 +153,15 @@ public class Utilities {
         }
     }
 
+    public static String getJalaliDate(Context context, PersianDate date) {
+        PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
+        String space = " ";
+
+        return calendar.getWeekDayName(date) + space +
+                calendar.formatNumber(date.getDayOfMonth()) + space +
+                calendar.getMonthName(date);
+    }
+
     public static String getTodayJalaliDate(Context context) {
         PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
         PersianDate date = calendar.getToday();
