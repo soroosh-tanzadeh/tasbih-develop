@@ -5,11 +5,12 @@
     android:padding="8dp"
     android:clickable="true"
     android:focusable="true"
+    android:id="@+id/message_wrapper"
     android:background="?attr/selectableItemBackground">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignParentRight="true"
         android:id="@+id/message_icon" />
 
@@ -25,13 +26,5 @@
         android:fontFamily="@font/neirizi_font"
         android:id="@+id/message_text" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/message_icon"
-        android:layout_marginTop="8dp"
-        android:background="@color/gray_300"
-        android:layout_marginRight="64dp"
-        android:layout_marginLeft="64dp" />
 
 </RelativeLayout>
