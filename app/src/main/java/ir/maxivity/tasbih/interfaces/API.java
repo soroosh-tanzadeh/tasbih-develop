@@ -7,6 +7,7 @@ import ir.maxivity.tasbih.models.GetFavoritePlaces;
 import ir.maxivity.tasbih.models.GetMessages;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetQuranText;
+import ir.maxivity.tasbih.models.GetQuranVoice;
 import ir.maxivity.tasbih.models.LoginResponse;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -14,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface API {
 
@@ -56,5 +58,9 @@ public interface API {
     @Multipart
     @POST("new-event.php")
     Call<AddNewEvent> addnewEvent(@Part("data") RequestBody body);
+
+    @Multipart
+    @GET("get-qaudio.php")
+    Call<GetQuranVoice> getQuranVoice(@Query("n") int number);
 
 }
