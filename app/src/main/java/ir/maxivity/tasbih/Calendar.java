@@ -4,6 +4,8 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -18,7 +20,11 @@ import java.util.List;
 import ir.maxivity.tasbih.calendarTabs.EventsList;
 import ir.maxivity.tasbih.calendarTabs.SectionsPagerAdapter;
 import ir.maxivity.tasbih.calendarTabs.Today_tab;
+import ir.maxivity.tasbih.fragments.AddReminderDialogFragment;
 import ir.maxivity.tasbih.models.PersianDateSerializable;
+import ir.maxivity.tasbih.reminderTools.AlarmReceiver;
+import ir.maxivity.tasbih.reminderTools.Reminder;
+import ir.maxivity.tasbih.reminderTools.ReminderDatabase;
 import ir.mirrajabi.persiancalendar.PersianCalendarView;
 import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
 import ir.mirrajabi.persiancalendar.core.interfaces.OnDayClickedListener;
@@ -26,11 +32,14 @@ import ir.mirrajabi.persiancalendar.core.models.CalendarEvent;
 import ir.mirrajabi.persiancalendar.core.models.CivilDate;
 import ir.mirrajabi.persiancalendar.core.models.PersianDate;
 import ir.mirrajabi.persiancalendar.helpers.DateConverter;
+import tools.Utilities;
 
 
-public class Calendar extends BaseActivity {
+public class Calendar extends BaseActivity implements AddReminderDialogFragment.OnSubmitClick {
 
     private static final String TAG = "FUCK CALENDAR";
+    private static final String DIALOG_TAG = "ADD REMINDER";
+    public static final String EXTRA_REMINDER_ID = "reminder_id";
     PersianCalendarHandler calendar;
     private ViewPager viewPager;
     private EventsList events_frag;
@@ -87,6 +96,10 @@ public class Calendar extends BaseActivity {
                 CivilDate date = DateConverter.persianToCivil(currentSelectedDate);
                 Date d = new GregorianCalendar(date.getYear(), date.getMonth() - 1, date.getDayOfMonth()).getTime();
 
+                DialogFragment dialogFragment = AddReminderDialogFragment.newInstance(Utilities.
+                        getJalaliDate(Calendar.this, currentSelectedDate));
+                dialogFragment.show(getSupportFragmentManager(), DIALOG_TAG);
+
                 Log.v(TAG, d.getTime() + "");
 
             }
@@ -125,5 +138,45 @@ public class Calendar extends BaseActivity {
         overridePendingTransition(0, R.anim.slide_to_right);
     }
 
+    @Override
+    public void onAddReminderClick(String message) {
+        setReminder(message);
+        calendar.addLocalEvent(new CalendarEvent(currentSelectedDate, message, false));
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
+        if (prev != null) {
+            DialogFragment df = (DialogFragment) prev;
+            df.dismiss();
+        }
+
+    }
+
+    public void setReminder(String message) {
+        ReminderDatabase rb = new ReminderDatabase(this);
+        CivilDate civilDate = DateConverter.persianToCivil(currentSelectedDate);
+
+
+        String setDate = civilDate.getDayOfMonth()
+                + "/" + (civilDate.getMonth() - 1)
+                + "/" + civilDate.getYear();
+
+
+        int ID = rb.addReminder(new Reminder(message, setDate, "08:00"));
+
+        java.util.Calendar mCalendar = java.util.Calendar.getInstance();
+        long milMinute = 60000L;
+
+        mCalendar.set(java.util.Calendar.MONTH, civilDate.getMonth());
+        mCalendar.set(java.util.Calendar.YEAR, civilDate.getYear());
+        mCalendar.set(java.util.Calendar.DAY_OF_MONTH, civilDate.getDayOfMonth() - 1);
+        mCalendar.set(java.util.Calendar.HOUR_OF_DAY, 8);
+        mCalendar.set(java.util.Calendar.MINUTE, 0);
+        mCalendar.set(java.util.Calendar.SECOND, 0);
+
+        Log.v("ALARM", mCalendar.getTime() + "");
+        AlarmReceiver alarmReceiver = new AlarmReceiver();
+        alarmReceiver.setRepeatAlarm(this, mCalendar, ID, 10 * milMinute);
+
+        showShortToast("یاد آور با موفقیت ذخیره شد");
+    }
 }
 
