@@ -7,19 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import ir.maxivity.tasbih.R;
 import ir.maxivity.tasbih.models.GetMessages;
-import tools.Utilities;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder> {
 
     private Context context;
     private List<GetMessages.Message> messages;
     private LayoutInflater inflater;
+    private OnItemClickListener listener;
 
     public MessagesAdapter(Context context, List<GetMessages.Message> messages) {
         this.context = context;
@@ -52,18 +55,36 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
         TextView name;
         ImageView image;
+        RelativeLayout wrapper;
 
         public MessagesViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.message_text);
             image = itemView.findViewById(R.id.message_icon);
-
+            wrapper = itemView.findViewById(R.id.message_wrapper);
         }
 
-        public void setData(GetMessages.Message message) {
+        public void setData(final GetMessages.Message message) {
             name.setText(message.name);
-            Utilities.fetchSvg(context, message.url, image);
+            Picasso.get().load(message.url).into(image);
+
+            wrapper.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        listener.onItemClick(message);
+                    }
+                }
+            });
         }
 
+    }
+
+    public void setCLickListener(OnItemClickListener itemClickListener) {
+        this.listener = itemClickListener;
+    }
+
+    interface OnItemClickListener {
+        void onItemClick(GetMessages.Message message);
     }
 }
