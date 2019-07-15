@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import ir.maxivity.tasbih.R;
@@ -26,6 +27,8 @@ public class AddReminderDialogFragment extends DialogFragment {
     private Button submit;
     private EditText reminderText;
     private OnSubmitClick listener;
+    private TimePicker timePicker;
+    private EditText timePickerEdtTxt;
 
 
     public static AddReminderDialogFragment newInstance(String time) {
@@ -55,14 +58,31 @@ public class AddReminderDialogFragment extends DialogFragment {
         textView.setText(time);
         submit = root.findViewById(R.id.submit_reminder);
         reminderText = root.findViewById(R.id.reminder_text);
+        timePicker = root.findViewById(R.id.time_picker_spinner);
+        timePickerEdtTxt = root.findViewById(R.id.time_picker_edt);
+        timePicker.setIs24HourView(true);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            timePickerEdtTxt.setVisibility(View.GONE);
+            timePicker.setVisibility(View.VISIBLE);
+        } else {
+            timePickerEdtTxt.setVisibility(View.VISIBLE);
+            timePicker.setVisibility(View.GONE);
+        }
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (reminderText.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), getString(R.string.reminder_text_validation), Toast.LENGTH_SHORT).show();
-                } else
-                    listener.onAddReminderClick(reminderText.getText().toString());
+                } else {
+                    String time = "";
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        time = timePicker.getHour() + ":" + timePicker.getMinute();
+                    } else {
+                        time = timePickerEdtTxt.getText().toString();
+                    }
+                    listener.onAddReminderClick(reminderText.getText().toString(), time);
+                }
             }
         });
 
@@ -90,6 +110,6 @@ public class AddReminderDialogFragment extends DialogFragment {
     }
 
     public interface OnSubmitClick {
-        void onAddReminderClick(String message);
+        void onAddReminderClick(String message, String time);
     }
 }
