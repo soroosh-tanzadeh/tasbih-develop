@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="300dp"
-        android:layout_height="250dp"
+        android:layout_height="350dp"
         android:background="@drawable/rounded_event_background"
         android:orientation="vertical">
 
@@ -55,6 +55,36 @@
             app:backgroundTint="@color/gray_400"
             android:id="@+id/reminder_text"
             android:textColor="@color/gray_700" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="انتخاب زمان:"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp" />
+
+
+            <TimePicker
+                style="@style/myTimePicker"
+                android:theme="@style/myTimePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:timePickerMode="spinner"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="8dp"
+                android:id="@+id/time_picker_spinner"
+                android:numbersTextColor="@color/gray_500">
+
+            </TimePicker>
+
+        </RelativeLayout>
 
 
         <Button
