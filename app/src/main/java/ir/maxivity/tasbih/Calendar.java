@@ -139,8 +139,8 @@ public class Calendar extends BaseActivity implements AddReminderDialogFragment.
     }
 
     @Override
-    public void onAddReminderClick(String message) {
-        setReminder(message);
+    public void onAddReminderClick(String message, String time) {
+        setReminder(message, time);
         calendar.addLocalEvent(new CalendarEvent(currentSelectedDate, message, false));
         Fragment prev = getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
         if (prev != null) {
@@ -150,26 +150,39 @@ public class Calendar extends BaseActivity implements AddReminderDialogFragment.
 
     }
 
-    public void setReminder(String message) {
+    public void setReminder(String message, String time) {
         ReminderDatabase rb = new ReminderDatabase(this);
         CivilDate civilDate = DateConverter.persianToCivil(currentSelectedDate);
 
 
         String setDate = civilDate.getDayOfMonth()
-                + "/" + (civilDate.getMonth() - 1)
+                + "/" + (civilDate.getMonth())
                 + "/" + civilDate.getYear();
+        Log.v("ALARM", setDate);
+        int hour = 8;
+        int min = 0;
+        try {
+            hour = Integer.parseInt(time.split(":")[0]);
+            min = Integer.parseInt(time.split(":")[1]);
+
+            if (min < 10) {
+                time = hour + ":" + "0" + min;
+            }
+        } catch (Exception e) {
+            time = "8:00";
+        }
 
 
-        int ID = rb.addReminder(new Reminder(message, setDate, "08:00"));
+        int ID = rb.addReminder(new Reminder(message, setDate, time));
 
         java.util.Calendar mCalendar = java.util.Calendar.getInstance();
         long milMinute = 60000L;
 
-        mCalendar.set(java.util.Calendar.MONTH, civilDate.getMonth());
+        mCalendar.set(java.util.Calendar.MONTH, civilDate.getMonth() - 1);
         mCalendar.set(java.util.Calendar.YEAR, civilDate.getYear());
-        mCalendar.set(java.util.Calendar.DAY_OF_MONTH, civilDate.getDayOfMonth() - 1);
-        mCalendar.set(java.util.Calendar.HOUR_OF_DAY, 8);
-        mCalendar.set(java.util.Calendar.MINUTE, 0);
+        mCalendar.set(java.util.Calendar.DAY_OF_MONTH, civilDate.getDayOfMonth());
+        mCalendar.set(java.util.Calendar.HOUR_OF_DAY, hour);
+        mCalendar.set(java.util.Calendar.MINUTE, min);
         mCalendar.set(java.util.Calendar.SECOND, 0);
 
         Log.v("ALARM", mCalendar.getTime() + "");
