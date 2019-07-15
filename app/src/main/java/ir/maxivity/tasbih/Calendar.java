@@ -155,9 +155,9 @@ public class Calendar extends BaseActivity implements AddReminderDialogFragment.
         CivilDate civilDate = DateConverter.persianToCivil(currentSelectedDate);
 
 
-        String setDate = civilDate.getDayOfMonth()
-                + "/" + (civilDate.getMonth())
-                + "/" + civilDate.getYear();
+        String setDate = currentSelectedDate.getDayOfMonth()
+                + "/" + (currentSelectedDate.getMonth())
+                + "/" + currentSelectedDate.getYear();
         Log.v("ALARM", setDate);
         int hour = 8;
         int min = 0;
