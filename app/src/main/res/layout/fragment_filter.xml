@@ -20,7 +20,8 @@
 
             <RelativeLayout
                 android:layout_width="@dimen/recent_filter_width"
-                android:layout_height="@dimen/recent_filter_height">
+                android:layout_height="@dimen/recent_filter_height"
+                android:id="@+id/restaurant_wrapper">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -41,7 +42,8 @@
 
             <RelativeLayout
                 android:layout_width="@dimen/recent_filter_width"
-                android:layout_height="@dimen/recent_filter_height">
+                android:layout_height="@dimen/recent_filter_height"
+                android:id="@+id/hotel_wrapper">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -64,7 +66,8 @@
 
             <RelativeLayout
                 android:layout_width="@dimen/recent_filter_width"
-                android:layout_height="@dimen/recent_filter_height">
+                android:layout_height="@dimen/recent_filter_height"
+                android:id="@+id/coffee_shop_wrapper">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -85,7 +88,8 @@
 
             <RelativeLayout
                 android:layout_width="@dimen/recent_filter_width"
-                android:layout_height="@dimen/recent_filter_height">
+                android:layout_height="@dimen/recent_filter_height"
+                android:id="@+id/mosque_wrapper">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -106,7 +110,8 @@
 
             <RelativeLayout
                 android:layout_width="@dimen/recent_filter_width"
-                android:layout_height="@dimen/recent_filter_height">
+                android:layout_height="@dimen/recent_filter_height"
+                android:id="@+id/hospital_wrapper">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -163,6 +168,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:gravity="center"
+                    android:id="@+id/university_wrapper"
                     android:layout_weight="1">
 
                     <TextView
@@ -186,6 +192,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:gravity="center"
+                    android:id="@+id/residency_wrapper"
                     android:layout_weight="1">
 
                     <TextView
@@ -216,6 +223,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:gravity="center"
+                    android:id="@+id/shop_wrapper"
                     android:layout_weight="1">
 
                     <TextView
@@ -239,6 +247,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:gravity="center"
+                    android:id="@+id/dentistry_wrapper"
                     android:layout_weight="1">
 
                     <TextView
@@ -268,8 +277,10 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="60dp"
-                    android:gravity="center"
-                    android:layout_weight="1">
+                    android:layout_alignParentTop="true"
+                    android:layout_weight="1"
+                    android:id="@+id/gym_wrapper"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/gym_txt"
@@ -283,8 +294,8 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/gym_txt"
                         android:layout_marginRight="39dp"
+                        android:layout_toLeftOf="@id/gym_txt"
                         android:background="@drawable/gym" />
 
                 </RelativeLayout>
@@ -292,6 +303,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:gravity="center"
+                    android:id="@+id/other_wrapper"
                     android:layout_weight="1">
 
                     <TextView
