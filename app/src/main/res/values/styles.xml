@@ -84,7 +84,10 @@
 
     </style>
 
-
+    <style name="myTimePicker" parent="Theme.AppCompat.Light">
+        <item name="android:textColorPrimary">#706C6C</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+    </style>
     <style name="CalendarTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
