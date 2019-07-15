@@ -143,7 +143,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
     private boolean goToMyLocationAtFirst = false;
     private Marker newLocationMarker;
     private ArrayList<Marker> mapMarkers;
-    private static final double MAP_ZOOM = 16.5;
+    private static final double MAP_ZOOM = 17;
 
     //VIEWS///
     FloatingActionButton actionButton, addLocationButton;
@@ -175,15 +175,12 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
         addLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addLocationButton.hide();
-                addLocationMarker.setVisibility(View.VISIBLE);
-                searchBar.setVisibility(View.GONE);
-                if (getCurrentFragment() instanceof FilterFragment) {
-                    dismissChildFragment(FILTER_FRAGMENT);
+                final MainActivity main = (MainActivity) getActivity();
+                if (main.application.getLoginLater()) {
+                    Toast.makeText(getContext(), "شما باید در برنامه ثبت نام کنید", Toast.LENGTH_SHORT).show();
+                } else {
+                    startAddingLocation();
                 }
-                loadChildFragment(new AddLocationFragment(), ADD_LOCATION_TAG, false);
-
-                onAddLocationProgress = true;
             }
         });
 
@@ -192,6 +189,17 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
         return view;
     }
 
+    private void startAddingLocation() {
+        addLocationButton.hide();
+        addLocationMarker.setVisibility(View.VISIBLE);
+        searchBar.setVisibility(View.GONE);
+        if (getCurrentFragment() instanceof FilterFragment) {
+            dismissChildFragment(FILTER_FRAGMENT);
+        }
+        loadChildFragment(new AddLocationFragment(), ADD_LOCATION_TAG, false);
+
+        onAddLocationProgress = true;
+    }
     public boolean onBackPressed() {
         if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
