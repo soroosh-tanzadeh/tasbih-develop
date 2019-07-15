@@ -30,6 +30,7 @@ import java.util.List;
 import co.ronash.pushe.Pushe;
 import ir.maxivity.tasbih.activities.FavoritePlacesActivity;
 import ir.maxivity.tasbih.activities.MyPlacesActivity;
+import ir.maxivity.tasbih.activities.ReminderActivity;
 import ir.maxivity.tasbih.adapters.DrawerListAdapter;
 import ir.maxivity.tasbih.fragments.mapFragments.BaseFragment;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
@@ -228,6 +229,10 @@ public class MainActivity extends BaseActivity {
                         Intent intent = new Intent(MainActivity.this, MyPlacesActivity.class);
                         startActivity(intent);
                     }
+                }
+                if (items.getItems().get(i).getText() == getString(R.string.reminder)) {
+                    Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
+                    startActivity(intent);
                 }
             }
         });
