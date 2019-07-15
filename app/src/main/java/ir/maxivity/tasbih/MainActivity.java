@@ -25,10 +25,13 @@ import android.widget.TextView;
 
 import org.osmdroid.config.Configuration;
 
+import java.util.List;
+
 import co.ronash.pushe.Pushe;
 import ir.maxivity.tasbih.activities.FavoritePlacesActivity;
 import ir.maxivity.tasbih.activities.MyPlacesActivity;
 import ir.maxivity.tasbih.adapters.DrawerListAdapter;
+import ir.maxivity.tasbih.fragments.mapFragments.BaseFragment;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
 import ir.maxivity.tasbih.tools.CreateDrawerItem;
 import ir.maxivity.tasbih.tools.CustomGestureDetector;
@@ -255,10 +258,26 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-            drawerLayout.closeDrawer(Gravity.RIGHT);
-        } else
-            doubleBackPress();
+        List fragmentList = getSupportFragmentManager().getFragments();
+
+        boolean handled = false;
+        for (int i = 0; i < fragmentList.size(); i++) {
+            if (fragmentList.get(i) instanceof BaseFragment) {
+                handled = ((BaseFragment) fragmentList.get(i)).onBackPressed();
+
+                if (handled) {
+                    break;
+                }
+            }
+        }
+        if (!handled) {
+            if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+            } else
+                doubleBackPress();
+
+        }
+
 
     }
 

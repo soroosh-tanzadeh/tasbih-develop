@@ -75,6 +75,7 @@ import java.util.List;
 import ir.maxivity.tasbih.fragments.mapFragments.AddEventDialogFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.AddLocationFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.AddLocationInfoFragment;
+import ir.maxivity.tasbih.fragments.mapFragments.BaseFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.FilterFragment;
 import ir.maxivity.tasbih.fragments.mapFragments.LocationInfoFragment;
 import ir.maxivity.tasbih.interfaces.MapListener;
@@ -93,7 +94,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tools.Utilities;
 
-public class Map extends Fragment implements MapListener, AddEventDialogFragment.OnSubmitButtonClick {
+public class Map extends BaseFragment implements MapListener, AddEventDialogFragment.OnSubmitButtonClick {
     private static final String TAG = "FUCK MAP";
 
     // used to track request permissions
@@ -191,6 +192,14 @@ public class Map extends Fragment implements MapListener, AddEventDialogFragment
         return view;
     }
 
+    public boolean onBackPressed() {
+        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private void bindViews(View view) {
         map = view.findViewById(R.id.map);
@@ -317,6 +326,7 @@ public class Map extends Fragment implements MapListener, AddEventDialogFragment
         mapEventReceiver();
         mapListener();
     }
+
 
     private void mapListener() {
         map.addMapListener(new org.osmdroid.events.MapListener() {
