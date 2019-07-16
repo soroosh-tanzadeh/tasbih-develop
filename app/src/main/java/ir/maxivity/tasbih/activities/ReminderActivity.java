@@ -43,14 +43,18 @@ public class ReminderActivity extends BaseActivity {
             adapter = new ReminderAdapter(this, reminders);
         else
             emptyList.setVisibility(View.VISIBLE);
-        recyclerView.setAdapter(adapter);
 
-        adapter.setOnDeleteListener(new ReminderAdapter.OnDeleteClick() {
-            @Override
-            public void onDelete(String id) {
-                deleteReminder(Integer.parseInt(id));
-            }
-        });
+        try {
+            recyclerView.setAdapter(adapter);
+            adapter.setOnDeleteListener(new ReminderAdapter.OnDeleteClick() {
+                @Override
+                public void onDelete(String id) {
+                    deleteReminder(Integer.parseInt(id));
+                }
+            });
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
 

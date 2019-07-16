@@ -178,6 +178,7 @@
     <string name="myPlace_empty_list">شما هیچ مکانی را به نقشه اضافه نکردید</string>
     <string name="reminder_text_validation">لطفا متن یادآور را وارد کنید</string>
     <string name="reminder">یادآورها</string>
+    <string name="reminder_empty_list">شما هیچ یادآوری ثبت نکردید.</string>
 
 
     <string-array name="category_list">
