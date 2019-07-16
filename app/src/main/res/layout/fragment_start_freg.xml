@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
                 android:background="@drawable/qudsbg">
@@ -108,7 +108,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:srcCompat="@drawable/ic_event_note_black_24dp" />
 
-            </androidx.constraintlayout.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:id="@+id/imageView7"
@@ -145,7 +145,7 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:text="نمایش همه"
-                        android:textAlignment="textEnd"
+                        android:gravity="left|center"
                         android:textColor="#3F51B5" />
 
                     <Button
@@ -155,7 +155,7 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:text="تخفیف‌ها"
-                        android:textAlignment="textStart"
+                        android:gravity="right|center"
                         android:textColor="#000" />
                 </LinearLayout>
 

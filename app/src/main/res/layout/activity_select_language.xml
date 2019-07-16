@@ -36,7 +36,7 @@
 
     </RelativeLayout>
 
-    <android.support.design.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
@@ -76,9 +76,9 @@
         </RelativeLayout>
 
 
-    </android.support.design.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <android.support.design.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
@@ -118,7 +118,7 @@
         </RelativeLayout>
 
 
-    </android.support.design.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
 
 
     <Button

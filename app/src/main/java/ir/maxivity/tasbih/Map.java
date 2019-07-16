@@ -397,7 +397,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
 
     }
 
-    private Marker createMarker(GeoPoint position, int drawable, String id) {
+    private Marker createMarker(GeoPoint position, int drawable, String id) throws NullPointerException {
         Marker marker = new Marker(map);
         marker.setPosition(position);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
@@ -623,12 +623,17 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                                 for (GetPlaces.response res : response.body().data) {
                                     Double lat = Double.parseDouble(res.lat);
                                     Double lon = Double.parseDouble(res.lon);
-                                    Marker marker = createMarker(new GeoPoint(lat, lon),
-                                            Utilities.getMarkerOnType(Utilities.getLocationType(Integer.parseInt(res.type))),
-                                            res.id);
-                                    mapMarkers.add(marker);
-                                    addOrRemoveNewLocationMarker(false, marker);
-                                    onMarkersClickAction();
+                                    try {
+                                        Marker marker = createMarker(new GeoPoint(lat, lon),
+                                                Utilities.getMarkerOnType(Utilities.getLocationType(Integer.parseInt(res.type))),
+                                                res.id);
+                                        mapMarkers.add(marker);
+                                        addOrRemoveNewLocationMarker(false, marker);
+                                        onMarkersClickAction();
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
                                 }
                             }
                         }
@@ -705,13 +710,17 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
     @Override
     public void onAddLocationSubmit() {
         loadChildFragment(new AddLocationInfoFragment(), ADD_LOCATION_INFO_TAG, true);
+        try {
+            newLocationMarker = createMarker(new GeoPoint(map.getMapCenter().getLatitude()
+                            , map.getMapCenter().getLongitude())
+                    , R.drawable.marker2, "-1");
+            addLocationMarker.setVisibility(View.GONE);
 
-        newLocationMarker = createMarker(new GeoPoint(map.getMapCenter().getLatitude()
-                        , map.getMapCenter().getLongitude())
-                , R.drawable.marker2, "-1");
-        addLocationMarker.setVisibility(View.GONE);
+            addOrRemoveNewLocationMarker(false, newLocationMarker);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
-        addOrRemoveNewLocationMarker(false, newLocationMarker);
     }
 
     private void addNewLocationRequest(HashMap<String, String> fields) throws NullPointerException {

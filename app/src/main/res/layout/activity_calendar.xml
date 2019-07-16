@@ -26,7 +26,7 @@
             app:pcv_fontSize="20sp"
             app:pcv_headersFontSize="14sp" />
 
-        <android.support.design.widget.TabLayout
+        <com.google.android.material.tabs.TabLayout
 
             android:id="@+id/calendar_tabs"
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             app:tabTextColor="#FFF"
             android:theme="@style/AppTheme">
 
-        </android.support.design.widget.TabLayout>
+        </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -45,13 +45,13 @@
         android:layout_below="@id/date_calendar_wrapper"
         android:orientation="vertical">
 
-        <androidx.core.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/calendar_viewer"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
