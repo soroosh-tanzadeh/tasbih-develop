@@ -23,7 +23,7 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/ic_heart"
+            android:background="@drawable/no_reminder"
             android:layout_gravity="center" />
 
         <TextView
@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:text="@string/reminder_empty_list"
             android:layout_gravity="center"
+            android:textColor="@color/gray_400"
             android:layout_marginTop="8dp" />
     </LinearLayout>
 
