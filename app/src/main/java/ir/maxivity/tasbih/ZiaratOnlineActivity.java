@@ -1,9 +1,8 @@
 package ir.maxivity.tasbih;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-public class ZiaratOnlineActivity extends AppCompatActivity {
+public class ZiaratOnlineActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

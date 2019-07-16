@@ -2,15 +2,17 @@ package ir.maxivity.tasbih;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.annotation.Nullable;
 
-public class Start_freg extends Fragment {
+import ir.maxivity.tasbih.fragments.mapFragments.BaseFragment;
+
+
+public class Start_freg extends BaseFragment {
 
 
     private View the_view;

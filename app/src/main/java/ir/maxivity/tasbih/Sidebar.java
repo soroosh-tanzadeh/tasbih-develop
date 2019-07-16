@@ -3,11 +3,10 @@ package ir.maxivity.tasbih;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class Sidebar extends AppCompatActivity {
+public class Sidebar extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

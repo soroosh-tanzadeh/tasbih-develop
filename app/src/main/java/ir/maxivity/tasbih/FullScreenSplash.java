@@ -2,7 +2,6 @@ package ir.maxivity.tasbih;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import java.io.IOException;
 
@@ -14,7 +13,7 @@ import ir.maxivity.tasbih.dataAccess.LocalDB;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullScreenSplash extends AppCompatActivity {
+public class FullScreenSplash extends BaseActivity {
     private static int oppend = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

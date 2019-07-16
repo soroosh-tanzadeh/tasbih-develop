@@ -10,8 +10,9 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.WakefulBroadcastReceiver;
+
+import androidx.core.app.NotificationCompat;
+import androidx.legacy.content.WakefulBroadcastReceiver;
 
 import java.util.Calendar;
 

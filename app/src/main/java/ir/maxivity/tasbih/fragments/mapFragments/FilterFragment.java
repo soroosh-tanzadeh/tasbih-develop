@@ -2,10 +2,11 @@ package ir.maxivity.tasbih.fragments.mapFragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import ir.maxivity.tasbih.R;
 
@@ -24,7 +25,9 @@ public class FilterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_filter, container, false);
+        View root = inflater.inflate(R.layout.fragment_filter, container, false);
+        return root;
     }
+
 
 }

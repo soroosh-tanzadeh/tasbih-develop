@@ -2,9 +2,10 @@ package ir.maxivity.tasbih.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.card.MaterialCardView;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.android.material.card.MaterialCardView;
 
 import ir.maxivity.tasbih.BaseActivity;
 import ir.maxivity.tasbih.Login;

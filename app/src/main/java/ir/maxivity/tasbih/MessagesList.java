@@ -1,11 +1,10 @@
 package ir.maxivity.tasbih;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-public class MessagesList extends AppCompatActivity {
+public class MessagesList extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "167083214898",
+    "firebase_url": "https://tasbih-53750.firebaseio.com",
+    "project_id": "tasbih-53750",
+    "storage_bucket": "tasbih-53750.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167083214898:android:c0f2738628361a5a",
+        "android_client_info": {
+          "package_name": "ir.maxivity.tasbih"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167083214898-rhaf73h3rb3b7q24sngkltabtrdqh362.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ir.maxivity.tasbih",
+            "certificate_hash": "e9d3600f7181f033b7639f555294a110548ace2d"
+          }
+        },
+        {
+          "client_id": "167083214898-mhb5b7geq92lpcs08qrg0e7ur49egac9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvRzqr-FRW_bnOn8JSIhtyfjpIcD7UaQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167083214898-mhb5b7geq92lpcs08qrg0e7ur49egac9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

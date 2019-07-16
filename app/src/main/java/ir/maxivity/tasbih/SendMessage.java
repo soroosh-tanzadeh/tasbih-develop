@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -15,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class SendMessage extends AppCompatActivity {
+public class SendMessage extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -10,6 +10,7 @@
     <color name="black_overlay">#66000000</color>
     <color name="black">#000</color>
 
+    <color name="gold">#bb9458</color>
 
     <!-- GRAY -->
     <color name="gray_900">#212121</color>

@@ -76,13 +76,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
                 android:timePickerMode="spinner"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="8dp"
                 android:id="@+id/time_picker_spinner"
-                android:numbersTextColor="@color/gray_500">
+                android:visibility="visible" />
 
-            </TimePicker>
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:background="@drawable/background_outline_round"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:id="@+id/time_picker_edt"
+                android:hint="00:00"
+                android:gravity="center"
+                android:visibility="gone" />
+
 
         </RelativeLayout>
 

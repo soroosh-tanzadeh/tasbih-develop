@@ -59,7 +59,7 @@ public interface API {
     @POST("new-event.php")
     Call<AddNewEvent> addnewEvent(@Part("data") RequestBody body);
 
-    @Multipart
+
     @GET("get-qaudio.php")
     Call<GetQuranVoice> getQuranVoice(@Query("n") int number);
 

@@ -1,21 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-        android:width="481dp"
-        android:height="481dp"
-        android:viewportWidth="481.3"
-        android:viewportHeight="481.3">
+    android:width="346.12dp"
+    android:height="346.12dp"
+    android:viewportWidth="346.12"
+    android:viewportHeight="346.12">
+
     <path
-        android:pathData="M240.6,240.6m-229.6,0a229.6,229.6 0,1 1,459.2 0a229.6,229.6 0,1 1,-459.2 0"
-        android:strokeColor="#2C2B2A"
-        android:fillColor="#00000000"
-        android:strokeWidth="22"/>
+        android:fillColor="#2b2b2b"
+        android:pathData="M258.67,155a7.24,7.24,0,0,0-7.36,7.36V262.92H199.14V221.86a7.26,7.26,0,0,0-7.09-7.22H154.33a7.43,7.43,0,0,0-7.49,7.22v41.06h-52V165.7a7.23,7.23,0,0,0-14.45,0V270.28a7.15,7.15,0,0,0,7.09,7.11h66.88a7.15,7.15,0,0,0,7.09-7.11V229.22H184.7v41.06a7.21,7.21,0,0,0,7.35,7.11h66.62a7.15,7.15,0,0,0,7.09-7.11V162.36A7.19,7.19,0,0,0,258.67,155Z" />
     <path
-        android:pathData="M116.4,308.4h192.7c6.6,0 12,-5.4 12,-12V184.9c0,-6.6 -5.4,-12 -12,-12H116.4c-6.6,0 -12,5.4 -12,12v111.5C104.4,303 109.8,308.4 116.4,308.4z"
-        android:strokeColor="#2B2B2B"
-        android:fillColor="#00000000"
-        android:strokeWidth="22"/>
+        android:fillColor="#2b2b2b"
+        android:pathData="M298.66,160.73l-58.05-58.3V62.68a7.35,7.35,0,0,0-7.49-7.34A7.19,7.19,0,0,0,226,62.68V87.85L178.14,39.68a7,7,0,0,0-4.95-2.29A7.26,7.26,0,0,0,168,39.68L47.72,159.93c-2.88,2.88-3.07,7.51,0,10.16,2.68,3.08,7.28,2.88,10.17,0l115.3-115,115,116.12a7.14,7.14,0,0,0,5.22,1.88,8.11,8.11,0,0,0,5.21-1.88A7.59,7.59,0,0,0,298.66,160.73Z" />
     <path
-        android:pathData="M331.7,276.9c14.8,6.1 29.6,12.2 44.5,18.4c0.2,-38.8 0.5,-77.6 0.7,-116.5c-15.3,8.2 -30.6,16.5 -45.9,24.7C331.2,227.9 331.5,252.4 331.7,276.9z"
-        android:strokeColor="#2C2B2A"
-        android:fillColor="#00000000"
-        android:strokeWidth="22"/>
+        android:strokeColor="#2b2b2b"
+        android:strokeWidth="2"
+        android:strokeMiterLimit="10"
+        android:pathData="M 173.06 1 C 268.086114056 1 345.12 78.0338859441 345.12 173.06 C 345.12 268.086114056 268.086114056 345.12 173.06 345.12 C 78.0338859441 345.12 1 268.086114056 1 173.06 C 1 78.0338859441 78.0338859441 1 173.06 1 Z" />
 </vector>

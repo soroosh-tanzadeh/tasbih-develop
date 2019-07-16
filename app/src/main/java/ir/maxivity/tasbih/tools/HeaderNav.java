@@ -1,10 +1,11 @@
 package ir.maxivity.tasbih.tools;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import ir.maxivity.tasbih.BuildConfig;
 import ir.maxivity.tasbih.R;

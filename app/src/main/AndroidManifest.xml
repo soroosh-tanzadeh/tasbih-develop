@@ -26,7 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.AddReminderActivity"></activity>
+        <activity android:name=".activities.ReminderActivity" />
         <activity android:name=".activities.BackgroundsActivity" />
         <activity android:name=".activities.MyPlacesActivity" />
         <activity android:name=".activities.SelectLanguageActivity" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -42,43 +43,36 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/gold">
+        android:background="@color/gray_300">
 
-        <android.support.v7.widget.AppCompatSeekBar
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/player_seek_bar"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
-
-            />
+            android:layout_height="1dp"
+            android:background="@color/gold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/player_seek_bar"
-            android:orientation="horizontal"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
             android:gravity="center">
 
-            <ImageButton
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/player_seek_bar"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:thumb="@drawable/custom_thumb"
+
+                />
+
+            <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/ic_stop"
-                android:layout_marginRight="16dp"
-                android:id="@+id/stop_btn" />
-
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_play2"
-                android:layout_marginRight="16dp"
+                app:srcCompat="@drawable/ic_play2"
                 android:id="@+id/play_btn" />
-
-            <ImageButton
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/ic_pause"
-                android:id="@+id/pause_btn" />
 
 
         </LinearLayout>

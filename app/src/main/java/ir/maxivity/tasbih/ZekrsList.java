@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,7 +24,7 @@ import java.io.InputStreamReader;
 
 import ir.maxivity.tasbih.tools.HeaderNav;
 
-public class ZekrsList extends AppCompatActivity {
+public class ZekrsList extends BaseActivity {
 
     LinearLayout zekrs_list_layout;
 

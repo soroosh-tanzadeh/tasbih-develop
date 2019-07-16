@@ -1,12 +1,12 @@
 package ir.maxivity.tasbih;
 
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import ir.maxivity.tasbih.dataAccess.ZekrData;
 import ir.maxivity.tasbih.tools.HeaderNav;
 import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
 
-public class ZekrCounter extends AppCompatActivity {
+public class ZekrCounter extends BaseActivity {
 
     int zekr_num = 0;
     String zekr_code;
