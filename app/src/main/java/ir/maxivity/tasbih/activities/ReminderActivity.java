@@ -1,6 +1,8 @@
 package ir.maxivity.tasbih.activities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +24,7 @@ public class ReminderActivity extends BaseActivity {
     List<Reminder> reminders = new ArrayList<>();
     ReminderAdapter adapter;
     AlarmReceiver alarmReceiver;
+    LinearLayout emptyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +35,14 @@ public class ReminderActivity extends BaseActivity {
         recyclerView = findViewById(R.id.reminder_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         reminders = reminderDatabase.getAllReminders();
+        emptyList = findViewById(R.id.empty_list);
 
         alarmReceiver = new AlarmReceiver();
 
-        adapter = new ReminderAdapter(this, reminders);
+        if (reminders.size() > 0)
+            adapter = new ReminderAdapter(this, reminders);
+        else
+            emptyList.setVisibility(View.VISIBLE);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnDeleteListener(new ReminderAdapter.OnDeleteClick() {
@@ -55,6 +62,10 @@ public class ReminderActivity extends BaseActivity {
         //adapter.removeItem(reminder);
 
         adapter.updateList(reminderDatabase.getAllReminders());
+
+        if (reminderDatabase.getAllReminders().size() == 0) {
+            emptyList.setVisibility(View.VISIBLE);
+        }
 
         alarmReceiver.cancelAlarm(this, id);
     }
