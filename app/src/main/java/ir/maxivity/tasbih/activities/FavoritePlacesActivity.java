@@ -2,7 +2,7 @@ package ir.maxivity.tasbih.activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +27,7 @@ public class FavoritePlacesActivity extends BaseActivity {
     private RecyclerView favoriteList;
     private ArrayList<GetPlaces.response> places = new ArrayList<>();
     private FavoritePlaceAdapter adapter;
-    private TextView empty;
+    private LinearLayout empty;
     NasimDialog dialog;
 
     @Override
@@ -66,10 +66,12 @@ public class FavoritePlacesActivity extends BaseActivity {
                         for (GetFavoritePlaces.FavoriteResponse res : response.body().data) {
                             getPlacesById(res.place_id);
                         }
-                        if (places.size() > 0) {
+                        if (response.body().data.size() > 0) {
                             empty.setVisibility(View.GONE);
+                        } else {
+                            empty.setVisibility(View.VISIBLE);
+                            dialog.dismiss();
                         }
-                        dialog.dismiss();
                     } else {
                         empty.setVisibility(View.VISIBLE);
                         dialog.dismiss();

@@ -13,14 +13,32 @@
         android:layout_margin="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_centerInParent="true"
+        android:orientation="vertical"
         android:id="@+id/empty_list"
-        android:text="@string/favorite_empty_list"
-        android:textColor="@color/gray_400"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_remove_bookmark" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorite_empty_list"
+            android:textColor="@color/gray_400"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp" />
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>
