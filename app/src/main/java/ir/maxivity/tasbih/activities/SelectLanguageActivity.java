@@ -67,6 +67,7 @@ public class SelectLanguageActivity extends BaseActivity {
                 if (persianSelected || arabicSelected) {
                     Intent intent = new Intent(SelectLanguageActivity.this, Login.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     showShortToast(getString(R.string.select_language_warning));
                 }

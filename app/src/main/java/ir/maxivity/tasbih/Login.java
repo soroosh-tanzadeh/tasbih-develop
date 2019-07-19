@@ -173,6 +173,7 @@ public class Login extends BaseActivity {
                     Log.v(TAG, "user id : " + application.getUserId());
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
 
             }
@@ -184,6 +185,7 @@ public class Login extends BaseActivity {
                 application.setLoginLater(true);
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -206,6 +208,7 @@ public class Login extends BaseActivity {
                             Toast.makeText(getApplicationContext(), "result ok going to main", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Login.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             Toast.makeText(getApplicationContext(), response.body().msg, Toast.LENGTH_SHORT).show();
 
