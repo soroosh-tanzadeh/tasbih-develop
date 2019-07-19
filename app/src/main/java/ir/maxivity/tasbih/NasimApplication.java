@@ -15,6 +15,7 @@ public class NasimApplication extends Application {
     private final String PREF_USER_ID_KEY = "USER_ID";
     private final String PREF_LANGUAGE_KEY = "LANGUAGE";
     private final String PREF_LOGIN_LATER_KEY = "LOGIN_LATER";
+    private final String PREF_USER_LOCATION_KEY = "USER_LOCATION";
     private final String MAIN_PREF_NAME = "NASIM_PREF_FILE";
 
 
@@ -76,6 +77,13 @@ public class NasimApplication extends Application {
     public boolean getLoginLater() {
         SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
         return sharedPreferences.getBoolean(PREF_LOGIN_LATER_KEY, false);
+    }
+
+    public void setUserLocation(String location) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_USER_LOCATION_KEY, location);
+        editor.apply();
     }
 
 
