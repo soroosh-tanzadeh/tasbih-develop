@@ -11,6 +11,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wang.avi.AVLoadingIndicatorView;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -40,6 +42,7 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
     private Handler handler = new Handler();
     private String mediaUrl;
     private boolean prepare = false;
+    private AVLoadingIndicatorView progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,13 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
         header = findViewById(R.id.header_name_txt);
         content = findViewById(R.id.content_txt);
         seekBar = findViewById(R.id.player_seek_bar);
+        progress = findViewById(R.id.progress_loading);
         seekBar.setMax(99);
         seekBar.setOnTouchListener(this);
         play = findViewById(R.id.play_btn);
         id = getIntent().getIntExtra("ID", 0);
         name = getIntent().getStringExtra("NAME");
         quranType = getIntent().getBooleanExtra("QURAN", true);
-
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setOnCompletionListener(this);
@@ -72,6 +75,8 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mediaFileLengthInMilliseconds = mediaPlayer.getDuration();
+                play.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
                 prepare = true;
             }
         });

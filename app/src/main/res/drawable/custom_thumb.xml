@@ -4,8 +4,8 @@
     <solid android:color="@color/gold" />
 
     <size
-        android:width="24dp"
-        android:height="24dp" />
+        android:width="16dp"
+        android:height="16dp" />
     <stroke
         android:width="0.5dp"
         android:color="@color/gray_900" />

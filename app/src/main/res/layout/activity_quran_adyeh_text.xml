@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/quran_fragment_background"
     tools:context=".QuranAdyehTextActivity">
 
     <TextView
@@ -43,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray_300">
+        android:background="@color/white">
 
         <ImageView
             android:layout_width="match_parent"
@@ -55,27 +56,50 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_centerVertical="true"
-            android:gravity="center">
+            android:gravity="left">
 
 
             <SeekBar
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:id="@+id/player_seek_bar"
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="8dp"
                 android:thumb="@drawable/custom_thumb"
+                android:indeterminate="true"
+                android:progressDrawable="@drawable/progress_drawable"
                 />
 
             <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/ic_play2"
+                android:layout_marginLeft="24dp"
+                android:id="@+id/play_btn"
+                android:visibility="gone" />
+
+            <com.wang.avi.AVLoadingIndicatorView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                app:srcCompat="@drawable/ic_play2"
-                android:id="@+id/play_btn" />
+                android:layout_marginLeft="24dp"
+                app:indicatorName="BallScaleIndicator"
+                android:visibility="visible"
+                app:indicatorColor="@color/gold"
+                android:id="@+id/progress_loading" />
 
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="انتخاب قاری"
+            android:textColor="@color/gold"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_gold_drawable"
+            android:gravity="center"
+            android:padding="8dp" />
 
     </RelativeLayout>
 
