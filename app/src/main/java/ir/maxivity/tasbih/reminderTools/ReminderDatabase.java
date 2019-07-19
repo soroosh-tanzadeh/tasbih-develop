@@ -137,6 +137,36 @@ public class ReminderDatabase extends SQLiteOpenHelper {
         return reminderList;
     }
 
+    public List<Reminder> getAzanReminders() {
+        List<Reminder> reminderList = new ArrayList<>();
+
+        // Select all Query
+        String selectQuery = "SELECT * FROM " + TABLE_REMINDERS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Reminder reminder = new Reminder();
+                reminder.setID(Integer.parseInt(cursor.getString(0)));
+                reminder.setTitle(cursor.getString(1));
+                reminder.setDate(cursor.getString(2));
+                reminder.setTime(cursor.getString(3));
+                reminder.setRepeat(cursor.getString(4));
+                reminder.setRepeatNo(cursor.getString(5));
+                reminder.setRepeatType(cursor.getString(6));
+                reminder.setActive(cursor.getString(7));
+
+                // Adding Reminders to list
+                if (reminder.getActive().equals("false"))
+                    reminderList.add(reminder);
+            } while (cursor.moveToNext());
+        }
+        return reminderList;
+    }
+
     // Getting Reminders Count
     public int getRemindersCount() {
         String countQuery = "SELECT * FROM " + TABLE_REMINDERS;
