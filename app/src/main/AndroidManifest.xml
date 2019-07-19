@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.location.network" />
     <uses-feature android:name="android.hardware.location.gps" />
@@ -41,6 +42,10 @@
         <activity
             android:name=".Login"
             android:windowSoftInputMode="adjustResize|adjustPan" />
+
+        <service
+            android:name=".reminderTools.MyJobIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <activity
             android:name=".Calendar"
             android:theme="@style/CalendarTheme" />

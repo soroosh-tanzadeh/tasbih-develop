@@ -3,6 +3,7 @@ package ir.maxivity.tasbih.reminderTools;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,26 +13,31 @@ import android.media.RingtoneManager;
 import android.os.SystemClock;
 
 import androidx.core.app.NotificationCompat;
-import androidx.legacy.content.WakefulBroadcastReceiver;
 
 import java.util.Calendar;
 
 import ir.maxivity.tasbih.MainActivity;
 import ir.maxivity.tasbih.R;
 
-public class AlarmReceiver extends WakefulBroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
     AlarmManager mAlarmManager;
     PendingIntent mPendingIntent;
+    Context context;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.context = context;
+        MyJobIntentService.enqueueWork(context, intent);
+    }
+
+
+    public void setNotification(Intent intent, Context context) {
         int mReceivedID = Integer.parseInt(intent.getStringExtra(ir.maxivity.tasbih.Calendar.EXTRA_REMINDER_ID));
 
         ReminderDatabase rb = new ReminderDatabase(context);
         Reminder reminder = rb.getReminder(mReceivedID);
         String mTitle = reminder.getTitle();
 
-        // Create intent to open ReminderEditActivity on notification click
         Intent homeIntent = new Intent(context, MainActivity.class);
         homeIntent.putExtra(ir.maxivity.tasbih.Calendar.EXTRA_REMINDER_ID, Integer.toString(mReceivedID));
         PendingIntent mClick = PendingIntent.getActivity(context, mReceivedID, homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
