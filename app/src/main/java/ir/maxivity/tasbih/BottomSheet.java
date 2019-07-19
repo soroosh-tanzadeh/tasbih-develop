@@ -21,7 +21,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
         super.setupDialog(dialog, style);
 
         //Set the custom view
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.bottomsheet, null);
+
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_reworked, null);
         dialog.setContentView(view);
         Button showqiblah_btn =  view.findViewById(R.id.showqiblah_btn);
         Button showquran_btn =  view.findViewById(R.id.showquran_btn);

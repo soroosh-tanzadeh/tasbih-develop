@@ -224,8 +224,12 @@ public class MainActivity extends BaseActivity {
                         loadFragment(map);
                         return true;
                     case R.id.navigation_detail:
-                        BottomSheetDialogFragment fragment = new BottomSheet();
-                        fragment.show(getSupportFragmentManager(), "TAG");
+                        try {
+                            BottomSheetDialogFragment fragment = new BottomSheet();
+                            fragment.show(getSupportFragmentManager(), "TAG");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         return false;
                 }
                 return false;
