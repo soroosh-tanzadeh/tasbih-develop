@@ -37,6 +37,13 @@ public class Reminder {
         mTime = Time;
     }
 
+    public Reminder(String Title, String Date, String Time, boolean active) {
+        mTitle = Title;
+        mDate = Date;
+        mTime = Time;
+        mActive = active + "";
+    }
+
     public Reminder() {
     }
 
