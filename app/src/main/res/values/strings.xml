@@ -179,6 +179,11 @@
     <string name="reminder_text_validation">لطفا متن یادآور را وارد کنید</string>
     <string name="reminder">یادآورها</string>
     <string name="reminder_empty_list">شما هیچ یادآوری ثبت نکردید.</string>
+    <string name="azan_fajr">اذان صبح</string>
+    <string name="azan_zohr">اذان ظهر</string>
+    <string name="azan_asr">اذان عصر</string>
+    <string name="azan_maqrib">اذان مغرب</string>
+    <string name="azan_ishaa">اذان عشا</string>
 
 
     <string-array name="category_list">

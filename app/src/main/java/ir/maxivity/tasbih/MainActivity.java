@@ -1,12 +1,17 @@
 package ir.maxivity.tasbih;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -22,11 +27,26 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.azan.Azan;
+import com.azan.AzanTimes;
+import com.azan.Method;
+import com.azan.Time;
+import com.azan.astrologicalCalc.SimpleDate;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.osmdroid.config.Configuration;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import co.ronash.pushe.Pushe;
@@ -35,6 +55,9 @@ import ir.maxivity.tasbih.activities.MyPlacesActivity;
 import ir.maxivity.tasbih.activities.ReminderActivity;
 import ir.maxivity.tasbih.adapters.DrawerListAdapter;
 import ir.maxivity.tasbih.fragments.mapFragments.BaseFragment;
+import ir.maxivity.tasbih.reminderTools.AzanReciever;
+import ir.maxivity.tasbih.reminderTools.Reminder;
+import ir.maxivity.tasbih.reminderTools.ReminderDatabase;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
 import ir.maxivity.tasbih.tools.CreateDrawerItem;
 import ir.maxivity.tasbih.tools.CustomGestureDetector;
@@ -44,6 +67,19 @@ public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
     private ListView drawerItemList;
+    private FusedLocationProviderClient fusedLocationClient;
+
+
+    // Iran location
+    public static final double iranDefaultLat = 32.4279;
+    public static final double iranDefaultLon = 53.6880;
+
+    //generate alarm Ids
+    public static final int FAJR_ID = 3000;
+    public static final int ZOHR_ID = 3001;
+    public static final int ASR_ID = 3002;
+    public static final int MAQRIB_ID = 3003;
+    public static final int ISHAA_ID = 3004;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -53,6 +89,8 @@ public class MainActivity extends BaseActivity {
         Configuration.getInstance().setUserAgentValue(getPackageName());
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         setContentView(R.layout.main_drawer_layout);
         final Fragment start = new Start_freg();
@@ -241,6 +279,11 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startReceivingLocationUpdates();
+    }
 
     boolean doubleBackPressed = false;
 
@@ -261,6 +304,60 @@ public class MainActivity extends BaseActivity {
         }, 2000);
     }
 
+
+    public void startReceivingLocationUpdates() {
+        // Requesting ACCESS_FINE_LOCATION using Dexter library
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        saveUserLocation();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            // open device settings when the permission is
+                            // denied permanently
+                            openSettings();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(com.karumi.dexter.listener.PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+
+                }).check();
+    }
+
+    private void saveUserLocation() {
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    application.setUserLocation(location.getLatitude() + "," + location.getLongitude());
+                    try {
+                        setAzanReminders();
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void openSettings() {
+        Intent intent = new Intent();
+        intent.setAction(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package",
+                BuildConfig.APPLICATION_ID, null);
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
     @Override
     public void onBackPressed() {
@@ -286,6 +383,63 @@ public class MainActivity extends BaseActivity {
         }
 
 
+    }
+
+    public void setAzanReminders() throws NumberFormatException {
+        String id = "";
+        if (application.getReminderIds() != null) {
+            id = application.getReminderIds();
+            Log.v("FUCK MAIN", id);
+        } else {
+            addAzanRemindersToDatabase();
+        }
+
+        SimpleDate today = new SimpleDate(new GregorianCalendar());
+        double lat = iranDefaultLat;
+        double lon = iranDefaultLon;
+        try {
+            lat = Double.parseDouble(application.getUserLocation().split(",")[0]);
+            lon = Double.parseDouble(application.getUserLocation().split(",")[1]);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        com.azan.astrologicalCalc.Location location = new com.azan.astrologicalCalc.Location(lat, lon, 4.5, 0);
+        Azan azan = new Azan(location, Method.Companion.getMUSLIM_LEAGUE());
+        AzanTimes azanTimes = azan.getPrayerTimes(today);
+        AzanReciever reciever = new AzanReciever();
+        String[] speceficId = id.split(",");
+        reciever.setAlarm(this, setAzanTime(today, azanTimes.fajr()), Integer.parseInt(speceficId[0]));
+        reciever.setAlarm(this, setAzanTime(today, azanTimes.thuhr()), Integer.parseInt(speceficId[1]));
+        reciever.setAlarm(this, setAzanTime(today, azanTimes.assr()), Integer.parseInt(speceficId[2]));
+        reciever.setAlarm(this, setAzanTime(today, azanTimes.maghrib()), Integer.parseInt(speceficId[3]));
+        reciever.setAlarm(this, setAzanTime(today, azanTimes.ishaa()), Integer.parseInt(speceficId[4]));
+
+    }
+
+    private void addAzanRemindersToDatabase() {
+        ReminderDatabase rb = new ReminderDatabase(this);
+        String time = "";
+        String date = "";
+
+        int sobId = rb.addReminder(new Reminder(getString(R.string.azan_fajr), date, time, false));
+        int zohrId = rb.addReminder(new Reminder(getString(R.string.azan_zohr), date, time, false));
+        int asrId = rb.addReminder(new Reminder(getString(R.string.azan_asr), date, time, false));
+        int maqribId = rb.addReminder(new Reminder(getString(R.string.azan_maqrib), date, time, false));
+        int ishaId = rb.addReminder(new Reminder(getString(R.string.azan_ishaa), date, time, false));
+
+        String id = sobId + "," + zohrId + "," + asrId + "," + maqribId + "," + ishaId;
+        application.setAzanReminderIds(id);
+    }
+
+    private Calendar setAzanTime(SimpleDate date, Time azantime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, date.getYear());
+        calendar.set(Calendar.MONTH, date.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, date.getDay());
+        calendar.set(Calendar.HOUR_OF_DAY, azantime.getHour());
+        calendar.set(Calendar.MINUTE, azantime.getMinute());
+        calendar.set(Calendar.SECOND, azantime.getSecond());
+        return calendar;
     }
 
     private void loadFragment(Fragment fragment) {
