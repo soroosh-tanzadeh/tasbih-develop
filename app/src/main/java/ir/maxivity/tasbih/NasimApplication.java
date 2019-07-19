@@ -15,8 +15,9 @@ public class NasimApplication extends Application {
     private final String PREF_USER_ID_KEY = "USER_ID";
     private final String PREF_LANGUAGE_KEY = "LANGUAGE";
     private final String PREF_LOGIN_LATER_KEY = "LOGIN_LATER";
-    private final String PREF_USER_LOCATION_KEY = "USER_LOCATION";
-    private final String MAIN_PREF_NAME = "NASIM_PREF_FILE";
+    private final String PREF_AZAN_IDS_KEY = "AZAN_ID";
+    public static final String PREF_USER_LOCATION_KEY = "USER_LOCATION";
+    public static final String MAIN_PREF_NAME = "NASIM_PREF_FILE";
 
 
     @Override
@@ -84,6 +85,23 @@ public class NasimApplication extends Application {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PREF_USER_LOCATION_KEY, location);
         editor.apply();
+    }
+
+    public String getUserLocation() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(PREF_USER_LOCATION_KEY, null);
+    }
+
+    public void setAzanReminderIds(String Ids) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_AZAN_IDS_KEY, Ids);
+        editor.apply();
+    }
+
+    public String getReminderIds() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(PREF_AZAN_IDS_KEY, null);
     }
 
 
