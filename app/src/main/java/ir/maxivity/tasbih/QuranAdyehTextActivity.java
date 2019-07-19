@@ -219,4 +219,10 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
         Log.v(TAG, "percent : " + percent);
         seekBar.setSecondaryProgress(percent);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mediaPlayer.release();
+    }
 }
