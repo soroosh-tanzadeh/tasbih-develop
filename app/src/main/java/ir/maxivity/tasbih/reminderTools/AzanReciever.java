@@ -27,8 +27,6 @@ public class AzanReciever extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         AzanJobIntentService.enqueueWork(context, intent);
-        AzanJobIntentService service = new AzanJobIntentService();
-        service.setContext(context);
     }
 
     public void setAzanNotification(Intent intent, Context context) {
@@ -43,7 +41,7 @@ public class AzanReciever extends BroadcastReceiver {
 
         Uri uri = Uri.parse("android.resource://ir.maxivity.tasbih/raw/azan_moazen_zadeh.mp3");
         // Create Notification
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "Azan")
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle(context.getResources().getString(R.string.app_name))

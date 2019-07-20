@@ -52,23 +52,13 @@
             android:layout_height="match_parent"
             android:id="@+id/persian_card_wrapper">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:id="@+id/persian_flag_image"
-                android:background="@drawable/persian_flag_icon"
-                android:layout_marginRight="8dp"
-
-                />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/persian_flag_image"
                 android:layout_marginRight="16dp"
-                android:text="@string/persian_language"
+                android:text="Persian (فارسی)"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
                 android:textSize="20sp"
                 android:textColor="@color/gray_700" />
 
@@ -94,22 +84,11 @@
             android:layout_height="match_parent"
             android:id="@+id/arabic_card_wrapper">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:id="@+id/arabic_flag_image"
-                android:background="@drawable/arabic_flag_icon"
-                android:layout_marginRight="8dp"
-
-                />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/arabic_flag_image"
-                android:layout_marginRight="16dp"
-                android:text="@string/arabic_language"
+                android:layout_marginLeft="8dp"
+                android:text="Arabic (العربی)"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
                 android:textColor="@color/gray_700" />

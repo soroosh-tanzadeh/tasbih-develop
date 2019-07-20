@@ -27,7 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
-        MyJobIntentService.enqueueWork(context, intent);
+        MyJobIntentService.enqueueWork(context.getApplicationContext(), intent);
     }
 
 
@@ -43,7 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent mClick = PendingIntent.getActivity(context, mReceivedID, homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Create Notification
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "Reminder")
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle(context.getResources().getString(R.string.app_name))
