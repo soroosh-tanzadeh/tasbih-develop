@@ -27,6 +27,8 @@ public class AzanReciever extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         AzanJobIntentService.enqueueWork(context, intent);
+        AzanJobIntentService service = new AzanJobIntentService();
+        service.setContext(context);
     }
 
     public void setAzanNotification(Intent intent, Context context) {
