@@ -32,5 +32,6 @@ public class QuranAdyeh extends BaseActivity {
         sectionsPagerAdapter.addFragment(new AdyehFragment(), getString(R.string.adyeh));
         sectionsPagerAdapter.addFragment(new QuranFragment(), getString(R.string.quran));
         vp.setAdapter(sectionsPagerAdapter);
+        vp.setCurrentItem(1);
     }
 }
