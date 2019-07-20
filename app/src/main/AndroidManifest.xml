@@ -98,6 +98,12 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".reminderTools.AzanReciever" />
+
+        <service
+            android:name=".reminderTools.AzanJobIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
