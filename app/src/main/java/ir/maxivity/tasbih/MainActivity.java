@@ -413,11 +413,11 @@ public class MainActivity extends BaseActivity {
         AzanReciever reciever = new AzanReciever();
         String[] speceficId = id.split(",");
         reciever.setAlarm(this, setAzanTime(today, azanTimes.fajr()), Integer.parseInt(speceficId[0]));
-        reciever.setAlarm(this, setAzanTime(today, azanTimes.thuhr()), Integer.parseInt(speceficId[1]));
+        /*reciever.setAlarm(this, setAzanTime(today, azanTimes.thuhr()), Integer.parseInt(speceficId[1]));
         reciever.setAlarm(this, setAzanTime(today, azanTimes.assr()), Integer.parseInt(speceficId[2]));
         reciever.setAlarm(this, setAzanTime(today, azanTimes.maghrib()), Integer.parseInt(speceficId[3]));
         reciever.setAlarm(this, setAzanTime(today, azanTimes.ishaa()), Integer.parseInt(speceficId[4]));
-
+*/
     }
 
     private void addAzanRemindersToDatabase() {
@@ -438,7 +438,7 @@ public class MainActivity extends BaseActivity {
     private Calendar setAzanTime(SimpleDate date, Time azantime) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, date.getYear());
-        calendar.set(Calendar.MONTH, date.getMonth());
+        calendar.set(Calendar.MONTH, date.getMonth() - 1);
         calendar.set(Calendar.DAY_OF_MONTH, date.getDay());
         calendar.set(Calendar.HOUR_OF_DAY, azantime.getHour());
         calendar.set(Calendar.MINUTE, azantime.getMinute());
