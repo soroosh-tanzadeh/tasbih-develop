@@ -20,30 +20,29 @@
         android:textSize="22sp"
         android:id="@+id/header_name_txt" />
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_below="@id/header_name_txt"
-        android:fillViewport="true"
-        android:scrollbars="vertical"
-        android:id="@+id/sura_scroll_view">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="right"
-        android:padding="16dp"
-        android:textSize="20sp"
-        android:fontFamily="@font/neirizi_font"
-        android:textColor="@color/md_green_600"
-        android:id="@+id/content_txt" />
+        android:layout_above="@id/player_wrapper"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:id="@+id/quran_recycler"
+        android:layout_height="match_parent" />
 
-    </ScrollView>
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="24dp"
+        app:indicatorName="BallScaleIndicator"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        app:indicatorColor="@color/gold"
+        android:id="@+id/progress_text_load" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
+        android:id="@+id/player_wrapper"
         android:background="@color/white">
 
         <ImageView
@@ -66,8 +65,6 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="8dp"
                 android:thumb="@drawable/custom_thumb"
-                android:indeterminate="true"
-                android:progressDrawable="@drawable/progress_drawable"
                 />
 
             <ImageView

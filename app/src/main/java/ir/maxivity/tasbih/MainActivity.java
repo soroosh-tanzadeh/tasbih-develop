@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity {
         TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
 
         persianDate.setText(Utilities.getTodayJalaliDate(this));
-        arabicDate.setText(Utilities.getTodayIslamicDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this) + " / " + Utilities.getTodayGregortianDate(this));
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -412,12 +412,11 @@ public class MainActivity extends BaseActivity {
         AzanTimes azanTimes = azan.getPrayerTimes(today);
         AzanReciever reciever = new AzanReciever();
         String[] speceficId = id.split(",");
-        reciever.setAlarm(this, setAzanTime(today, azanTimes.fajr()), Integer.parseInt(speceficId[0]));
-        /*reciever.setAlarm(this, setAzanTime(today, azanTimes.thuhr()), Integer.parseInt(speceficId[1]));
+       /* reciever.setAlarm(this, setAzanTime(today, azanTimes.fajr()), Integer.parseInt(speceficId[0]));
+        reciever.setAlarm(this, setAzanTime(today, azanTimes.thuhr()), Integer.parseInt(speceficId[1]));
         reciever.setAlarm(this, setAzanTime(today, azanTimes.assr()), Integer.parseInt(speceficId[2]));
         reciever.setAlarm(this, setAzanTime(today, azanTimes.maghrib()), Integer.parseInt(speceficId[3]));
-        reciever.setAlarm(this, setAzanTime(today, azanTimes.ishaa()), Integer.parseInt(speceficId[4]));
-*/
+        reciever.setAlarm(this, setAzanTime(today, azanTimes.ishaa()), Integer.parseInt(speceficId[4]));*/
     }
 
     private void addAzanRemindersToDatabase() {
@@ -440,8 +439,8 @@ public class MainActivity extends BaseActivity {
         calendar.set(Calendar.YEAR, date.getYear());
         calendar.set(Calendar.MONTH, date.getMonth() - 1);
         calendar.set(Calendar.DAY_OF_MONTH, date.getDay());
-        calendar.set(Calendar.HOUR_OF_DAY, azantime.getHour());
-        calendar.set(Calendar.MINUTE, azantime.getMinute());
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 5);
         calendar.set(Calendar.SECOND, azantime.getSecond());
         return calendar;
     }

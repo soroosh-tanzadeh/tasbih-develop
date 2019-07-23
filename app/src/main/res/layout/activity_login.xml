@@ -76,9 +76,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:fitsSystemWindows="false"
-                            android:hint="@string/prompt_email"
+                            android:gravity="right"
+                            android:paddingRight="8dp"
                             android:inputType="phone"
                             android:maxLines="1"
+                            android:maxLength="11"
                             android:singleLine="true"
                             android:textColor="#000"
                             android:textColorHint="#000" />
@@ -116,6 +118,7 @@
                         android:layout_marginTop="30dp"
                         android:text="بعداً وارد میشم"
                         android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/colorPrimary"
                         android:textSize="17sp" />
                 </LinearLayout>

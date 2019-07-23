@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -27,6 +28,8 @@ public class AzanReciever extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         AzanJobIntentService.enqueueWork(context, intent);
+        Log.v("FUCK REcIVE", "recieved");
+
     }
 
     public void setAzanNotification(Intent intent, Context context) {
@@ -47,15 +50,27 @@ public class AzanReciever extends BroadcastReceiver {
                 .setContentTitle(context.getResources().getString(R.string.app_name))
                 .setTicker(mTitle)
                 .setContentText(mTitle)
-                .setSound(uri)
                 .setContentIntent(mClick)
                 .setAutoCancel(true)
+                .setDeleteIntent(createOnDissmissedIntent(context, mReceivedID))
                 .setOnlyAlertOnce(true);
 
         NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nManager.notify(mReceivedID, mBuilder.build());
+
     }
 
+
+    private PendingIntent createOnDissmissedIntent(Context context, int notificationId) {
+        Intent intent = new Intent(context, NotificationDismissReciever.class);
+        intent.putExtra("com.my.app.notificationId", notificationId);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context.getApplicationContext(),
+                        notificationId, intent, 0);
+        return pendingIntent;
+
+    }
     public void setAlarm(Context context, Calendar calendar, int ID) {
         mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 

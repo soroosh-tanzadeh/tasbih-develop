@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import ir.maxivity.tasbih.dataAccess.VerficationResult;
 import ir.maxivity.tasbih.models.LoginResponse;
 import okhttp3.RequestBody;
@@ -35,6 +37,8 @@ public class Login extends BaseActivity {
         setContentView(R.layout.activity_login);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         phonenumber = findViewById(R.id.phonenumber_input);
+        phonenumber.setHint(Utilities.numberConvert_En2Fa("09361234567"));
+        phonenumber.setHintTextColor(ContextCompat.getColor(this, R.color.gray_400));
         verificationcode = findViewById(R.id.verification_input);
         sendVirificationbtn = findViewById(R.id.submitVerification_code);
         sendVirificationbtn.setVisibility(View.GONE);

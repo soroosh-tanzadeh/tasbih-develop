@@ -63,4 +63,8 @@ public interface API {
     @GET("get-qaudio.php")
     Call<GetQuranVoice> getQuranVoice(@Query("n") int number);
 
+    @Multipart
+    @POST("get-qurantranslate.php")
+    Call<GetQuranText> getQuranTranslate(@Part("lang") RequestBody lang, @Part("sura") RequestBody sura);
+
 }

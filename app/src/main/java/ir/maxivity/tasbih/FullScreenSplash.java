@@ -2,11 +2,9 @@ package ir.maxivity.tasbih;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import java.io.IOException;
+import android.os.Handler;
 
 import ir.maxivity.tasbih.activities.SelectLanguageActivity;
-import ir.maxivity.tasbih.dataAccess.DataFileAccess;
 import ir.maxivity.tasbih.dataAccess.LocalDB;
 
 /**
@@ -19,34 +17,22 @@ public class FullScreenSplash extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_splash);
-        final DataFileAccess dataFileAccess = new DataFileAccess(this);
-        Thread t = new Thread(new Runnable() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                try {
-                    LocalDB localDB = dataFileAccess.readLocalDB();
-                    if (localDB != null){
-                        decide(localDB);
-                    }else {
-                        localDB = new LocalDB();
-                        dataFileAccess.writeLocalDB(localDB);
-                        decide(localDB);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                // Do something after 5s = 5000ms
+                if (application.getUserId() != null) {
+                    Intent intent = new Intent(FullScreenSplash.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(FullScreenSplash.this, SelectLanguageActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
-
             }
-        });
-        if (FullScreenSplash.oppend == 0) {
-            t.start();
-        }else{
-            Intent intent = new Intent(FullScreenSplash.this,MainActivity.class);
-            FullScreenSplash.oppend = 1;
-            startActivity(intent);
-        }
+        }, 2000);
 
     }
 
