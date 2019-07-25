@@ -71,7 +71,6 @@ public class AdyehFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
 
         try {
             adyeh = new JSONArray(readJsonFromAssets());
