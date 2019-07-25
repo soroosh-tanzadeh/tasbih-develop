@@ -9,9 +9,6 @@ import ir.maxivity.tasbih.tools.AzanPlayer;
 public class NotificationDismissReciever extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        AzanPlayer player = AzanPlayer.getInstance();
-        if (player.isPlaying()) {
-            player.release();
-        }
+        AzanPlayer.getInstance(context).stop();
     }
 }

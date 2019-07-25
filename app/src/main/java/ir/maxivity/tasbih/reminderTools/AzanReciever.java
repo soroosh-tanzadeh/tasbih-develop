@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -42,7 +41,10 @@ public class AzanReciever extends BroadcastReceiver {
         homeIntent.putExtra(ir.maxivity.tasbih.Calendar.EXTRA_REMINDER_ID, Integer.toString(mReceivedID));
         PendingIntent mClick = PendingIntent.getActivity(context, mReceivedID, homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Uri uri = Uri.parse("android.resource://ir.maxivity.tasbih/raw/azan_moazen_zadeh.mp3");
+        Intent deletInetent = new Intent(context, NotificationDismissReciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, deletInetent, 0);
+
+
         // Create Notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "Azan")
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
@@ -52,7 +54,7 @@ public class AzanReciever extends BroadcastReceiver {
                 .setContentText(mTitle)
                 .setContentIntent(mClick)
                 .setAutoCancel(true)
-                .setDeleteIntent(createOnDissmissedIntent(context, mReceivedID))
+                .setDeleteIntent(pendingIntent)
                 .setOnlyAlertOnce(true);
 
         NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -60,17 +62,6 @@ public class AzanReciever extends BroadcastReceiver {
 
     }
 
-
-    private PendingIntent createOnDissmissedIntent(Context context, int notificationId) {
-        Intent intent = new Intent(context, NotificationDismissReciever.class);
-        intent.putExtra("com.my.app.notificationId", notificationId);
-
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(context.getApplicationContext(),
-                        notificationId, intent, 0);
-        return pendingIntent;
-
-    }
     public void setAlarm(Context context, Calendar calendar, int ID) {
         mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -85,9 +76,35 @@ public class AzanReciever extends BroadcastReceiver {
         long diffTime = calendar.getTimeInMillis() - currentTime;
 
         // Start alarm using notification time
-        mAlarmManager.set(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + diffTime,
+        mAlarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + diffTime, BootReceiver.milDay,
                 mPendingIntent);
+
+        // Restart alarm if device is rebooted
+        ComponentName receiver = new ComponentName(context, BootReceiver.class);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+    }
+
+    public void setRepeatAlarm(Context context, Calendar calendar, int ID, long RepeatTime) {
+        mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        // Put Reminder ID in Intent Extra
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra(ir.maxivity.tasbih.Calendar.EXTRA_REMINDER_ID, Integer.toString(ID));
+        mPendingIntent = PendingIntent.getBroadcast(context, ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        // Calculate notification timein
+        Calendar c = Calendar.getInstance();
+        long currentTime = c.getTimeInMillis();
+        long diffTime = calendar.getTimeInMillis() - currentTime;
+
+        // Start alarm using initial notification time and repeat interval time
+        mAlarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + diffTime,
+                RepeatTime, mPendingIntent);
 
         // Restart alarm if device is rebooted
         ComponentName receiver = new ComponentName(context, BootReceiver.class);

@@ -44,6 +44,11 @@
 
     </style>
 
+    <style name="TooltipTextAppearance">
+        <item name="android:textColor">@color/gray_50</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="PrimaryFlatButton" parent="Theme.AppCompat.Light">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
         <item name="colorControlHighlight">#FFF</item>

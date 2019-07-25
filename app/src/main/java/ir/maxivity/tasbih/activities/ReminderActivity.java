@@ -1,7 +1,9 @@
 package ir.maxivity.tasbih.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ir.maxivity.tasbih.BaseActivity;
+import ir.maxivity.tasbih.Calendar;
 import ir.maxivity.tasbih.R;
 import ir.maxivity.tasbih.adapters.ReminderAdapter;
 import ir.maxivity.tasbih.reminderTools.AlarmReceiver;
@@ -25,12 +28,22 @@ public class ReminderActivity extends BaseActivity {
     ReminderAdapter adapter;
     AlarmReceiver alarmReceiver;
     LinearLayout emptyList;
+    Button add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         reminderDatabase = new ReminderDatabase(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reminder);
+
+        add = findViewById(R.id.add_reminder);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ReminderActivity.this, Calendar.class));
+            }
+        });
 
         recyclerView = findViewById(R.id.reminder_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

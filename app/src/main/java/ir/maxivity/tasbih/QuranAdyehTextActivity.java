@@ -1,18 +1,24 @@
 package ir.maxivity.tasbih;
 
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tomergoldst.tooltips.ToolTip;
+import com.tomergoldst.tooltips.ToolTipsManager;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.IOException;
@@ -44,13 +50,17 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
     private Boolean quranType;
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
-    private ImageView play;
+    private ImageView play, tooltip;
     private int mediaFileLengthInMilliseconds;
     private Handler handler = new Handler();
     private String mediaUrl;
     private boolean prepare = false;
     private AVLoadingIndicatorView progress, progressLoad;
     private List<GetQuranText.QuranResponse> arabic, persian, english;
+    private RelativeLayout mRootLayout;
+    private Parcelable listState;
+    private final String LIST_STATE = "list_state";
+    private boolean toolTipshown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +71,8 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
         seekBar = findViewById(R.id.player_seek_bar);
         progress = findViewById(R.id.progress_loading);
         progressLoad = findViewById(R.id.progress_text_load);
+        tooltip = findViewById(R.id.tooltip);
+        mRootLayout = findViewById(R.id.root);
         seekBar.setMax(99);
         seekBar.setOnTouchListener(this);
         play = findViewById(R.id.play_btn);
@@ -71,7 +83,42 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setOnCompletionListener(this);
         getSupportActionBar().setTitle(name);
+        final ToolTipsManager mToolTipsManager =
+                new ToolTipsManager();
 
+        tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String tip = name;
+                ToolTip.Builder builder = new ToolTip.Builder(getApplicationContext(), tooltip, mRootLayout, tip, ToolTip.POSITION_LEFT_TO);
+                Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.neirizi);
+                builder.setTypeface(typeface);
+                builder.setBackgroundColor(getResources().getColor(R.color.primary));
+                builder.setGravity(ToolTip.GRAVITY_CENTER);
+                if (!toolTipshown) {
+                    mToolTipsManager.show(builder.build());
+                    toolTipshown = true;
+                } else {
+                    toolTipshown = false;
+                    mToolTipsManager.dismissAll();
+                }
+            }
+        });
+
+        mRootLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (toolTipshown)
+                    mToolTipsManager.dismissAll();
+            }
+        });
+
+        try {
+            listState = savedInstanceState.getParcelable(LIST_STATE);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         if (quranType) {
             progressLoad.setVisibility(View.VISIBLE);
@@ -121,6 +168,17 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(LIST_STATE, content.getLayoutManager().onSaveInstanceState());
     }
 
     private void primarySeekBarProgressUpdater() {
@@ -251,6 +309,12 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
 
         QuranAdapter quranAdapter = new QuranAdapter(texts, this);
         content.setAdapter(quranAdapter);
+
+        try {
+            content.getLayoutManager().onRestoreInstanceState(listState);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getQuranVoice() throws NullPointerException {

@@ -1,9 +1,11 @@
 package ir.maxivity.tasbih;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,8 +15,10 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,7 +26,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import ir.maxivity.tasbih.tools.HeaderNav;
+import tools.Utilities;
 
 public class ZekrsList extends BaseActivity {
 
@@ -32,7 +36,24 @@ public class ZekrsList extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HeaderNav headerNav = new HeaderNav();
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.actionbar);
+        View actionbarview = getSupportActionBar().getCustomView();
+        ImageButton share_btn = actionbarview.findViewById(R.id.sharebtn);
+        ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
+        TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
+        TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
+
+        persianDate.setText(Utilities.getTodayJalaliDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this) + " / " + Utilities.getTodayGregortianDate(this));
+
+        share_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareIntent();
+            }
+        });
 
         ScrollView scrollView = new ScrollView(this);
         LinearLayout the_view = new LinearLayout(this);
@@ -40,13 +61,15 @@ public class ZekrsList extends BaseActivity {
         zekrs_list_layout.setOrientation(LinearLayout.VERTICAL);
         the_view.setOrientation(LinearLayout.VERTICAL);
         EditText search_zekrs_input = new EditText(this);
-        search_zekrs_input.setHint(R.string.search);
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_search_vector);
+        drawable.setBounds(0, 24, 0, 24);
+        search_zekrs_input.setCompoundDrawables(null, null, drawable, null);
+        search_zekrs_input.setCompoundDrawablePadding(8);
         search_zekrs_input.setTextColor(R.color.black);
         scrollView.addView(zekrs_list_layout);
         the_view.addView(search_zekrs_input);
         the_view.addView(scrollView);
         setContentView(the_view);
-        headerNav.loadHeadernav(this);
         search_zekrs_input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -99,9 +122,10 @@ public class ZekrsList extends BaseActivity {
                             final Button zekrbtn = new Button(new ContextThemeWrapper(ZekrsList.this, R.style.sorehbtn));
                             final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT);
-                            params.setMargins(50, 0, 50, 20);
+                            params.setMargins(8, 0, 8, 20);
                             zekrbtn.setText(zekrName);
-                            zekrbtn.setHeight(250);
+                            zekrbtn.setTextSize(20f);
+                            zekrbtn.setHeight(100);
                             zekrbtn.setBackground(getResources().getDrawable(R.drawable.ic_qlist_item));
                             zekrbtn.setId(zekrID);
 

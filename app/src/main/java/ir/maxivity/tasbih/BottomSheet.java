@@ -2,6 +2,7 @@ package ir.maxivity.tasbih;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class BottomSheet extends BottomSheetDialogFragment {
+
+    private clickListener listener;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -29,6 +32,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         Button showzekrcounter_btn =  view.findViewById(R.id.showzekrcounter_btn);
         Button showZiaratBtn = view.findViewById(R.id.showziartonline_btn);
         Button showMsgBtn = view.findViewById(R.id.showmsg_btn);
+        Button showMap = view.findViewById(R.id.showmap_btn);
 
         showqiblah_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +69,14 @@ public class BottomSheet extends BottomSheetDialogFragment {
             }
         });
 
+
+        showMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onMapClick();
+                dismiss();
+            }
+        });
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) view.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = params.getBehavior();
@@ -108,8 +120,22 @@ public class BottomSheet extends BottomSheetDialogFragment {
         }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (clickListener) context;
+        } catch (Exception e) {
+
+        }
+    }
+
     private void navigate(Class<?> classOf) {
         Intent i = new Intent(getActivity(), classOf);
         startActivity(i);
+    }
+
+    public interface clickListener {
+        void onMapClick();
     }
 }

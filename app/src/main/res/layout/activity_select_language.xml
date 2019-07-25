@@ -56,9 +56,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
-                android:text="Persian (فارسی)"
+                android:text="@string/persian"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:layout_centerInParent="true"
                 android:textSize="20sp"
                 android:textColor="@color/gray_700" />
 
@@ -88,7 +90,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Arabic (العربی)"
+                android:text="@string/arabic"
+                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
                 android:textColor="@color/gray_700" />

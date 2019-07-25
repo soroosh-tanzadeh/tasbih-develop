@@ -18,8 +18,8 @@ import java.util.List;
 import ir.maxivity.tasbih.R;
 
 import static android.content.Context.MODE_PRIVATE;
-import static ir.maxivity.tasbih.MainActivity.iranDefaultLat;
-import static ir.maxivity.tasbih.MainActivity.iranDefaultLon;
+import static ir.maxivity.tasbih.FullScreenSplash.iranDefaultLat;
+import static ir.maxivity.tasbih.FullScreenSplash.iranDefaultLon;
 import static ir.maxivity.tasbih.NasimApplication.MAIN_PREF_NAME;
 import static ir.maxivity.tasbih.NasimApplication.PREF_USER_LOCATION_KEY;
 
@@ -44,7 +44,7 @@ public class BootReceiver extends BroadcastReceiver {
     // Constant values in milliseconds
     private static final long milMinute = 60000L;
     private static final long milHour = 3600000L;
-    private static final long milDay = 86400000L;
+    public static final long milDay = 86400000L;
     private static final long milWeek = 604800000L;
     private static final long milMonth = 2592000000L;
 

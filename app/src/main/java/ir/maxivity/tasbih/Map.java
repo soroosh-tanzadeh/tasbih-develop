@@ -676,7 +676,11 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                 @Override
                 public boolean onMarkerClick(Marker marker, MapView mapView) {
                     Log.v(TAG, "marker :" + marker.getId());
+
                     try {
+                        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
                         if (getCurrentFragment() instanceof AddLocationFragment) {
                             dismissChildFragment(ADD_LOCATION_TAG);
                         }
@@ -752,8 +756,9 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                         addOrRemoveNewLocationMarker(true, newLocationMarker);
 
                         if (response.isSuccessful()) {
-                            Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(getContext(), "مکان با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "مکان شما ثبت نشد", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -830,7 +835,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                         dismissEventDialogFragment();
                         if (response.isSuccessful()) {
                         }
-                        Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "رویداد با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -843,7 +848,8 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
 
     @Override
     public void onEditSubmit(HashMap<String, String> fields) {
-
+        dismissChildFragment(LOCATION_INFO_FRAGMENT);
+        Toast.makeText(getContext(), "ذخیره شد.", Toast.LENGTH_SHORT).show();
     }
 
     private void dismissChildFragment(String tag) {

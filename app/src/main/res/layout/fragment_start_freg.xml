@@ -20,7 +20,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
-                android:background="@drawable/qudsbg">
+                android:background="@drawable/rezablur">
 
                 <ImageButton
                     android:id="@+id/imageView3"

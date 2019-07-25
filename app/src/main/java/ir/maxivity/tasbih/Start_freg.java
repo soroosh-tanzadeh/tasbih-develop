@@ -6,8 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import ir.maxivity.tasbih.fragments.mapFragments.BaseFragment;
 
@@ -27,6 +32,7 @@ public class Start_freg extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ImageButton calendar_btn = the_view.findViewById(R.id.calendar_btn);
+        TextView time = the_view.findViewById(R.id.textView5);
         calendar_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,6 +40,13 @@ public class Start_freg extends BaseFragment {
                 startActivity(i);
             }
         });
+
+        Date currentTime = java.util.Calendar.getInstance().getTime();
+
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        String date = df.format(java.util.Calendar.getInstance().getTime());
+
+        time.setText(date);
 
     }
 }

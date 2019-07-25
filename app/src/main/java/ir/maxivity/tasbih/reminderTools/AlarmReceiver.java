@@ -18,6 +18,7 @@ import java.util.Calendar;
 
 import ir.maxivity.tasbih.MainActivity;
 import ir.maxivity.tasbih.R;
+import ir.maxivity.tasbih.tools.AzanPlayer;
 
 public class AlarmReceiver extends BroadcastReceiver {
     AlarmManager mAlarmManager;
@@ -37,10 +38,17 @@ public class AlarmReceiver extends BroadcastReceiver {
         ReminderDatabase rb = new ReminderDatabase(context);
         Reminder reminder = rb.getReminder(mReceivedID);
         String mTitle = reminder.getTitle();
+        AzanPlayer player = AzanPlayer.getInstance(context);
+        if (reminder.getActive().equals("true")) {
+            player.play();
+        }
 
         Intent homeIntent = new Intent(context, MainActivity.class);
         homeIntent.putExtra(ir.maxivity.tasbih.Calendar.EXTRA_REMINDER_ID, Integer.toString(mReceivedID));
         PendingIntent mClick = PendingIntent.getActivity(context, mReceivedID, homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent deletInetent = new Intent(context, NotificationDismissReciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, deletInetent, 0);
 
         // Create Notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "Reminder")
@@ -52,6 +60,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentIntent(mClick)
                 .setAutoCancel(true)
+                .setDeleteIntent(pendingIntent)
                 .setOnlyAlertOnce(true);
 
         NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

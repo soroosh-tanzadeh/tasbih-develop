@@ -184,6 +184,9 @@
     <string name="azan_asr">اذان عصر</string>
     <string name="azan_maqrib">اذان مغرب</string>
     <string name="azan_ishaa">اذان عشا</string>
+    <string name="persian">Persian (فارسی)</string>
+    <string name="arabic">Arabic (العربی)</string>
+    <string name="guest_user">کاربر مهمان</string>
 
 
     <string-array name="category_list">

@@ -16,6 +16,8 @@ public class NasimApplication extends Application {
     private final String PREF_LANGUAGE_KEY = "LANGUAGE";
     private final String PREF_LOGIN_LATER_KEY = "LOGIN_LATER";
     private final String PREF_AZAN_IDS_KEY = "AZAN_ID";
+    private final String PREF_AZAN_REFRESH_KEY = "AZAN_REFRESH";
+
     public static final String PREF_USER_LOCATION_KEY = "USER_LOCATION";
     public static final String MAIN_PREF_NAME = "NASIM_PREF_FILE";
 
@@ -104,5 +106,18 @@ public class NasimApplication extends Application {
         return sharedPreferences.getString(PREF_AZAN_IDS_KEY, null);
     }
 
+
+    public void setAzanRefreshKey(long day) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(PREF_AZAN_REFRESH_KEY, day);
+        editor.apply();
+    }
+
+    public long getAzanRefresh() {
+        long def = 0L;
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getLong(PREF_AZAN_REFRESH_KEY, def);
+    }
 
 }

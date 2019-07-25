@@ -22,6 +22,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import ir.maxivity.tasbih.R;
 import ir.maxivity.tasbih.interfaces.MapListener;
 import ir.maxivity.tasbih.models.GetPlaces;
@@ -152,7 +154,16 @@ public class LocationInfoFragment extends Fragment {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editPhase();
+                if (editBtn.getText() == getString(R.string.edit)) {
+                    editPhase();
+                } else if (editBtn.getText() == getString(R.string.save)) {
+                    HashMap<String, String> fields = new HashMap<>();
+                    fields.put("locationName", locationName.getText().toString());
+                    fields.put("locationAddress", locationAddress.getText().toString());
+                    fields.put("locationWebsite", locationWebsite.getText().toString());
+                    fields.put("locationPhone", locationPhone.getText().toString());
+                    listener.onEditSubmit(fields);
+                }
             }
         });
     }
@@ -163,7 +174,7 @@ public class LocationInfoFragment extends Fragment {
         locationWebsite.setEnabled(true);
         locationPhone.setEnabled(true);
 
-        editBtn.setText("ذخیره");
+        editBtn.setText(getString(R.string.save));
     }
 
     @Override
