@@ -1,5 +1,6 @@
 package ir.maxivity.tasbih;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,10 +21,17 @@ public class ZekrCounter extends BaseActivity {
     int zekr_num = 0;
     String zekr_code;
     String zekr_name;
+    MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zekr_counter);
+        mediaPlayer = MediaPlayer.create(this, R.raw.tasbih);
+        try {
+            mediaPlayer.prepare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         this.zekr_code = getIntent().getExtras().getString("code");
         this.zekr_name = getIntent().getExtras().getString("zekrname");
@@ -55,6 +63,14 @@ public class ZekrCounter extends BaseActivity {
         zekrcounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    if (!mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 zekr_num++;
                 zekrnum.setText(ph.formatNumber(zekr_num));
             }
@@ -77,6 +93,8 @@ public class ZekrCounter extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
+        mediaPlayer.stop();
+        mediaPlayer.release();
         DataFileAccess dataFileAccess = new DataFileAccess(this);
         ZekrData zd = new ZekrData();
         zd.setZekr_code(zekr_code);

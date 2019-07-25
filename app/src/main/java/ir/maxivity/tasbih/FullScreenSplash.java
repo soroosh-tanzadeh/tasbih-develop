@@ -65,26 +65,6 @@ public class FullScreenSplash extends BaseActivity {
         }
 
 
-        if (checkLocationPermission()) {
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Do something after 5s = 5000ms
-                    if (application.getUserId() != null) {
-                        Intent intent = new Intent(FullScreenSplash.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Intent intent = new Intent(FullScreenSplash.this, SelectLanguageActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-            }, 2000);
-        }
-
-
 
     }
 
@@ -92,6 +72,18 @@ public class FullScreenSplash extends BaseActivity {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void navigateToNext() {
+        if (application.getUserId() != null) {
+            Intent intent = new Intent(FullScreenSplash.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(FullScreenSplash.this, SelectLanguageActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -108,15 +100,14 @@ public class FullScreenSplash extends BaseActivity {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         saveUserLocation();
-                        if (application.getUserId() != null) {
-                            Intent intent = new Intent(FullScreenSplash.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Intent intent = new Intent(FullScreenSplash.this, SelectLanguageActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Do something after 5s = 5000ms
+                                navigateToNext();
+                            }
+                        }, 2000);
                     }
 
                     @Override
