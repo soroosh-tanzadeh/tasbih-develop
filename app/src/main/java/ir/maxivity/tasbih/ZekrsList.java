@@ -37,7 +37,7 @@ public class ZekrsList extends BaseActivity {
     private JSONArray zekrs;
     private DrawerLayout drawerLayout;
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "WrongConstant"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +93,7 @@ public class ZekrsList extends BaseActivity {
             @Override
             public void onClick(int id, String name) {
                 Intent i = new Intent(ZekrsList.this, ZekrCounter.class);
-                i.putExtra("code", id);
+                i.putExtra("code", id + "");
                 i.putExtra("zekrname", name);
                 startActivity(i);
             }

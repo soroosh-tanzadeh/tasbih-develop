@@ -39,7 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Reminder reminder = rb.getReminder(mReceivedID);
         String mTitle = reminder.getTitle();
         AzanPlayer player = AzanPlayer.getInstance(context);
-        if (reminder.getActive().equals("true")) {
+        if (reminder.getActive().equals("false")) {
             player.play();
         }
 

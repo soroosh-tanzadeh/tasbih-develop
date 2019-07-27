@@ -206,9 +206,8 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_centerVertical="true"
+                        android:layout_marginRight="62dp"
                         android:layout_toLeftOf="@id/residency_txt"
-                        android:layout_marginRight="15dp"
                         android:background="@drawable/residency" />
 
                 </RelativeLayout>

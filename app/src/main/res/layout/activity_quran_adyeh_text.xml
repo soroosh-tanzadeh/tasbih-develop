@@ -59,21 +59,15 @@
             android:layout_height="1dp"
             android:background="@color/gold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerVertical="true"
-            android:gravity="left">
-
 
             <SeekBar
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="40dp"
                 android:id="@+id/player_seek_bar"
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="8dp"
                 android:thumb="@drawable/custom_thumb"
+                android:layout_marginTop="16dp"
                 />
 
             <ImageView
@@ -81,6 +75,7 @@
                 android:layout_height="20dp"
                 app:srcCompat="@drawable/ic_play2"
                 android:layout_marginLeft="24dp"
+                android:layout_below="@id/player_seek_bar"
                 android:id="@+id/play_btn"
                 android:visibility="gone" />
 
@@ -90,18 +85,17 @@
                 android:layout_marginLeft="24dp"
                 app:indicatorName="BallScaleIndicator"
                 android:visibility="visible"
+                android:layout_below="@id/player_seek_bar"
                 app:indicatorColor="@color/gold"
                 android:id="@+id/progress_loading" />
 
-
-        </LinearLayout>
-
         <TextView
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="انتخاب قاری"
             android:textColor="@color/gold"
+            android:layout_toRightOf="@id/player_seek_bar"
             android:layout_margin="16dp"
             android:background="@drawable/rounded_gold_drawable"
             android:gravity="center"

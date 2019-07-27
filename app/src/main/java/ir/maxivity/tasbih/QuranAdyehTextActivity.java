@@ -1,13 +1,17 @@
 package ir.maxivity.tasbih;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tomergoldst.tooltips.ToolTip;
@@ -62,10 +67,43 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
     private final String LIST_STATE = "list_state";
     private boolean toolTipshown = false;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quran_adyeh_text);
+        setContentView(R.layout.quran_drawerr_layout);
+
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.actionbar);
+        View actionbarview = getSupportActionBar().getCustomView();
+        ImageButton share_btn = actionbarview.findViewById(R.id.sharebtn);
+        ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
+        TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
+        TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
+
+        persianDate.setText(Utilities.getTodayJalaliDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this) + " / " + Utilities.getTodayGregortianDate(this));
+
+        drawerActions();
+
+        share_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareIntent();
+            }
+        });
+
+
+        final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+
+        settings_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
+
         header = findViewById(R.id.header_name_txt);
         content = findViewById(R.id.quran_recycler);
         seekBar = findViewById(R.id.player_seek_bar);
@@ -128,8 +166,7 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
                 e.printStackTrace();
             }
 
-        }
-        else
+        } else
             getAdyehText();
 
         header.setText(name);

@@ -1,20 +1,24 @@
 package ir.maxivity.tasbih;
 
+import android.app.ActionBar;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.io.IOException;
 
 import ir.maxivity.tasbih.dataAccess.DataFileAccess;
 import ir.maxivity.tasbih.dataAccess.ZekrData;
-import ir.maxivity.tasbih.tools.HeaderNav;
 import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
+import tools.Utilities;
 
 public class ZekrCounter extends BaseActivity {
 
@@ -22,10 +26,42 @@ public class ZekrCounter extends BaseActivity {
     String zekr_code;
     String zekr_name;
     MediaPlayer mediaPlayer;
+    private DrawerLayout drawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_zekr_counter);
+        setContentView(R.layout.zekr_counter_drawer_layout);
+
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.actionbar);
+        View actionbarview = getSupportActionBar().getCustomView();
+        ImageButton share_btn = actionbarview.findViewById(R.id.sharebtn);
+        ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
+        TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
+        TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
+
+        persianDate.setText(Utilities.getTodayJalaliDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this) + " / " + Utilities.getTodayGregortianDate(this));
+
+        drawerActions();
+
+        share_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareIntent();
+            }
+        });
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        settings_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
+
         mediaPlayer = MediaPlayer.create(this, R.raw.tasbih);
         try {
             mediaPlayer.prepare();
@@ -33,7 +69,7 @@ public class ZekrCounter extends BaseActivity {
             e.printStackTrace();
         }
 
-        this.zekr_code = getIntent().getExtras().getString("code");
+        this.zekr_code = getIntent().getExtras().getString("code", "");
         this.zekr_name = getIntent().getExtras().getString("zekrname");
 
         DataFileAccess dataFileAccess = new DataFileAccess(this);
@@ -49,8 +85,6 @@ public class ZekrCounter extends BaseActivity {
             Log.e("Reading Zekr",e.getMessage());
             zekr_num = 0;
         }
-        HeaderNav hn = new HeaderNav();
-        hn.loadHeadernav(this);
 
         ConstraintLayout zekrcounter = findViewById(R.id.countzekr_btn);
         final TextView zekrnum = findViewById(R.id.zekrnum);

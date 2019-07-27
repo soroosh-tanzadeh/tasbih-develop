@@ -136,10 +136,10 @@
     <string name="restaurant">رستوران</string>
     <string name="hotel">هتل</string>
     <string name="coffee_shop">کافی شاپ</string>
-    <string name="religious_places">نهاد مذهبی</string>
+    <string name="religious_places">مذهبی</string>
     <string name="hospital">بیمارستان</string>
     <string name="university">دانشگاه</string>
-    <string name="residency">اقامتگاه بومگردی</string>
+    <string name="residency">اقامتگاه</string>
     <string name="dentistry">دندان پزشکی</string>
     <string name="shop">فروشگاه</string>
     <string name="gym">باشگاه</string>

@@ -1,6 +1,7 @@
 package ir.maxivity.tasbih;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -24,11 +25,14 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ir.maxivity.tasbih.activities.SelectLanguageActivity;
+import ir.maxivity.tasbih.dataAccess.DataFileAccess;
+import ir.maxivity.tasbih.dataAccess.LocalDB;
 import ir.maxivity.tasbih.reminderTools.AlarmReceiver;
 import ir.maxivity.tasbih.reminderTools.BootReceiver;
 import ir.maxivity.tasbih.reminderTools.Reminder;
@@ -49,6 +53,29 @@ public class FullScreenSplash extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_splash);
+
+        final DataFileAccess dataFileAccess = new DataFileAccess(this);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    LocalDB localDB = dataFileAccess.readLocalDB();
+                    if (localDB != null) {
+
+                    } else {
+                        localDB = new LocalDB();
+                        dataFileAccess.writeLocalDB(localDB);
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         Calendar calendar = Calendar.getInstance();
@@ -56,15 +83,20 @@ public class FullScreenSplash extends BaseActivity {
 
         if (application.getAzanRefresh() == 0L) {
             application.setAzanRefreshKey(today);
-        }
-        if (daysBetween(application.getAzanRefresh(), today) != 5) {
+            setAlarms = true;
+        } else if (daysBetween(application.getAzanRefresh(), today) != 5) {
             Log.v("AZAN REFRESH", daysBetween(application.getAzanRefresh(), today) + "");
             setAlarms = false;
         } else {
             setAlarms = true;
         }
 
-
+        try {
+            if (setAlarms)
+                setAzanReminders();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -126,6 +158,7 @@ public class FullScreenSplash extends BaseActivity {
                 }).check();
     }
 
+    @SuppressLint("MissingPermission")
     private void saveUserLocation() {
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -133,23 +166,18 @@ public class FullScreenSplash extends BaseActivity {
             public void onSuccess(Location location) {
                 if (location != null) {
                     application.setUserLocation(location.getLatitude() + "," + location.getLongitude());
-                    try {
-                        if (setAlarms)
-                            setAzanReminders();
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         });
+
+
     }
 
     private java.util.Calendar setAzanTime(Date date, Time azantime) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        //java.util.Calendar calendar = java.util.Calendar.getInstance();
         calendar.set(java.util.Calendar.YEAR, calendar.get(Calendar.YEAR));
-        calendar.set(java.util.Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
+        calendar.set(java.util.Calendar.MONTH, calendar.get(Calendar.MONTH));
         calendar.set(java.util.Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
         calendar.set(java.util.Calendar.HOUR_OF_DAY, azantime.getHour());
         calendar.set(java.util.Calendar.MINUTE, azantime.getMinute());
@@ -176,9 +204,9 @@ public class FullScreenSplash extends BaseActivity {
         String id = "";
         if (application.getReminderIds() != null) {
             id = application.getReminderIds();
-            Log.v("FUCK MAIN", id);
         } else {
             addAzanRemindersToDatabase();
+            id = application.getReminderIds();
         }
 
         SimpleDate today = new SimpleDate(new GregorianCalendar());
@@ -197,12 +225,12 @@ public class FullScreenSplash extends BaseActivity {
         AzanTimes azanTimes = azan.getPrayerTimes(today);
         AlarmReceiver reciever = new AlarmReceiver();
         String[] speceficId = id.split(",");
+
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.fajr()), Integer.parseInt(speceficId[0]), BootReceiver.milDay);
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.thuhr()), Integer.parseInt(speceficId[1]), BootReceiver.milDay);
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.assr()), Integer.parseInt(speceficId[2]), BootReceiver.milDay);
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.maghrib()), Integer.parseInt(speceficId[3]), BootReceiver.milDay);
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.ishaa()), Integer.parseInt(speceficId[4]), BootReceiver.milDay);
-
         application.setAzanRefreshKey(date.getTimeInMillis());
     }
 }

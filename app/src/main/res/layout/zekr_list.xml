@@ -15,6 +15,7 @@
         android:drawableRight="@drawable/ic_search_vector"
         android:inputType="textFilter"
         android:selectAllOnFocus="false"
+        android:gravity="right"
         android:singleLine="false"
         android:textColor="#000" />
 
