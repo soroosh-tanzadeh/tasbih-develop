@@ -24,7 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     AlarmManager mAlarmManager;
     PendingIntent mPendingIntent;
     Context context;
-
+    public static final String CUSTOM_INTENT = "ir.maxivity.tasbih.intent.action.ALARM";
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
@@ -73,6 +73,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Put Reminder ID in Intent Extra
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra(ir.maxivity.tasbih.Calendar.EXTRA_REMINDER_ID, Integer.toString(ID));
+        intent.setAction(CUSTOM_INTENT);
         mPendingIntent = PendingIntent.getBroadcast(context, ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // Calculate notification time
@@ -81,7 +82,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         long diffTime = calendar.getTimeInMillis() - currentTime;
 
         // Start alarm using notification time
-        mAlarmManager.set(AlarmManager.ELAPSED_REALTIME,
+        mAlarmManager.set(AlarmManager.RTC_WAKEUP,
                 SystemClock.elapsedRealtime() + diffTime,
                 mPendingIntent);
 
@@ -99,6 +100,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Put Reminder ID in Intent Extra
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra(ir.maxivity.tasbih.Calendar.EXTRA_REMINDER_ID, Integer.toString(ID));
+        intent.setAction(CUSTOM_INTENT);
         mPendingIntent = PendingIntent.getBroadcast(context, ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // Calculate notification timein

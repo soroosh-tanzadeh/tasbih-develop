@@ -92,7 +92,11 @@
         <activity android:name=".Qiblah_compass" />
         <activity android:name=".BaseActivity" />
 
-        <receiver android:name=".reminderTools.AlarmReceiver" />
+        <receiver android:name=".reminderTools.AlarmReceiver">
+            <intent-filter>
+                <action android:name="ir.maxivity.tasbih.intent.action.ALARM" />
+            </intent-filter>
+        </receiver>
 
         <receiver android:name=".reminderTools.BootReceiver">
             <intent-filter>
