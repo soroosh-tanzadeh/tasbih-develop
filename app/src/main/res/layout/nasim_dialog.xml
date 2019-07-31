@@ -24,7 +24,7 @@
         android:visibility="gone"
         android:layout_centerInParent="true"
         style="@style/AVLoadingIndicatorView"
-        app:indicatorName="BallClipRotateIndicator"
+        app:indicatorName="BallScaleIndicator"
         app:indicatorColor="@color/primary" />
 
     <TextView

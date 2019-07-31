@@ -25,9 +25,23 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        tools:replace="android:supportsRtl"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:supportsRtl">
+        <activity android:name=".activities.SettingActivity"></activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="ir.maxivity.tasbih.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <activity android:name=".activities.AddMessagesActivity" />
+        <activity android:name=".activities.BackgroundActivity" />
         <activity android:name=".activities.ReminderActivity" />
         <activity android:name=".activities.BackgroundsActivity" />
         <activity android:name=".activities.MyPlacesActivity" />
@@ -47,6 +61,7 @@
         <service
             android:name=".reminderTools.MyJobIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <activity
             android:name=".Calendar"
             android:theme="@style/CalendarTheme" />
@@ -97,15 +112,12 @@
                 <action android:name="ir.maxivity.tasbih.intent.action.ALARM" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".reminderTools.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".reminderTools.AzanReciever" />
-
         <receiver
             android:name=".reminderTools.NotificationDismissReciever"
             android:exported="false" />

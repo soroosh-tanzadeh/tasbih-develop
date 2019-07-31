@@ -80,12 +80,11 @@ public class FullScreenSplash extends BaseActivity {
 
         Calendar calendar = Calendar.getInstance();
         long today = calendar.getTimeInMillis();
-
         if (application.getAzanRefresh() == 0L) {
             application.setAzanRefreshKey(today);
             setAlarms = true;
-        } else if (daysBetween(application.getAzanRefresh(), today) != 5) {
-            Log.v("AZAN REFRESH", daysBetween(application.getAzanRefresh(), today) + "");
+        } else if (daysBetween(application.getAzanRefresh(), today) < 5) {
+            Log.v("FUCK REFRESH", daysBetween(application.getAzanRefresh(), today) + "");
             setAlarms = false;
         } else {
             setAlarms = true;
@@ -107,7 +106,7 @@ public class FullScreenSplash extends BaseActivity {
     }
 
     private void navigateToNext() {
-        if (application.getUserId() != null) {
+        if (application.getToken() != null) {
             Intent intent = new Intent(FullScreenSplash.this, MainActivity.class);
             startActivity(intent);
             finish();

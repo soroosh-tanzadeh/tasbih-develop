@@ -5,10 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -56,7 +56,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
         TextView name;
         ImageView image;
-        RelativeLayout wrapper;
+        CardView wrapper;
 
         public MessagesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -85,7 +85,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         this.listener = itemClickListener;
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(GetMessages.Message message);
     }
 }

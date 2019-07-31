@@ -563,7 +563,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
         final MainActivity main = (MainActivity) getActivity();
         final NasimDialog dialog = main.showLoadingDialog();
 
-        RequestBody pass = RequestBody.create(MediaType.parse("text/plain"), "R&K7v2t9tQ*Pez@p");
+        RequestBody pass = RequestBody.create(MediaType.parse("text/plain"), main.application.getToken());
         RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), main.application.getUserId());
         RequestBody place_id = RequestBody.create(MediaType.parse("text/plain"), id);
         dialog.show();

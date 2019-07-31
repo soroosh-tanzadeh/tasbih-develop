@@ -21,7 +21,7 @@
         android:textAlignment="center"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:text="عنوان تخفیف"
+        android:text="عنوان رویداد"
         android:padding="2dp"
         app:layout_constraintStart_toStartOf="parent"/>
 </LinearLayout>

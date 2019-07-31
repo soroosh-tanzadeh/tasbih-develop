@@ -1,5 +1,6 @@
 package ir.maxivity.tasbih;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ir.maxivity.tasbih.activities.BackgroundActivity;
 import ir.maxivity.tasbih.adapters.MessagesAdapter;
 import ir.maxivity.tasbih.models.GetMessages;
 import retrofit2.Call;
@@ -30,6 +32,16 @@ public class MessagesActivity extends BaseActivity {
         initViews();
 
         getMessagesRequest();
+
+        adapter.setCLickListener(new MessagesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(GetMessages.Message message) {
+                Intent intent = new Intent(MessagesActivity.this, BackgroundActivity.class);
+                intent.putExtra("MESSAGE_NAME", message.name);
+                intent.putExtra("MESSAGE_URL", message.url);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initViews() {
@@ -67,7 +79,7 @@ public class MessagesActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<GetMessages> call, Throwable t) {
-
+                loading.dismiss();
                 showShortToast(getString(R.string.request_failure_text));
             }
         });

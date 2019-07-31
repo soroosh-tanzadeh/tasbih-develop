@@ -3,6 +3,7 @@ package ir.maxivity.tasbih.interfaces;
 import ir.maxivity.tasbih.models.AddFavortiePlace;
 import ir.maxivity.tasbih.models.AddNewEvent;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
+import ir.maxivity.tasbih.models.GetBackgroundResponse;
 import ir.maxivity.tasbih.models.GetFavoritePlaces;
 import ir.maxivity.tasbih.models.GetMessages;
 import ir.maxivity.tasbih.models.GetPlaces;
@@ -66,5 +67,15 @@ public interface API {
     @Multipart
     @POST("get-qurantranslate.php")
     Call<GetQuranText> getQuranTranslate(@Part("lang") RequestBody lang, @Part("sura") RequestBody sura);
+
+    @Multipart
+    @POST("verifycode.php")
+    Call<LoginResponse> verfiyCode(@Part("phone") RequestBody phone,
+                                   @Part("sessionid") RequestBody sessionId,
+                                   @Part("code") RequestBody code,
+                                   @Part("userid") RequestBody userId);
+
+    @GET("get-background.php")
+    Call<GetBackgroundResponse> getBackgrounds();
 
 }

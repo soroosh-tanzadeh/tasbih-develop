@@ -28,6 +28,7 @@ public class Login extends BaseActivity {
     private Button sendVirificationbtn;
     private Button login_submit;
     private TextView loginLater;
+    private LoginResponse mResponse;
 
     private VerficationResult verficationResult;
 
@@ -44,6 +45,7 @@ public class Login extends BaseActivity {
         sendVirificationbtn.setVisibility(View.GONE);
         login_submit = findViewById(R.id.login_submit);
         loginLater = findViewById(R.id.login_later);
+        mResponse = new LoginResponse();
         phonenumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -170,16 +172,18 @@ public class Login extends BaseActivity {
         login_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo move authorization out of the click
-                if (application.getToken() == null)
-                    loginRequest(phonenumber.getText().toString());
-                else {
-                    Log.v(TAG, "user id : " + application.getUserId());
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                loginRequest(phonenumber.getText().toString());
+            }
+        });
 
+        sendVirificationbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (verificationcode.getText().length() == 4) {
+                    verificationRequest(mResponse, verificationcode.getText().toString());
+                } else {
+                    showShortToast("لطفا کد را وارد کنید");
+                }
             }
         });
 
@@ -194,6 +198,39 @@ public class Login extends BaseActivity {
         });
     }
 
+
+    private void verificationRequest(LoginResponse response, String verifyCode) {
+        RequestBody phone = RequestBody.create(Utilities.TEXT, response.phoneNumber);
+        RequestBody sessionId = RequestBody.create(Utilities.TEXT, response.data);
+        RequestBody userId = RequestBody.create(Utilities.TEXT, response.user_id);
+        RequestBody code = RequestBody.create(Utilities.TEXT, verifyCode);
+        final NasimDialog dialog = showLoadingDialog();
+        dialog.show();
+
+        application.api.verfiyCode(phone, sessionId, code, userId).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                dialog.dismiss();
+                if (response.isSuccessful() && response.body() != null) {
+                    application.setToken(response.body().data);
+                    application.setUserId(response.body().user_id);
+                    application.setLoginLater(false);
+                    //Toast.makeText(getApplicationContext(), "result ok going to main", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    showShortToast("در حال حاظر امکان ثبت نام وجود ندارد");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                dialog.dismiss();
+                showShortToast(t.getMessage());
+            }
+        });
+    }
     private void loginRequest(String phone) {
 
         String body = Utilities.createBody(phone);
@@ -206,13 +243,16 @@ public class Login extends BaseActivity {
                 try {
                     if (response.isSuccessful()) {
                         if (response.body().resultcode == 1) {
-                            application.setToken(response.body().data);
+                           /* application.setToken(response.body().data);
                             application.setUserId(response.body().user_id);
                             application.setLoginLater(false);
                             Toast.makeText(getApplicationContext(), "result ok going to main", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Login.this, MainActivity.class);
                             startActivity(intent);
-                            finish();
+                            finish();*/
+                            goToVerificationMode();
+                            mResponse = response.body();
+
                         } else {
                             Toast.makeText(getApplicationContext(), response.body().msg, Toast.LENGTH_SHORT).show();
 

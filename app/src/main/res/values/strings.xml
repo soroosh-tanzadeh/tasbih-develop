@@ -187,6 +187,9 @@
     <string name="persian">Persian (فارسی)</string>
     <string name="arabic">Arabic (العربی)</string>
     <string name="guest_user">کاربر مهمان</string>
+    <string name="font_size">اندازه قلم</string>
+    <string name="text_color">رنگ متن</string>
+    <string name="eqame">اقامه</string>
 
 
     <string-array name="category_list">

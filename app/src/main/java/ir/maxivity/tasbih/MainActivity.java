@@ -35,6 +35,7 @@ import co.ronash.pushe.Pushe;
 import ir.maxivity.tasbih.activities.FavoritePlacesActivity;
 import ir.maxivity.tasbih.activities.MyPlacesActivity;
 import ir.maxivity.tasbih.activities.ReminderActivity;
+import ir.maxivity.tasbih.activities.SettingActivity;
 import ir.maxivity.tasbih.adapters.DrawerListAdapter;
 import ir.maxivity.tasbih.fragments.mapFragments.BaseFragment;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
@@ -56,7 +57,7 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
     // Iran location
 
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "WrongConstant"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -236,6 +237,11 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
                 }
                 if (items.getItems().get(i).getText() == getString(R.string.reminder)) {
                     Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
+                    startActivity(intent);
+                }
+
+                if (items.getItems().get(i).getText() == getString(R.string.settings)) {
+                    Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                     startActivity(intent);
                 }
             }

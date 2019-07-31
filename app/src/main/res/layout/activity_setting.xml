@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.SettingActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/azan_settings"
+        android:background="?attr/selectableItemBackground"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:id="@+id/azan_icon"
+            android:background="@drawable/adhan_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/azan_icon"
+            android:layout_marginRight="16dp"
+            android:text="اذان"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_300"
+            android:layout_marginRight="32dp"
+            android:layout_marginLeft="32dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/language_setting"
+        android:background="?attr/selectableItemBackground"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:id="@+id/language_icon"
+            android:background="@drawable/language_icon_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/language_icon"
+            android:layout_marginRight="16dp"
+            android:text="انتخاب زبان"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_300"
+            android:layout_marginRight="32dp"
+            android:layout_marginLeft="32dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

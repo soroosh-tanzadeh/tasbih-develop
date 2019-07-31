@@ -14,8 +14,8 @@ public class CreateDrawerItem {
     public CreateDrawerItem(Context context, String userName, boolean signUp) {
         items.add(new DrawerItem(R.drawable.user, userName));
         items.add(new DrawerItem(R.drawable.ic_fave, context.getString(R.string.favorite)));
-        items.add(new DrawerItem(R.drawable.ic_location_blue, context.getString(R.string.my_places)));
-        items.add(new DrawerItem(R.drawable.ic_event_blue, context.getString(R.string.reminder)));
+        items.add(new DrawerItem(R.drawable.marker2, context.getString(R.string.my_places)));
+        items.add(new DrawerItem(R.drawable.alarm_blur, context.getString(R.string.reminder)));
         items.add(new DrawerItem(R.drawable.ic_settings_blue, context.getString(R.string.settings)));
         if (signUp)
             items.add(new DrawerItem(R.drawable.ic_login, context.getString(R.string.sign_up)));
