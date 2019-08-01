@@ -9,10 +9,13 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import ir.maxivity.tasbih.LocationType;
 import ir.maxivity.tasbih.R;
 import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
-import ir.mirrajabi.persiancalendar.core.models.CivilDate;
 import ir.mirrajabi.persiancalendar.core.models.IslamicDate;
 import ir.mirrajabi.persiancalendar.core.models.PersianDate;
 import ir.mirrajabi.persiancalendar.helpers.DateConverter;
@@ -153,16 +156,20 @@ public class Utilities {
     }
 
     public static String getTodayGregortianDate(Context context) {
-        PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
+        /*PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
         PersianDate date = calendar.getToday();
         CivilDate civilDate = DateConverter.persianToCivil(date);
         String[] eMonthNames = {
-                "ژانویه", "فوریه", "مارس", "آوریل", "مه", "ژوئن", "ژوئیه", "اوت", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"
+                "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug","sep","oct","nov","dec"
         };
 
-        return calendar.formatNumber(civilDate.getDayOfMonth() + "") + " " +
+        return numberConvert_Fa2En(calendar.formatNumber(civilDate.getDayOfMonth() + " ") + " " +
                 eMonthNames[civilDate.getMonth() - 1] + " " +
-                civilDate.getYear();
+                civilDate.getYear());*/
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy");
+        return df.format(c);
     }
 
 }

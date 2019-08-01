@@ -79,8 +79,10 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
         ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
         TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
         TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
+        TextView englishDate = actionbarview.findViewById(R.id.english_date_text);
         persianDate.setText(Utilities.getTodayJalaliDate(this));
-        arabicDate.setText(Utilities.getTodayIslamicDate(this) + " / " + Utilities.getTodayGregortianDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this));
+        englishDate.setText(Utilities.getTodayGregortianDate(this));
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -203,7 +205,13 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
     private void initViews() {
         drawerItemList = findViewById(R.id.drawer_item_list);
 
-        final CreateDrawerItem items = new CreateDrawerItem(this, getString(R.string.guest_user), application.getLoginLater());
+        String user = "";
+        if (application.getToken() != null) {
+            user = application.getUserId();
+        } else {
+            user = getString(R.string.guest_user);
+        }
+        final CreateDrawerItem items = new CreateDrawerItem(this, user, application.getLoginLater());
 
         DrawerListAdapter adapter = new DrawerListAdapter(this, R.layout.drawer_item_layout, items.getItems());
 

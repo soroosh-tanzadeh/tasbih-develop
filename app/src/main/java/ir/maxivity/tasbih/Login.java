@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 
 import ir.maxivity.tasbih.dataAccess.VerficationResult;
 import ir.maxivity.tasbih.models.LoginResponse;
+import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -200,7 +201,7 @@ public class Login extends BaseActivity {
 
 
     private void verificationRequest(LoginResponse response, String verifyCode) {
-        RequestBody phone = RequestBody.create(Utilities.TEXT, response.phoneNumber);
+        RequestBody phone = RequestBody.create(MediaType.parse("text/plain"), response.phoneNumber);
         RequestBody sessionId = RequestBody.create(Utilities.TEXT, response.data);
         RequestBody userId = RequestBody.create(Utilities.TEXT, response.user_id);
         RequestBody code = RequestBody.create(Utilities.TEXT, verifyCode);

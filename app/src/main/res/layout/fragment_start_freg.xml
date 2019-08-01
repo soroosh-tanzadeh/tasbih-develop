@@ -22,34 +22,34 @@
                 android:layout_height="230dp"
                 android:background="@drawable/rezablur">
 
-                <ImageButton
-                    android:id="@+id/imageView3"
-                    style="@style/PrimaryFlatButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/transparent"
-                    android:theme="@style/PrimaryFlatButton"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_access_time_black_24dp" />
+                <!--  <ImageButton
+                      android:id="@+id/imageView3"
+                      style="@style/PrimaryFlatButton"
+                      android:layout_width="48dp"
+                      android:layout_height="48dp"
+                      android:layout_marginStart="8dp"
+                      android:layout_marginLeft="8dp"
+                      android:layout_marginTop="8dp"
+                      android:background="@android:color/transparent"
+                      android:theme="@style/PrimaryFlatButton"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:srcCompat="@drawable/ic_access_time_black_24dp" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_marginTop="16dp"
-                    android:paddingTop="10dp"
-                    android:gravity="center"
-                    android:text="بوشهر"
-                    android:textAlignment="center"
-                    android:textColor="#FFF"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
-                    app:layout_constraintTop_toTopOf="parent" />
+                  <TextView
+                      android:id="@+id/textView2"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_margin="1dp"
+                      android:layout_marginTop="16dp"
+                      android:paddingTop="10dp"
+                      android:gravity="center"
+                      android:text="بوشهر"
+                      android:textAlignment="center"
+                      android:textColor="#FFF"
+                      android:textSize="24sp"
+                      app:layout_constraintStart_toEndOf="@+id/imageView3"
+                      app:layout_constraintTop_toTopOf="parent" />-->
 
 
 
@@ -71,26 +71,26 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/volumeButton"
+                    android:contentDescription="ON"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:visibility="gone"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="172dp"
                     android:background="@android:color/transparent"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/ic_volume_off_black_24dp" />
-24
+                    app:layout_constraintStart_toStartOf="parent" />
+
 
                 <ImageButton
                     android:id="@+id/calendar_btn"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="172dp"
                     android:background="@android:color/transparent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

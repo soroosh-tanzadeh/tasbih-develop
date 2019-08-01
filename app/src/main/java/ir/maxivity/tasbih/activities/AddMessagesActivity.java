@@ -5,11 +5,17 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,6 +27,7 @@ import androidx.core.content.FileProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,6 +43,8 @@ public class AddMessagesActivity extends BaseActivity {
     TextView messageName;
     SeekBar font;
     FrameLayout imageWrapper;
+    Bitmap imageBitmap;
+    Button send;
 
     String backgorundUrl, messageUrl, messageNameText;
 
@@ -52,6 +61,7 @@ public class AddMessagesActivity extends BaseActivity {
         imageWrapper = findViewById(R.id.image_wrapper);
         whiteColor = findViewById(R.id.white_color);
         blackColor = findViewById(R.id.black_color);
+        send = findViewById(R.id.send_btn);
 
         this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -62,13 +72,22 @@ public class AddMessagesActivity extends BaseActivity {
         TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
         TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
 
+        TextView englishDate = actionbarview.findViewById(R.id.english_date_text);
         persianDate.setText(Utilities.getTodayJalaliDate(this));
-        arabicDate.setText(Utilities.getTodayIslamicDate(this) + " / " + Utilities.getTodayGregortianDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this));
+        englishDate.setText(Utilities.getTodayGregortianDate(this));
 
 
         share_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                shareIntent();
+            }
+        });
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Bitmap bitmap = viewToBitmap(imageWrapper);
                 saveImage(bitmap);
                 shareImage();
@@ -93,6 +112,23 @@ public class AddMessagesActivity extends BaseActivity {
 
         }
 
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                message.setImageBitmap(bitmap);
+                imageBitmap = bitmap;
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
 
         Picasso.get().load(backgorundUrl).fit().into(background);
         Picasso.get().load(messageUrl).fit().into(message);
@@ -102,6 +138,7 @@ public class AddMessagesActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 messageName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                message.setColorFilter(R.color.gray_100, PorterDuff.Mode.SRC_ATOP);
             }
         });
 
@@ -109,6 +146,7 @@ public class AddMessagesActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 messageName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                message.setColorFilter(R.color.black, PorterDuff.Mode.SRC_ATOP);
             }
         });
 
@@ -173,6 +211,18 @@ public class AddMessagesActivity extends BaseActivity {
             startActivity(Intent.createChooser(shareIntent, "Choose an app"));
         }
     }
+
+    public void changeBitmapColor(Bitmap bm, int color) {
+
+        Paint paint = new Paint();
+        ColorFilter filter = new PorterDuffColorFilter(ContextCompat.getColor(this, color), PorterDuff.Mode.SRC_IN);
+        paint.setColorFilter(filter);
+
+        Canvas canvas = new Canvas(bm);
+        canvas.drawBitmap(bm, 0, 0, paint);
+    }
+
+
 
 
 }

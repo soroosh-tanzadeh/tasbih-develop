@@ -30,18 +30,50 @@
                 android:layout_gravity="center"
                 app:fontFamily="sans-serif" />
 
-            <TextView
-                android:id="@+id/arabic_date_text"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="0dp"
-                android:paddingBottom="5dp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textColor="#DFDFDF"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:fontFamily="sans-serif" />
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/english_date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="5dp"
+                    android:gravity="center"
+                    android:textColor="#DFDFDF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:fontFamily="sans-serif" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="5dp"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textColor="#DFDFDF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:fontFamily="sans-serif" />
+
+                <TextView
+                    android:id="@+id/arabic_date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="5dp"
+                    android:gravity="center"
+                    android:textColor="#DFDFDF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:fontFamily="sans-serif" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </LinearLayout>

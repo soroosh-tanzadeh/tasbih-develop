@@ -186,8 +186,46 @@
                 android:layout_height="wrap_content"
                 android:text="@string/eqame"
                 android:layout_toLeftOf="@id/eqame_check"
+                android:id="@+id/eqame_text"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp" />
+                android:layout_marginRight="8dp" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text=""
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/eqame_text"
+                android:layout_marginRight="16dp"
+                android:id="@+id/shiaa" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shiaa"
+                android:layout_toLeftOf="@id/shiaa"
+                android:id="@+id/shiaa_text"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp" />
+
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text=""
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/shiaa_text"
+                android:layout_marginRight="16dp"
+                android:id="@+id/soni" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/soni"
+                android:layout_toLeftOf="@id/soni"
+                android:id="@+id/soni_text"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp" />
 
         </RelativeLayout>
 

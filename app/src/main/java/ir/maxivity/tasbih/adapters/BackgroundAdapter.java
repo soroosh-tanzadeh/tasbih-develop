@@ -54,7 +54,7 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Ba
         }
 
         public void setData(final String url) {
-            Picasso.get().load(url).into(image);
+            Picasso.get().load(url).placeholder(R.drawable.placeholder).into(image);
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

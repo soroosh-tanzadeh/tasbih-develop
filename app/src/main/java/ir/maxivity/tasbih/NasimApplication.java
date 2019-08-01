@@ -17,6 +17,7 @@ public class NasimApplication extends Application {
     private final String PREF_LOGIN_LATER_KEY = "LOGIN_LATER";
     private final String PREF_AZAN_IDS_KEY = "AZAN_ID";
     private final String PREF_AZAN_REFRESH_KEY = "AZAN_REFRESH";
+    private final String PREF_APP_SOUND = "SOUND_MODE";
 
     public static final String PREF_USER_LOCATION_KEY = "USER_LOCATION";
     public static final String MAIN_PREF_NAME = "NASIM_PREF_FILE";
@@ -118,6 +119,18 @@ public class NasimApplication extends Application {
         long def = 0L;
         SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
         return sharedPreferences.getLong(PREF_AZAN_REFRESH_KEY, def);
+    }
+
+    public void setApplicationSound(String mode) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_APP_SOUND, mode);
+        editor.apply();
+    }
+
+    public String getSoundMode() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(PREF_APP_SOUND, null);
     }
 
 }

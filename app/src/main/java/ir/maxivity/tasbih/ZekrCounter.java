@@ -40,9 +40,10 @@ public class ZekrCounter extends BaseActivity {
         ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
         TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
         TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
-
+        TextView englishDate = actionbarview.findViewById(R.id.english_date_text);
         persianDate.setText(Utilities.getTodayJalaliDate(this));
-        arabicDate.setText(Utilities.getTodayIslamicDate(this) + " / " + Utilities.getTodayGregortianDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this));
+        englishDate.setText(Utilities.getTodayGregortianDate(this));
 
         drawerActions();
 

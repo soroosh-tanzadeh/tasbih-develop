@@ -175,6 +175,9 @@ public class FullScreenSplash extends BaseActivity {
     private java.util.Calendar setAzanTime(Date date, Time azantime) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        if (passedTime(azantime, date)) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
         calendar.set(java.util.Calendar.YEAR, calendar.get(Calendar.YEAR));
         calendar.set(java.util.Calendar.MONTH, calendar.get(Calendar.MONTH));
         calendar.set(java.util.Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
@@ -182,6 +185,15 @@ public class FullScreenSplash extends BaseActivity {
         calendar.set(java.util.Calendar.MINUTE, azantime.getMinute());
         calendar.set(Calendar.SECOND, azantime.getSecond());
         return calendar;
+    }
+
+    private boolean passedTime(Time azantime, Date date) {
+        Calendar calendar = Calendar.getInstance();
+        if (calendar.get(Calendar.HOUR_OF_DAY) > azantime.getHour()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void addAzanRemindersToDatabase() {
@@ -210,7 +222,6 @@ public class FullScreenSplash extends BaseActivity {
 
         SimpleDate today = new SimpleDate(new GregorianCalendar());
         Calendar date = Calendar.getInstance();
-        date.add(Calendar.DAY_OF_YEAR, 1);
         double lat = iranDefaultLat;
         double lon = iranDefaultLon;
         try {
@@ -224,6 +235,7 @@ public class FullScreenSplash extends BaseActivity {
         AzanTimes azanTimes = azan.getPrayerTimes(today);
         AlarmReceiver reciever = new AlarmReceiver();
         String[] speceficId = id.split(",");
+
 
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.fajr()), Integer.parseInt(speceficId[0]), BootReceiver.milDay);
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.thuhr()), Integer.parseInt(speceficId[1]), BootReceiver.milDay);

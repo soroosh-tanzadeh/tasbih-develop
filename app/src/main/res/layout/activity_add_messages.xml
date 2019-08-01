@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/image_wrapper"
-        android:layout_above="@id/colorPicker">
+        android:layout_above="@id/font_wrapper">
 
         <ImageView
             android:layout_width="match_parent"
@@ -43,22 +43,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:id="@+id/font_wrapper"
         android:background="@color/white">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_400" />
-
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="50dp"
             android:orientation="horizontal"
+            android:id="@+id/font_wrapper_main"
+            android:layout_alignParentRight="true"
+            android:layout_margin="8dp"
             android:gravity="center">
 
             <SeekBar
@@ -78,26 +75,15 @@
                 android:layout_centerVertical="true" />
         </LinearLayout>
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/colorPicker"
-        android:layout_above="@id/font_wrapper"
-        android:background="@color/white">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorAccent" />
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal"
+            android:layout_below="@id/font_wrapper_main"
             android:gravity="center"
-            android:layout_centerInParent="true">
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp">
 
             <ImageView
                 android:layout_width="40dp"
@@ -125,6 +111,17 @@
                 android:layout_gravity="center" />
 
         </LinearLayout>
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/background_outline_round"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:text="ارسال"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/send_btn" />
 
 
     </RelativeLayout>

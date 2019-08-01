@@ -38,7 +38,7 @@ public class Today_tab extends Fragment {
                 "شعبان", "رمضان", "شوال", "ذی‌القعده", "ذی‌الحجه"};
 
         String[] eMonthNames = {
-                "ژانویه", "فوریه", "مارس", "آوریل", "مه", "ژوئن", "ژوئیه", "اوت","سپتامبر","اکتبر","نوامبر","دسامبر"
+                "jan", "feb", "mar", "apr", "may", "jum", "jul", "aug", "sep", "oct", "nov", "dec"
         };
 
     @Nullable

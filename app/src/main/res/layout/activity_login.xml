@@ -66,6 +66,7 @@
                             android:fitsSystemWindows="false"
                             android:gravity="center"
                             android:hint="کد فعال سازی"
+                            android:maxLength="4"
                             android:inputType="numberDecimal"
                             android:textColor="#000"
                             android:textColorHint="#000"

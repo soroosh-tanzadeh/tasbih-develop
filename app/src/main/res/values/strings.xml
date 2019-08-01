@@ -156,7 +156,7 @@
     <string name="podcast">پادکست</string>
     <string name="online_pray">زیارت آنلاین</string>
     <string name="zekr_counter">ذکر شمار</string>
-    <string name="quran_adyeh">قرآن و اعدیه</string>
+    <string name="quran_adyeh">قرآن و ادعیه</string>
     <string name="qibla_compass">قبله‌نما</string>
     <string name="ok">باشه</string>
     <string name="request_failure_text">مشکلی پیش آمده بعدا دوباره تلاش کنید</string>
@@ -190,6 +190,8 @@
     <string name="font_size">اندازه قلم</string>
     <string name="text_color">رنگ متن</string>
     <string name="eqame">اقامه</string>
+    <string name="shiaa">شیعه</string>
+    <string name="soni">سنی</string>
 
 
     <string-array name="category_list">
