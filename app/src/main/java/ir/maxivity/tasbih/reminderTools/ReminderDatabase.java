@@ -80,7 +80,7 @@ public class ReminderDatabase extends SQLiteOpenHelper {
         return (int) ID;
     }
 
-    public Reminder getReminder(int id) {
+    public Reminder getReminder(int id) throws NullPointerException {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_REMINDERS, new String[]

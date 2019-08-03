@@ -83,7 +83,7 @@ public class FullScreenSplash extends BaseActivity {
         if (application.getAzanRefresh() == 0L) {
             application.setAzanRefreshKey(today);
             setAlarms = true;
-        } else if (daysBetween(application.getAzanRefresh(), today) < 5) {
+        } else if (daysBetween(application.getAzanRefresh(), today) < 3) {
             Log.v("FUCK REFRESH", daysBetween(application.getAzanRefresh(), today) + "");
             setAlarms = false;
         } else {

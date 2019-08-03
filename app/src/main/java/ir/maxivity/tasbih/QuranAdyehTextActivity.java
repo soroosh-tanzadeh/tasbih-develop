@@ -193,7 +193,12 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
                         mediaPlayer.start();
                         play.setImageResource(R.drawable.ic_pause);
                     }
-                    primarySeekBarProgressUpdater();
+                    try {
+                        primarySeekBarProgressUpdater();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     showShortToast("فایل هنوز آماده نیست");
                 }

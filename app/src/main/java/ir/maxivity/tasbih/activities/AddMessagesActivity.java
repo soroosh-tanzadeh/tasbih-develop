@@ -9,9 +9,9 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -27,7 +27,6 @@ import androidx.core.content.FileProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -112,26 +111,10 @@ public class AddMessagesActivity extends BaseActivity {
 
         }
 
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                message.setImageBitmap(bitmap);
-                imageBitmap = bitmap;
-            }
-
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
+        Log.v("FUCK MESSAGE", "" + background.getWidth());
 
         Picasso.get().load(backgorundUrl).fit().into(background);
-        Picasso.get().load(messageUrl).fit().into(message);
+        Picasso.get().load(messageUrl).into(message);
         messageName.setText(messageNameText);
 
         whiteColor.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +203,14 @@ public class AddMessagesActivity extends BaseActivity {
 
         Canvas canvas = new Canvas(bm);
         canvas.drawBitmap(bm, 0, 0, paint);
+    }
+
+    public float getPixelFromDp(float dp) {
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                getResources().getDisplayMetrics()
+        );
     }
 
 

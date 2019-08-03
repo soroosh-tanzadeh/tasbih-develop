@@ -22,8 +22,8 @@
             android:layout_gravity="center">
 
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/message_image"
                 android:layout_centerInParent="true" />
 
@@ -33,7 +33,6 @@
                 android:fontFamily="@font/neirizi_font"
                 android:layout_below="@id/message_image"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
                 android:id="@+id/message_name"
                 android:textSize="20sp"
                 android:gravity="center" />

@@ -9,6 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/gray_100"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/messages_list"
         android:layout_margin="8dp" />

@@ -192,6 +192,7 @@
     <string name="eqame">اقامه</string>
     <string name="shiaa">شیعه</string>
     <string name="soni">سنی</string>
+    <string name="azan_setting">تنظیمات اذان</string>
 
 
     <string-array name="category_list">
