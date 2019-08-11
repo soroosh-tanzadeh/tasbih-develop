@@ -66,6 +66,7 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
     private Parcelable listState;
     private final String LIST_STATE = "list_state";
     private boolean toolTipshown = false;
+    private Runnable playerRunnable;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -195,12 +196,6 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
                         play.setImageResource(R.drawable.ic_pause);
                         mySeekBarUpdator();
                     }
-                    /*try {
-                        primarySeekBarProgressUpdater();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
                 } else {
                     showShortToast("فایل هنوز آماده نیست");
                 }
@@ -211,9 +206,11 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (mediaPlayer != null && b) {
-                    mediaPlayer.seekTo(i / 1000);
-                }
+
+                /*if (mediaPlayer != null && b) {
+                    Log.v("FUCK PLAYER" , "progress: " + i * 1000);
+                    mediaPlayer.seekTo(i * 1000 );
+                }*/
             }
 
             @Override
@@ -223,7 +220,8 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                if (mediaPlayer.isPlaying())
+                    mediaPlayer.seekTo(seekBar.getProgress() * 1000);
             }
         });
     }
@@ -236,6 +234,7 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
     @Override
     protected void onPause() {
         super.onPause();
+        handler.removeCallbacks(this.playerRunnable);
     }
 
     @Override
@@ -262,15 +261,20 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
     }
 
     private void mySeekBarUpdator() {
-        final Handler handler = new Handler();
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mediaPlayer != null) {
-                    int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
-                    seekBar.setProgress(currentPosition);
+                try {
+                    if (mediaPlayer != null) {
+                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                        seekBar.setProgress(currentPosition);
+                    }
+                    handler.postDelayed(this, 1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    handler.removeCallbacks(this);
                 }
-                handler.postDelayed(this, 1000);
+
             }
         });
     }
@@ -444,6 +448,7 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        mediaPlayer.stop();
         mediaPlayer.release();
     }
 }

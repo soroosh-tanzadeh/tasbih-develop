@@ -22,21 +22,18 @@
             android:layout_gravity="center">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/message_image"
                 android:layout_centerInParent="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/neirizi_font"
-                android:layout_below="@id/message_image"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/message_name"
-                android:textSize="20sp"
-                android:gravity="center" />
         </RelativeLayout>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/tasbih_ic"
+            android:layout_gravity="bottom" />
 
     </FrameLayout>
 

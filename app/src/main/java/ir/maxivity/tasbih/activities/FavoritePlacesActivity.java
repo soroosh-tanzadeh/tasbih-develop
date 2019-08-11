@@ -1,8 +1,11 @@
 package ir.maxivity.tasbih.activities;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +37,29 @@ public class FavoritePlacesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_places);
+
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.actionbar);
+        View actionbarview = getSupportActionBar().getCustomView();
+        ImageButton share_btn = actionbarview.findViewById(R.id.sharebtn);
+        ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
+        TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
+        TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
+
+        settings_btn.setVisibility(View.GONE);
+        TextView englishDate = actionbarview.findViewById(R.id.english_date_text);
+        persianDate.setText(Utilities.getTodayJalaliDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this));
+        englishDate.setText(Utilities.getTodayGregortianDate(this));
+
+
+        share_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareIntent();
+            }
+        });
 
         favoriteList = findViewById(R.id.favorite_place_recycler);
         empty = findViewById(R.id.empty_list);

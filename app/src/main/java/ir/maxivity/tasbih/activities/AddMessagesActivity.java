@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -39,7 +40,6 @@ import tools.Utilities;
 public class AddMessagesActivity extends BaseActivity {
 
     ImageView background, message, whiteColor, blackColor;
-    TextView messageName;
     SeekBar font;
     FrameLayout imageWrapper;
     Bitmap imageBitmap;
@@ -55,7 +55,6 @@ public class AddMessagesActivity extends BaseActivity {
 
         background = findViewById(R.id.background_image);
         message = findViewById(R.id.message_image);
-        messageName = findViewById(R.id.message_name);
         font = findViewById(R.id.font_seek_bar);
         imageWrapper = findViewById(R.id.image_wrapper);
         whiteColor = findViewById(R.id.white_color);
@@ -108,39 +107,38 @@ public class AddMessagesActivity extends BaseActivity {
             backgorundUrl = getIntent().getStringExtra("BACKGROUND_URL");
             messageUrl = getIntent().getStringExtra("MESSAGE_URL");
             messageNameText = getIntent().getStringExtra("MESSAGE_NAME");
-
+            Log.v("FUCK MESSAGE", backgorundUrl);
         }
 
         Log.v("FUCK MESSAGE", "" + background.getWidth());
 
         Picasso.get().load(backgorundUrl).fit().into(background);
         Picasso.get().load(messageUrl).into(message);
-        messageName.setText(messageNameText);
 
         whiteColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                messageName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                message.setColorFilter(R.color.gray_100, PorterDuff.Mode.SRC_ATOP);
+                message.setColorFilter(Color.WHITE);
             }
         });
 
         blackColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                messageName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
                 message.setColorFilter(R.color.black, PorterDuff.Mode.SRC_ATOP);
             }
         });
 
-        float fs = 20f;
-        font.setProgress((int) fs);
-        messageName.setTextSize(TypedValue.COMPLEX_UNIT_PX, font.getProgress());
-
+/*        float fs = 20f;
+        font.setProgress((int) fs);*/
+        font.setProgress(50);
+        font.setMax(500);
         font.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                messageName.setTextSize(progress);
+                message.getLayoutParams().width = progress;
+                message.getLayoutParams().height = progress;
+                message.requestLayout();
             }
 
             @Override

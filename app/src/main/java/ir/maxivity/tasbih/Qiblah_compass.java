@@ -1,11 +1,15 @@
 package ir.maxivity.tasbih;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import tools.Alert;
 import tools.Compass;
 import tools.LocationService;
+import tools.Utilities;
 
 
 public class
@@ -29,10 +34,35 @@ Qiblah_compass extends BaseActivity {
     private Compass compass;
 
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_qiblah_compass);
+
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.actionbar);
+        View actionbarview = getSupportActionBar().getCustomView();
+        ImageButton share_btn = actionbarview.findViewById(R.id.sharebtn);
+        ImageButton settings_btn = actionbarview.findViewById(R.id.settingsbtn);
+        TextView persianDate = actionbarview.findViewById(R.id.persian_date_txt);
+        TextView arabicDate = actionbarview.findViewById(R.id.arabic_date_text);
+
+        settings_btn.setVisibility(View.GONE);
+        TextView englishDate = actionbarview.findViewById(R.id.english_date_text);
+        persianDate.setText(Utilities.getTodayJalaliDate(this));
+        arabicDate.setText(Utilities.getTodayIslamicDate(this));
+        englishDate.setText(Utilities.getTodayGregortianDate(this));
+
+
+        share_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareIntent();
+            }
+        });
+
         degree = findViewById(R.id.qiblah_dir);
         compassImage = findViewById(R.id.qiblah_compass);
         compassWrapper = findViewById(R.id.compass_wrapper);
