@@ -9,7 +9,7 @@ import ir.maxivity.tasbih.network.APIHelper;
 
 public class NasimApplication extends Application {
 
-    private final static String BASE_URL = " http://194.5.178.148/~tasbih/tasbih/WebService/";
+    private final static String BASE_URL = "http://130.185.77.48/tasbih/tasbih/WebService/";
     public API api;
     private final String PREF_TOKEN_KEY = "TOKEN";
     private final String PREF_USER_ID_KEY = "USER_ID";

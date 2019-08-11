@@ -324,4 +324,10 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
         bottomNavigationView.setSelectedItemId(R.id.navigation_map);
         loadFragment(map);
     }
+
+    @Override
+    public void onZiaratOnlineClick() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        loadFragment(home);
+    }
 }

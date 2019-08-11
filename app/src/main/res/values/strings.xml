@@ -193,6 +193,10 @@
     <string name="shiaa">شیعه</string>
     <string name="soni">سنی</string>
     <string name="azan_setting">تنظیمات اذان</string>
+    <string name="sahn_jame">صحن جامع رضوی</string>
+    <string name="sahn_azadi">صحن آزادی</string>
+    <string name="sahn_jomhuri">صحن جمهوری</string>
+    <string name="sahn_enghelab">صحن انقلاب</string>
 
 
     <string-array name="category_list">

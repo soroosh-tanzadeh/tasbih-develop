@@ -58,7 +58,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
         showZiaratBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigate(ZiaratOnlineActivity.class);
+                listener.onZiaratOnlineClick();
+                dismiss();
             }
         });
 
@@ -137,5 +138,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
     public interface clickListener {
         void onMapClick();
+
+        void onZiaratOnlineClick();
     }
 }

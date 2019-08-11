@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/imam_reza"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginRight="8dp"
@@ -49,6 +50,7 @@
             android:layout_marginLeft="8dp"
             app:cardCornerRadius="5dp"
             app:cardElevation="4dp"
+            android:id="@+id/imam_hosein"
             android:layout_marginTop="8dp">
 
             <LinearLayout
@@ -78,6 +80,7 @@
             android:layout_marginLeft="8dp"
             app:cardCornerRadius="5dp"
             app:cardElevation="4dp"
+            android:id="@+id/abol_fazl"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
 

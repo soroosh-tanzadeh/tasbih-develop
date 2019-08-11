@@ -99,6 +99,7 @@ dependencies {
 
     implementation 'com.tomergoldst.android:tooltips:1.0.10'
 
+    implementation 'com.github.appunite:video-player-android:1.0.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

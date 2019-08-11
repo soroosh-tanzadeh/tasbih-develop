@@ -174,7 +174,8 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaFileLengthInMilliseconds = mediaPlayer.getDuration();
+                // mediaFileLengthInMilliseconds = mediaPlayer.getDuration();
+                seekBar.setMax(mediaPlayer.getDuration() / 1000);
                 play.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
                 prepare = true;
@@ -192,16 +193,36 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
                     } else if (!mediaPlayer.isPlaying()) {
                         mediaPlayer.start();
                         play.setImageResource(R.drawable.ic_pause);
+                        mySeekBarUpdator();
                     }
-                    try {
+                    /*try {
                         primarySeekBarProgressUpdater();
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
                     showShortToast("فایل هنوز آماده نیست");
                 }
+
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (mediaPlayer != null && b) {
+                    mediaPlayer.seekTo(i / 1000);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
         });
@@ -238,6 +259,20 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
             e.printStackTrace();
         }
 
+    }
+
+    private void mySeekBarUpdator() {
+        final Handler handler = new Handler();
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mediaPlayer != null) {
+                    int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                    seekBar.setProgress(currentPosition);
+                }
+                handler.postDelayed(this, 1000);
+            }
+        });
     }
 
     private void setContentText(ArrayList<GetQuranText.QuranResponse> quranTexts) {
@@ -384,19 +419,19 @@ public class QuranAdyehTextActivity extends BaseActivity implements View.OnTouch
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (view.getId() == R.id.player_seek_bar) {
+       /* if (view.getId() == R.id.player_seek_bar) {
             if (mediaPlayer.isPlaying()) {
                 SeekBar sb = (SeekBar) view;
                 int playPositionInMillisecconds = (mediaFileLengthInMilliseconds / 100) * sb.getProgress();
                 mediaPlayer.seekTo(playPositionInMillisecconds);
             }
-        }
+        }*/
         return false;
     }
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        mediaPlayer.reset();
+        mediaPlayer.seekTo(0);
         play.setImageResource(R.drawable.ic_play2);
     }
 

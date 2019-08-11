@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class MessagesActivity extends BaseActivity {
 
     private void initViews() {
         recyclerView = findViewById(R.id.messages_list);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new MessagesAdapter(this, messages);
         recyclerView.setAdapter(adapter);
     }

@@ -67,14 +67,15 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="8dp"
                 android:thumb="@drawable/custom_thumb"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 />
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="8dp"
                 app:srcCompat="@drawable/ic_play2"
+                android:padding="5dp"
                 android:layout_marginLeft="24dp"
                 android:layout_below="@id/player_seek_bar"
                 android:id="@+id/play_btn"
@@ -98,7 +99,7 @@
             android:text="انتخاب قاری"
             android:textColor="@color/gold"
             android:layout_toRightOf="@id/player_seek_bar"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:background="@drawable/rounded_gold_drawable"
             android:gravity="center"
             android:padding="8dp" />
