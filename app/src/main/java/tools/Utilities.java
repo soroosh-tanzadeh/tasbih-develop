@@ -139,6 +139,23 @@ public class Utilities {
                 calendar.getMonthName(date);
     }
 
+    public static String getJalaliDateRaw(Context context) {
+        PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
+        PersianDate date = calendar.getToday();
+        String space = " ";
+
+        return calendar.formatNumber(date.getDayOfMonth()) + space +
+                calendar.getMonthName(date) + space + calendar.formatNumber(date.getYear());
+    }
+
+    public static String getNameOfToday(Context context) {
+        PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
+        PersianDate date = calendar.getToday();
+        String space = " ";
+
+        return calendar.getWeekDayName(date);
+    }
+
     public static String getTodayIslamicDate(Context context) {
         PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
         PersianDate date = calendar.getToday();

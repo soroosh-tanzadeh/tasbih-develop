@@ -16,6 +16,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import ir.maxivity.tasbih.R;
+import ir.mirrajabi.persiancalendar.PersianCalendarView;
+import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
+import ir.mirrajabi.persiancalendar.core.models.PersianDate;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ir.maxivity.tasbih.FullScreenSplash.iranDefaultLat;
@@ -50,83 +53,79 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            ReminderDatabase rb = new ReminderDatabase(context);
-            mCalendar = Calendar.getInstance();
-            mAlarmReceiver = new AlarmReceiver();
-            azanReciever = new AzanReciever();
-            List<Reminder> reminders = rb.getAllReminders();
-            List<Reminder> azanReminders = rb.getAzanReminders();
-            for (Reminder rm : reminders) {
+        ReminderDatabase rb = new ReminderDatabase(context);
+        mCalendar = Calendar.getInstance();
+        mAlarmReceiver = new AlarmReceiver();
+        azanReciever = new AzanReciever();
+        List<Reminder> reminders = rb.getAllReminders();
+        List<Reminder> azanReminders = rb.getAzanReminders();
+        for (Reminder rm : reminders) {
 
-                mReceivedID = rm.getID();
-                mRepeat = rm.getRepeat();
-                mRepeatNo = rm.getRepeatNo();
-                mRepeatType = rm.getRepeatType();
-                mActive = rm.getActive();
-                mDate = rm.getDate();
-                mTime = rm.getTime();
+            mReceivedID = rm.getID();
+            mRepeat = rm.getRepeat();
+            mRepeatNo = rm.getRepeatNo();
+            mRepeatType = rm.getRepeatType();
+            mActive = rm.getActive();
+            mDate = rm.getDate();
+            mTime = rm.getTime();
 
-                mDateSplit = mDate.split("/");
-                mTimeSplit = mTime.split(":");
+            mDateSplit = mDate.split("/");
+            mTimeSplit = mTime.split(":");
 
-                mDay = Integer.parseInt(mDateSplit[0]);
-                mMonth = Integer.parseInt(mDateSplit[1]);
-                mYear = Integer.parseInt(mDateSplit[2]);
-                mHour = Integer.parseInt(mTimeSplit[0]);
-                mMinute = Integer.parseInt(mTimeSplit[1]);
+            mDay = Integer.parseInt(mDateSplit[0]);
+            mMonth = Integer.parseInt(mDateSplit[1]);
+            mYear = Integer.parseInt(mDateSplit[2]);
+            mHour = Integer.parseInt(mTimeSplit[0]);
+            mMinute = Integer.parseInt(mTimeSplit[1]);
 
-                mCalendar.set(Calendar.MONTH, --mMonth);
-                mCalendar.set(Calendar.YEAR, mYear);
-                mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
-                mCalendar.set(Calendar.HOUR_OF_DAY, mHour);
-                mCalendar.set(Calendar.MINUTE, mMinute);
-                mCalendar.set(Calendar.SECOND, 0);
+            mCalendar.set(Calendar.MONTH, --mMonth);
+            mCalendar.set(Calendar.YEAR, mYear);
+            mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
+            mCalendar.set(Calendar.HOUR_OF_DAY, mHour);
+            mCalendar.set(Calendar.MINUTE, mMinute);
+            mCalendar.set(Calendar.SECOND, 0);
 
-                // Cancel existing notification of the reminder by using its ID
-                // mAlarmReceiver.cancelAlarm(context, mReceivedID);
+            // Cancel existing notification of the reminder by using its ID
+            // mAlarmReceiver.cancelAlarm(context, mReceivedID);
 
-                // Check repeat type
-                if (mRepeatType.equals("Minute")) {
-                    mRepeatTime = Integer.parseInt(mRepeatNo) * milMinute;
-                } else if (mRepeatType.equals("Hour")) {
-                    mRepeatTime = Integer.parseInt(mRepeatNo) * milHour;
-                } else if (mRepeatType.equals("Day")) {
-                    mRepeatTime = Integer.parseInt(mRepeatNo) * milDay;
-                } else if (mRepeatType.equals("Week")) {
-                    mRepeatTime = Integer.parseInt(mRepeatNo) * milWeek;
-                } else if (mRepeatType.equals("Month")) {
-                    mRepeatTime = Integer.parseInt(mRepeatNo) * milMonth;
-                }
-
-                // Create a new notification
-                if (mActive.equals("true")) {
-                    if (mRepeat.equals("true")) {
-                        mAlarmReceiver.setRepeatAlarm(context, mCalendar, mReceivedID, mRepeatTime);
-                    } else if (mRepeat.equals("false")) {
-                        mAlarmReceiver.setAlarm(context, mCalendar, mReceivedID);
-                    }
-                }
+            // Check repeat type
+            if (mRepeatType.equals("Minute")) {
+                mRepeatTime = Integer.parseInt(mRepeatNo) * milMinute;
+            } else if (mRepeatType.equals("Hour")) {
+                mRepeatTime = Integer.parseInt(mRepeatNo) * milHour;
+            } else if (mRepeatType.equals("Day")) {
+                mRepeatTime = Integer.parseInt(mRepeatNo) * milDay;
+            } else if (mRepeatType.equals("Week")) {
+                mRepeatTime = Integer.parseInt(mRepeatNo) * milWeek;
+            } else if (mRepeatType.equals("Month")) {
+                mRepeatTime = Integer.parseInt(mRepeatNo) * milMonth;
             }
 
-            AzanReciever reciever = new AzanReciever();
-            SimpleDate today = new SimpleDate(new GregorianCalendar());
-            for (Reminder reminder : azanReminders) {
-
-                if (reminder.getTitle().equals(context.getString(R.string.azan_fajr))) {
-                    reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).fajr()), reminder.getID());
-                } else if (reminder.getTitle().equals(context.getString(R.string.azan_zohr))) {
-                    reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).thuhr()), reminder.getID());
-                } else if (reminder.getTitle().equals(context.getString(R.string.azan_asr))) {
-                    reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).assr()), reminder.getID());
-                } else if (reminder.getTitle().equals(context.getString(R.string.azan_maqrib))) {
-                    reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).maghrib()), reminder.getID());
-                } else if (reminder.getTitle().equals(context.getString(R.string.azan_ishaa))) {
-                    reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).ishaa()), reminder.getID());
+            // Create a new notification
+            if (mActive.equals("true")) {
+                if (mRepeat.equals("true")) {
+                    mAlarmReceiver.setRepeatAlarm(context, mCalendar, mReceivedID, mRepeatTime);
+                } else if (mRepeat.equals("false")) {
+                    mAlarmReceiver.setAlarm(context, mCalendar, mReceivedID);
                 }
             }
+        }
 
+        AzanReciever reciever = new AzanReciever();
+        SimpleDate today = new SimpleDate(new GregorianCalendar());
+        for (Reminder reminder : azanReminders) {
 
+            if (reminder.getTitle().equals(context.getString(R.string.azan_fajr))) {
+                reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).fajr()), reminder.getID());
+            } else if (reminder.getTitle().equals(context.getString(R.string.azan_zohr))) {
+                reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).thuhr()), reminder.getID());
+            } else if (reminder.getTitle().equals(context.getString(R.string.azan_asr))) {
+                reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).assr()), reminder.getID());
+            } else if (reminder.getTitle().equals(context.getString(R.string.azan_maqrib))) {
+                reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).maghrib()), reminder.getID());
+            } else if (reminder.getTitle().equals(context.getString(R.string.azan_ishaa))) {
+                reciever.setAlarm(context, setAzanTime(today, getAzanTimes(context).ishaa()), reminder.getID());
+            }
         }
     }
 
@@ -145,8 +144,17 @@ public class BootReceiver extends BroadcastReceiver {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        com.azan.astrologicalCalc.Location location = new com.azan.astrologicalCalc.Location(lat, lon, 4.5, 0);
-        Azan azan = new Azan(location, Method.Companion.getMUSLIM_LEAGUE());
+        PersianCalendarView calendarView = new PersianCalendarView(context);
+        PersianCalendarHandler calendarHandler = calendarView.getCalendar();
+        PersianDate todaydate = calendarHandler.getToday();
+
+        int month = todaydate.getMonth();
+        double gmtDiff = 3.5;
+        if (month <= 6) {
+            gmtDiff = 4.5;
+        }
+        com.azan.astrologicalCalc.Location location = new com.azan.astrologicalCalc.Location(lat, lon, gmtDiff, 0);
+        Azan azan = new Azan(location, Method.Companion.getKARACHI_SHAF());
         return azan.getPrayerTimes(today);
     }
 
