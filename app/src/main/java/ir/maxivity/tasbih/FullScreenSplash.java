@@ -231,7 +231,7 @@ public class FullScreenSplash extends BaseActivity {
             e.printStackTrace();
         }
         com.azan.astrologicalCalc.Location location = new com.azan.astrologicalCalc.Location(lat, lon, 4.5, 0);
-        Azan azan = new Azan(location, Method.Companion.getMUSLIM_LEAGUE());
+        Azan azan = new Azan(location, Method.Companion.getKARACHI_SHAF());
         AzanTimes azanTimes = azan.getPrayerTimes(today);
         AlarmReceiver reciever = new AlarmReceiver();
         String[] speceficId = id.split(",");

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -82,25 +83,27 @@ public class Start_freg extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (volume.getContentDescription() == "OFF") {
-                    volume.setContentDescription("ON");
-                    volume.setImageResource(R.drawable.ic_volume_up_black_24dp);
                     try {
                         amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
                         amanager.setStreamMute(AudioManager.STREAM_ALARM, false);
+                        volume.setContentDescription("ON");
                         mainActivity.application.setApplicationSound(volume.getContentDescription().toString());
-                    } catch (Exception e) {
+                        volume.setImageResource(R.drawable.ic_volume_up_black_24dp);
+                    } catch (SecurityException e) {
                         e.printStackTrace();
-                    }
+                        Toast.makeText(getContext(), getString(R.string.do_not_disturb_warning), Toast.LENGTH_LONG).show();
 
+                    }
                 } else {
-                    volume.setContentDescription("OFF");
-                    volume.setImageResource(R.drawable.ic_volume_off_black_24dp);
                     try {
                         amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
                         amanager.setStreamMute(AudioManager.STREAM_ALARM, true);
+                        volume.setContentDescription("OFF");
                         mainActivity.application.setApplicationSound(volume.getContentDescription().toString());
-                    } catch (Exception e) {
+                        volume.setImageResource(R.drawable.ic_volume_off_black_24dp);
+                    } catch (SecurityException e) {
                         e.printStackTrace();
+                        Toast.makeText(getContext(), getString(R.string.do_not_disturb_warning), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -119,7 +122,7 @@ public class Start_freg extends BaseFragment {
 
                 String date = df.format(java.util.Calendar.getInstance().getTime());
                 time.setText(date);
-                timerHandler.postDelayed(updater, 30000);
+                timerHandler.postDelayed(updater, 1000);
             }
         };
         timerHandler.post(updater);
