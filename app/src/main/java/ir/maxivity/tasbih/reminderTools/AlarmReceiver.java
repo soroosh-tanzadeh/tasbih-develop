@@ -64,8 +64,11 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setDeleteIntent(pendingIntent)
                     .setOnlyAlertOnce(true);
 
-            NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            nManager.notify(mReceivedID, mBuilder.build());
+            if (!reminder.getTitle().equals(context.getString(R.string.refresh_key))) {
+                NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                nManager.notify(mReceivedID, mBuilder.build());
+            }
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

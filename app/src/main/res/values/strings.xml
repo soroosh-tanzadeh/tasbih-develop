@@ -199,6 +199,7 @@
     <string name="sahn_enghelab">صحن انقلاب</string>
     <string name="no_ziarat_message">در حال حاضر امکان برقراری ارتباط آنلاین موجود نیست</string>
     <string name="do_not_disturb_warning">شما در وضعیت مزاحم نشوید هستید. در این وضعیت امکان تغییر حالت به حالت صدا دار امکان پذیر نیست.</string>
+    <string name="refresh_key">REFRESH</string>
 
 
     <string-array name="category_list">

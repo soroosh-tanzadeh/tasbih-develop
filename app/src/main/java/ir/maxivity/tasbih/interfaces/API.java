@@ -30,7 +30,7 @@ public interface API {
 
 
     @Multipart
-    @POST("doLogin.php")
+    @POST("dologin.php")
     Call<LoginResponse> doLogin(@Part("phone") RequestBody body);
 
     @Multipart

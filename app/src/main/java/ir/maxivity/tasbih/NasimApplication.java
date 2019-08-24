@@ -9,7 +9,7 @@ import ir.maxivity.tasbih.network.APIHelper;
 
 public class NasimApplication extends Application {
 
-    private final static String BASE_URL = "http://130.185.77.48/tasbih/tasbih/WebService/";
+    private final static String BASE_URL = "http://webflax.ir/tasbih/tasbih/WebService/";
     public API api;
     private final String PREF_TOKEN_KEY = "TOKEN";
     private final String PREF_USER_ID_KEY = "USER_ID";
@@ -18,6 +18,7 @@ public class NasimApplication extends Application {
     private final String PREF_AZAN_IDS_KEY = "AZAN_ID";
     private final String PREF_AZAN_REFRESH_KEY = "AZAN_REFRESH";
     private final String PREF_APP_SOUND = "SOUND_MODE";
+    private final String PREF_AZAN_REFRESH_ID = "REFRESH_ID";
 
     public static final String PREF_USER_LOCATION_KEY = "USER_LOCATION";
     public static final String MAIN_PREF_NAME = "NASIM_PREF_FILE";
@@ -105,6 +106,18 @@ public class NasimApplication extends Application {
     public String getReminderIds() {
         SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
         return sharedPreferences.getString(PREF_AZAN_IDS_KEY, null);
+    }
+
+    public void setAzanRefreshId(int id) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(PREF_AZAN_REFRESH_ID, id);
+        editor.apply();
+    }
+
+    public int getAzanRefreshId() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getInt(PREF_AZAN_REFRESH_ID, 0);
     }
 
 

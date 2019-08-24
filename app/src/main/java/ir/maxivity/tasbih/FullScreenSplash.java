@@ -187,6 +187,21 @@ public class FullScreenSplash extends BaseActivity {
         return calendar;
     }
 
+    private Calendar setRefreshTime() {
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+
+        calendar.set(java.util.Calendar.YEAR, calendar.get(Calendar.YEAR));
+        calendar.set(java.util.Calendar.MONTH, calendar.get(Calendar.MONTH));
+        calendar.set(java.util.Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+        calendar.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        calendar.set(java.util.Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar;
+    }
+
     private boolean passedTime(Time azantime, Date date) {
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.HOUR_OF_DAY) > azantime.getHour()) {
@@ -206,6 +221,9 @@ public class FullScreenSplash extends BaseActivity {
         int asrId = rb.addReminder(new Reminder(getString(R.string.azan_asr), date, time, false));
         int maqribId = rb.addReminder(new Reminder(getString(R.string.azan_maqrib), date, time, false));
         int ishaId = rb.addReminder(new Reminder(getString(R.string.azan_ishaa), date, time, false));
+
+        int rfreshTime = rb.addReminder(new Reminder(getString(R.string.refresh_key), date, time, true));
+        application.setAzanRefreshId(rfreshTime);
 
         String id = sobId + "," + zohrId + "," + asrId + "," + maqribId + "," + ishaId;
         application.setAzanReminderIds(id);
@@ -236,7 +254,7 @@ public class FullScreenSplash extends BaseActivity {
         AlarmReceiver reciever = new AlarmReceiver();
         String[] speceficId = id.split(",");
 
-
+        reciever.setRepeatAlarm(this, setRefreshTime(), application.getAzanRefreshId(), BootReceiver.milDay);
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.fajr()), Integer.parseInt(speceficId[0]), BootReceiver.milDay);
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.thuhr()), Integer.parseInt(speceficId[1]), BootReceiver.milDay);
         reciever.setRepeatAlarm(this, setAzanTime(date.getTime(), azanTimes.assr()), Integer.parseInt(speceficId[2]), BootReceiver.milDay);
