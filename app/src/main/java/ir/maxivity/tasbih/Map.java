@@ -128,6 +128,9 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
 
     private Boolean onAddLocationProgress = false;
 
+    private Boolean onFilterSelect = false;
+    private String filterName = "";
+
 
     //TAGS////
     private final String ADD_LOCATION_TAG = "add location";
@@ -595,12 +598,61 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
         }
 
         try {
-            if (!onAddLocationProgress)
-                getPlaces();
+            if (!onAddLocationProgress) {
+                if (onFilterSelect) {
+                    getPlacesByFilter(filterName);
+                } else {
+                    getPlaces();
+                }
+            }
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void getPlacesByFilter(String name) {
+        final MainActivity main = (MainActivity) getActivity();
+        GetPlaceBody body = new GetPlaceBody();
+        body.place_name = name;
+
+        main.application.api.getPlace(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
+                .enqueue(new Callback<GetPlaces>() {
+                    @Override
+                    public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
+                        if (response.isSuccessful()) {
+                            if (response.isSuccessful()) {
+                                if (response.body().result == 1) {
+                                    map.getOverlays().clear();
+                                    map.getOverlays().add(myLocationNewOverlay);
+                                    map.invalidate();
+                                    mapMarkers.clear();
+                                    for (GetPlaces.response res : response.body().data) {
+                                        Double lat = Double.parseDouble(res.lat);
+                                        Double lon = Double.parseDouble(res.lon);
+                                        try {
+                                            Marker marker = createMarker(new GeoPoint(lat, lon),
+                                                    Utilities.getMarkerOnType(Utilities.getLocationType(Integer.parseInt(res.type))),
+                                                    res.id);
+                                            mapMarkers.add(marker);
+                                            addOrRemoveNewLocationMarker(false, marker);
+                                            onMarkersClickAction();
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GetPlaces> call, Throwable t) {
+                        Log.v(TAG, "body : " + t.getMessage());
+                    }
+                });
     }
 
     private void getPlaces() throws NullPointerException {
@@ -803,8 +855,10 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
     }
 
     @Override
-    public void onSelectFilter() {
-
+    public void onSelectFilter(String name) {
+        onFilterSelect = true;
+        filterName = name;
+        dismissChildFragment(FILTER_FRAGMENT);
     }
 
     @Override

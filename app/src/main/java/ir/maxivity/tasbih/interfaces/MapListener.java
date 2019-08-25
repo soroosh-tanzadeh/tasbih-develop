@@ -9,7 +9,7 @@ public interface MapListener {
     void onAddLocationInfoSubmit(HashMap<String , String> fields);
     void onAddLocationInfoCancel();
 
-    void onSelectFilter();
+    void onSelectFilter(String name);
 
     void onFavoritePlaceClick(String id);
 

@@ -51,6 +51,13 @@ public interface API {
             , @Part("place_id") RequestBody place_id);
 
     @Multipart
+    @POST("update-place.php")
+    Call<AddNewPlaceResponse> updatePlace(@Part("data") RequestBody data,
+                                          @Part("user_id") RequestBody user_id,
+                                          @Part("pass") RequestBody pass,
+                                          @Part("plcae_id") RequestBody place_id);
+
+    @Multipart
     @POST("get-favorite-places.php")
     Call<GetFavoritePlaces> getFavoritePlaces(@Part("user_id") RequestBody user_id
             , @Part("pass") RequestBody pass);
@@ -78,4 +85,10 @@ public interface API {
     @GET("get-background.php")
     Call<GetBackgroundResponse> getBackgrounds();
 
+    @Multipart
+    @POST("update-event.php")
+    Call<AddNewEvent> updateEvent(@Part("data") RequestBody data,
+                                  @Part("user_id") RequestBody user_id,
+                                  @Part("pass") RequestBody pass,
+                                  @Part("event_id") RequestBody event_id);
 }

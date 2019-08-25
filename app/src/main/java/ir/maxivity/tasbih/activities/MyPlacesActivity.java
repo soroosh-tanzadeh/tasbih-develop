@@ -1,10 +1,12 @@
 package ir.maxivity.tasbih.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,7 @@ public class MyPlacesActivity extends BaseActivity {
     private TextView empty;
 
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,7 @@ public class MyPlacesActivity extends BaseActivity {
         myPlaceRecycler = findViewById(R.id.my_place_recycler);
         empty = findViewById(R.id.empty_list);
         adapter = new FavoritePlaceAdapter(this, places);
+        myPlaceRecycler.setAdapter(adapter);
 
     }
 
@@ -89,6 +93,7 @@ public class MyPlacesActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<GetPlaces> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

@@ -1,11 +1,13 @@
 package ir.maxivity.tasbih.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +35,7 @@ public class FavoritePlacesActivity extends BaseActivity {
     private LinearLayout empty;
     NasimDialog dialog;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +110,7 @@ public class FavoritePlacesActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<GetFavoritePlaces> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
 
             }

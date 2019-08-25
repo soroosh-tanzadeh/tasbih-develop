@@ -66,7 +66,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
         }
 
         public void setData(final GetPlaces.response response) {
-            Picasso.get().load(response.img_address).into(imageView);
+            Picasso.get().load(response.img_address).fit().into(imageView);
             name.setText(response.place_name);
             site.setText(response.web_address);
             navigation.setOnClickListener(new View.OnClickListener() {

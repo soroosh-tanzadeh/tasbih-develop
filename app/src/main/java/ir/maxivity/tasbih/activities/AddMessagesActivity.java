@@ -132,7 +132,7 @@ public class AddMessagesActivity extends BaseActivity {
 /*        float fs = 20f;
         font.setProgress((int) fs);*/
         font.setProgress(50);
-        font.setMax(500);
+        font.setMax(800);
         font.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {

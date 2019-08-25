@@ -1,5 +1,6 @@
 package ir.maxivity.tasbih.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class ReminderActivity extends BaseActivity {
     LinearLayout emptyList;
     Button add;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         reminderDatabase = new ReminderDatabase(this);
