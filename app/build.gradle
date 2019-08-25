@@ -101,5 +101,8 @@ dependencies {
 
     implementation 'com.github.appunite:video-player-android:1.0.1'
 
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

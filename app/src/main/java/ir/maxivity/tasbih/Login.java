@@ -7,10 +7,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import ir.maxivity.tasbih.dataAccess.VerficationResult;
 import ir.maxivity.tasbih.models.LoginResponse;
@@ -30,6 +35,8 @@ public class Login extends BaseActivity {
     private Button login_submit;
     private TextView loginLater;
     private LoginResponse mResponse;
+    private ScrollView loginScroll;
+    private NestedScrollView parentScroll;
 
     private VerficationResult verficationResult;
 
@@ -46,6 +53,8 @@ public class Login extends BaseActivity {
         sendVirificationbtn.setVisibility(View.GONE);
         login_submit = findViewById(R.id.login_submit);
         loginLater = findViewById(R.id.login_later);
+        loginScroll = findViewById(R.id.login_form);
+        parentScroll = findViewById(R.id.parent_scroll);
         mResponse = new LoginResponse();
         phonenumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -53,122 +62,18 @@ public class Login extends BaseActivity {
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             }
         });
-       /* final DataFileAccess fileAccess = new DataFileAccess(this);
-        try {
-            final LocalDB[] localDB = {fileAccess.readLocalDB()};
-            if (true) {
-                if (localDB[0] == null || !localDB[0].isLogedin()) {
-                    goToPhoneInputMode();
-                    login_submit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            final DBConnection dbConnection = new DBConnection(Login.this);
-                            @SuppressLint("StaticFieldLeak") AsyncTask<String, String, String> at = new AsyncTask<String, String, String>() {
-                                final ProgressDialog[] dialog = new ProgressDialog[1];
 
-                                @Override
-                                protected void onPreExecute() {
-                                    super.onPreExecute();
-                                    dialog[0] = ProgressDialog.show(Login.this, "",
-                                            "لطفا شکیبا باشید...", true);
-                                }
-
-                                @Override
-                                protected String doInBackground(String... uri) {
-                                    try {
-                                        VerficationResult result = dbConnection.RequestVerficiationCode(phonenumber.getText().toString());
-                                        String sessionID = result.getData();
-                                        Login.this.verficationResult = result;
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                goToVerificationMode();
-                                            }
-                                        });
-                                    } catch (ExecutionException e) {
-                                        e.printStackTrace();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return null;
-                                }
-
-                                @Override
-                                protected void onPostExecute(String s) {
-                                    super.onPostExecute(s);
-                                    dialog[0].dismiss();
-                                }
-                            };
-                            at.execute();
+        KeyboardVisibilityEvent.setEventListener(
+                this, new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if (isOpen) {
+                            loginScroll.fullScroll(View.FOCUS_DOWN);
+                            parentScroll.fullScroll(View.FOCUS_DOWN);
                         }
-                    });
-
-                    sendVirificationbtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            final DBConnection dbConnection = new DBConnection(Login.this);
-                            @SuppressLint("StaticFieldLeak") AsyncTask<String, String, String> at = new AsyncTask<String, String, String>() {
-                                final ProgressDialog[] dialog = new ProgressDialog[1];
-
-                                @Override
-                                protected void onPreExecute() {
-                                    super.onPreExecute();
-                                    dialog[0] = ProgressDialog.show(Login.this, "",
-                                            "لطفا شکیبا باشید...", true);
-                                }
-
-                                @Override
-                                protected String doInBackground(String... uri) {
-                                    try {
-                                        VerficationResult result = dbConnection.VerifyAccess(Login.this.verficationResult.getPhoneNumber(), Login.this.verificationcode.getText().toString(),
-                                                Login.this.verficationResult.getUserID(), Login.this.verficationResult.getData());
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if (localDB[0] == null) {
-                                                    localDB[0] = new LocalDB();
-                                                }
-                                                localDB[0].setLogedin(true);
-                                                try {
-                                                    fileAccess.writeLocalDB(localDB[0]);
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                Intent intent = new Intent(Login.this,MainActivity.class);
-                                                startActivity(intent);
-                                                finish();
-                                            }
-                                        });
-                                    } catch (ExecutionException e) {
-                                        e.printStackTrace();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return null;
-                                }
-
-                                @Override
-                                protected void onPostExecute(String s) {
-                                    super.onPostExecute(s);
-                                    dialog[0].dismiss();
-                                }
-                            };
-                            at.execute();
-                        }
-                    });
-                } else {
-                    finish();
+                    }
                 }
-            } else {
-                finish();
-            }
-        } catch (Exception ex) {
-            Log.e("Login Page", ex.getMessage());
-        }*/
+        );
 
         login_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,7 +139,7 @@ public class Login extends BaseActivity {
     }
     private void loginRequest(String phone) {
 
-        String body = Utilities.createBody(phone);
+        String body = phone;
         final NasimDialog dialog = showLoadingDialog();
         dialog.show();
         application.api.doLogin(RequestBody.create(Utilities.TEXT, body)).enqueue(new Callback<LoginResponse>() {

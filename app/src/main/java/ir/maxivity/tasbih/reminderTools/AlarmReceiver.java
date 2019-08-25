@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
@@ -14,11 +15,28 @@ import android.os.SystemClock;
 
 import androidx.core.app.NotificationCompat;
 
+import com.azan.Azan;
+import com.azan.AzanTimes;
+import com.azan.Method;
+import com.azan.Time;
+import com.azan.astrologicalCalc.SimpleDate;
+
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import ir.maxivity.tasbih.MainActivity;
 import ir.maxivity.tasbih.R;
 import ir.maxivity.tasbih.tools.AzanPlayer;
+import ir.mirrajabi.persiancalendar.PersianCalendarView;
+import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
+import ir.mirrajabi.persiancalendar.core.models.PersianDate;
+
+import static android.content.Context.MODE_PRIVATE;
+import static ir.maxivity.tasbih.FullScreenSplash.iranDefaultLat;
+import static ir.maxivity.tasbih.FullScreenSplash.iranDefaultLon;
+import static ir.maxivity.tasbih.NasimApplication.MAIN_PREF_NAME;
+import static ir.maxivity.tasbih.NasimApplication.PREF_USER_LOCATION_KEY;
 
 public class AlarmReceiver extends BroadcastReceiver {
     AlarmManager mAlarmManager;
@@ -38,6 +56,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         try {
             ReminderDatabase rb = new ReminderDatabase(context);
             Reminder reminder = rb.getReminder(mReceivedID);
+            List<Reminder> azanReminders = rb.getAzanReminders();
             String mTitle = reminder.getTitle();
             AzanPlayer player = AzanPlayer.getInstance(context);
             if (reminder.getActive().equals("false")) {
@@ -65,6 +84,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setOnlyAlertOnce(true);
 
             if (!reminder.getTitle().equals(context.getString(R.string.refresh_key))) {
+                refreshAlarm(azanReminders);
                 NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 nManager.notify(mReceivedID, mBuilder.build());
             }
@@ -73,6 +93,64 @@ public class AlarmReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
 
+    }
+
+    public void refreshAlarm(List<Reminder> azanReminders) {
+        SimpleDate today = new SimpleDate(new GregorianCalendar());
+        for (Reminder reminder : azanReminders) {
+            if (reminder.getTitle().equals(context.getString(R.string.azan_fajr))) {
+                setAlarm(context, setAzanTime(today, getAzanTimes(context).fajr()), reminder.getID());
+            } else if (reminder.getTitle().equals(context.getString(R.string.azan_zohr))) {
+                setAlarm(context, setAzanTime(today, getAzanTimes(context).thuhr()), reminder.getID());
+            } else if (reminder.getTitle().equals(context.getString(R.string.azan_asr))) {
+                setAlarm(context, setAzanTime(today, getAzanTimes(context).assr()), reminder.getID());
+            } else if (reminder.getTitle().equals(context.getString(R.string.azan_maqrib))) {
+                setAlarm(context, setAzanTime(today, getAzanTimes(context).maghrib()), reminder.getID());
+            } else if (reminder.getTitle().equals(context.getString(R.string.azan_ishaa))) {
+                setAlarm(context, setAzanTime(today, getAzanTimes(context).ishaa()), reminder.getID());
+            }
+        }
+    }
+
+    private AzanTimes getAzanTimes(Context context) {
+        SimpleDate today = new SimpleDate(new GregorianCalendar());
+        double lat = iranDefaultLat;
+        double lon = iranDefaultLon;
+        try {
+            lat = Double.parseDouble(getUserLocation(context).split(",")[0]);
+            lon = Double.parseDouble(getUserLocation(context).split(",")[1]);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        PersianCalendarView calendarView = new PersianCalendarView(context);
+        PersianCalendarHandler calendarHandler = calendarView.getCalendar();
+        PersianDate todaydate = calendarHandler.getToday();
+
+        int month = todaydate.getMonth();
+        double gmtDiff = 3.5;
+        if (month <= 6) {
+            gmtDiff = 4.5;
+        }
+        com.azan.astrologicalCalc.Location location = new com.azan.astrologicalCalc.Location(lat, lon, gmtDiff, 0);
+        Azan azan = new Azan(location, Method.Companion.getKARACHI_SHAF());
+        return azan.getPrayerTimes(today);
+    }
+
+    private Calendar setAzanTime(SimpleDate date, Time azantime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, date.getYear());
+        calendar.set(Calendar.MONTH, date.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, date.getDay());
+        calendar.set(Calendar.HOUR_OF_DAY, azantime.getHour());
+        calendar.set(Calendar.MINUTE, azantime.getMinute());
+        calendar.set(Calendar.SECOND, azantime.getSecond());
+        return calendar;
+    }
+
+
+    private String getUserLocation(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(PREF_USER_LOCATION_KEY, null);
     }
 
     public void setAlarm(Context context, Calendar calendar, int ID) {
