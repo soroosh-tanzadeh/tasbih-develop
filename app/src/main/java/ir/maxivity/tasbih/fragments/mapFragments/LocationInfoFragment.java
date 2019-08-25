@@ -105,7 +105,7 @@ public class LocationInfoFragment extends Fragment {
     private void viewActions() {
         if (model != null) {
             try {
-                Picasso.get().load(model.img_address).into(locationImage);
+                Picasso.get().load(model.img_address).fit().into(locationImage);
             } catch (IllegalArgumentException e) {
                 Toast.makeText(getContext(), "فایل عکس خراب است", Toast.LENGTH_SHORT).show();
             }

@@ -106,7 +106,8 @@ public class Login extends BaseActivity {
 
 
     private void verificationRequest(LoginResponse response, String verifyCode) {
-        RequestBody phone = RequestBody.create(MediaType.parse("text/plain"), response.phoneNumber);
+        final RequestBody phone = RequestBody.create(MediaType.parse("text/plain"), response.phoneNumber);
+        final String mobile = response.phoneNumber;
         RequestBody sessionId = RequestBody.create(Utilities.TEXT, response.data);
         RequestBody userId = RequestBody.create(Utilities.TEXT, response.user_id);
         RequestBody code = RequestBody.create(Utilities.TEXT, verifyCode);
@@ -121,7 +122,7 @@ public class Login extends BaseActivity {
                     application.setToken(response.body().data);
                     application.setUserId(response.body().user_id);
                     application.setLoginLater(false);
-                    //Toast.makeText(getApplicationContext(), "result ok going to main", Toast.LENGTH_SHORT).show();
+                    application.setUserPhone(mobile);
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
                     finish();

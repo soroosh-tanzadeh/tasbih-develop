@@ -3,7 +3,6 @@ package ir.maxivity.tasbih;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -12,7 +11,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,10 +30,6 @@ import org.osmdroid.config.Configuration;
 import java.util.List;
 
 import co.ronash.pushe.Pushe;
-import ir.maxivity.tasbih.activities.FavoritePlacesActivity;
-import ir.maxivity.tasbih.activities.MyPlacesActivity;
-import ir.maxivity.tasbih.activities.ReminderActivity;
-import ir.maxivity.tasbih.activities.SettingActivity;
 import ir.maxivity.tasbih.adapters.DrawerListAdapter;
 import ir.maxivity.tasbih.fragments.mapFragments.BaseFragment;
 import ir.maxivity.tasbih.tools.BottomNavigationViewHelper;
@@ -207,7 +201,7 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
 
         String user = "";
         if (application.getToken() != null) {
-            user = application.getUserId();
+            user = application.getUserPhone();
         } else {
             user = getString(R.string.guest_user);
         }
@@ -217,7 +211,7 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
 
         drawerItemList.setAdapter(adapter);
 
-        drawerItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       /* drawerItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (items.getItems().get(i).getText() == getString(R.string.favorite)) {
@@ -252,8 +246,16 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
                     Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                     startActivity(intent);
                 }
+
+                if (items.getItems().get(i).getText() == getString(R.string.logout)){
+                    application.clearData();
+                    finish();
+                    Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
+                    startActivity(intent);
+                }
             }
-        });
+        });*/
+        drawerActions();
 
     }
 

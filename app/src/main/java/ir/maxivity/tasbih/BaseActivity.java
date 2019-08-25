@@ -2,6 +2,7 @@ package ir.maxivity.tasbih;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.concurrent.TimeUnit;
 
@@ -93,9 +96,15 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void drawerActions() {
-        ListView drawerItemList = findViewById(R.id.drawer_item_list);
+        final ListView drawerItemList = findViewById(R.id.drawer_item_list);
+        String user = "";
+        if (application.getToken() != null) {
+            user = application.getUserPhone();
+        } else {
+            user = getString(R.string.guest_user);
+        }
 
-        final CreateDrawerItem items = new CreateDrawerItem(this, getString(R.string.guest_user), application.getLoginLater());
+        final CreateDrawerItem items = new CreateDrawerItem(this, user, application.getLoginLater());
 
         DrawerListAdapter drawerAdapter = new DrawerListAdapter(this, R.layout.drawer_item_layout, items.getItems());
 
@@ -130,6 +139,26 @@ public class BaseActivity extends AppCompatActivity {
                 if (items.getItems().get(i).getText() == getString(R.string.reminder)) {
                     Intent intent = new Intent(BaseActivity.this, ReminderActivity.class);
                     startActivity(intent);
+                }
+
+                if (items.getItems().get(i).getText() == getString(R.string.logout)) {
+                    Snackbar snackbar = Snackbar.make(drawerItemList, "آیا میخواهید از برنامه خارج شوید؟", Snackbar.LENGTH_SHORT).
+                            setAction("بله", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    application.clearData();
+                                    finish();
+                                    Intent intent = new Intent(BaseActivity.this, FullScreenSplash.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+                            });
+                    View snack = snackbar.getView();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        snack.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                    }
+                    snackbar.show();
+
                 }
             }
         });

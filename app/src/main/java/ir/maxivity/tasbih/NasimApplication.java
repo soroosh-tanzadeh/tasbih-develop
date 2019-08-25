@@ -19,6 +19,7 @@ public class NasimApplication extends Application {
     private final String PREF_AZAN_REFRESH_KEY = "AZAN_REFRESH";
     private final String PREF_APP_SOUND = "SOUND_MODE";
     private final String PREF_AZAN_REFRESH_ID = "REFRESH_ID";
+    private final String PREF_USER_PHONE = "USER_PHONE";
 
     public static final String PREF_USER_LOCATION_KEY = "USER_LOCATION";
     public static final String MAIN_PREF_NAME = "NASIM_PREF_FILE";
@@ -59,6 +60,19 @@ public class NasimApplication extends Application {
         SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
         return sharedPreferences.getString(PREF_USER_ID_KEY, null);
     }
+
+    public void setUserPhone(String phone) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_USER_PHONE, phone);
+        editor.apply();
+    }
+
+    public String getUserPhone() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(PREF_USER_PHONE, "");
+    }
+
 
     public void setLanguage(String language) {
         SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, Context.MODE_PRIVATE);
@@ -144,6 +158,11 @@ public class NasimApplication extends Application {
     public String getSoundMode() {
         SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
         return sharedPreferences.getString(PREF_APP_SOUND, null);
+    }
+
+    public void clearData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MAIN_PREF_NAME, MODE_PRIVATE);
+        sharedPreferences.edit().clear().apply();
     }
 
 }

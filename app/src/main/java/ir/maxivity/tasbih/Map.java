@@ -88,7 +88,6 @@ import ir.maxivity.tasbih.models.AddNewPlaceResponse;
 import ir.maxivity.tasbih.models.GetPlaceBody;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetPlacesBody;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -225,6 +224,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
             @Override
             public void onClick(View view) {
                 searchBar.setVisibility(View.VISIBLE);
+                dissmissAllPreviousFragment();
                 if (getCurrentFragment() instanceof FilterFragment) {
                     dismissChildFragment(FILTER_FRAGMENT);
                 } else
@@ -563,9 +563,9 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
         final MainActivity main = (MainActivity) getActivity();
         final NasimDialog dialog = main.showLoadingDialog();
 
-        RequestBody pass = RequestBody.create(MediaType.parse("text/plain"), main.application.getToken());
-        RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), main.application.getUserId());
-        RequestBody place_id = RequestBody.create(MediaType.parse("text/plain"), id);
+        RequestBody pass = RequestBody.create(Utilities.TEXT, main.application.getToken());
+        RequestBody user_id = RequestBody.create(Utilities.TEXT, main.application.getUserId());
+        RequestBody place_id = RequestBody.create(Utilities.TEXT, id);
         dialog.show();
         main.application.api.addFavoritePlace(user_id, pass, place_id)
                 .enqueue(new Callback<AddFavortiePlace>() {
@@ -676,7 +676,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                 @Override
                 public boolean onMarkerClick(Marker marker, MapView mapView) {
                     Log.v(TAG, "marker :" + marker.getId());
-
+                    dissmissAllPreviousFragment();
                     try {
                         if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -695,6 +695,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
             });
         }
     }
+
 
     public void focusOnUserLocation() {
         if (userLocation != null) {
@@ -866,6 +867,14 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
         if (prev != null) {
             DialogFragment df = (DialogFragment) prev;
             df.dismiss();
+        }
+    }
+
+
+    private void dissmissAllPreviousFragment() {
+        FragmentManager fm = getChildFragmentManager();
+        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
         }
     }
 
