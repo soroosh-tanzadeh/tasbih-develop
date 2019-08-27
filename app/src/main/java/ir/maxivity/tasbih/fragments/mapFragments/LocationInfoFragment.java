@@ -201,6 +201,7 @@ public class LocationInfoFragment extends Fragment {
                     fields.put("locationAddress", locationAddress.getText().toString());
                     fields.put("locationWebsite", locationWebsite.getText().toString());
                     fields.put("locationPhone", locationPhone.getText().toString());
+                    fields.put("placeId", model.id);
                     listener.onEditSubmit(fields);
                 }
             }

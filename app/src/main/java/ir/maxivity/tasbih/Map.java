@@ -95,6 +95,7 @@ import ir.maxivity.tasbih.models.GetEventResponse;
 import ir.maxivity.tasbih.models.GetPlaceBody;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetPlacesBody;
+import ir.maxivity.tasbih.models.UpdatePlaceBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -1103,10 +1104,48 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                 });
     }
 
+    private void updatePlace(UpdatePlaceBody body, String placeId) {
+        final MainActivity main = (MainActivity) getActivity();
+        RequestBody bod = RequestBody.create(Utilities.JSON, Utilities.createBody(body));
+        RequestBody place_id = RequestBody.create(Utilities.JSON, placeId);
+        RequestBody userId = RequestBody.create(Utilities.JSON, main.application.getUserId());
+        RequestBody pass = RequestBody.create(Utilities.JSON, main.application.getToken());
+        final NasimDialog dialog = main.showLoadingDialog();
+        dialog.show();
+
+        main.application.api.updatePlace(bod, userId, pass, place_id).enqueue(new Callback<AddNewPlaceResponse>() {
+            @Override
+            public void onResponse(Call<AddNewPlaceResponse> call, Response<AddNewPlaceResponse> response) {
+                dialog.dismiss();
+                dissmissAllPreviousFragment();
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "ذخیره شد.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddNewPlaceResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
     @Override
     public void onEditSubmit(HashMap<String, String> fields) {
         dismissChildFragment(LOCATION_INFO_FRAGMENT);
-        Toast.makeText(getContext(), "ذخیره شد.", Toast.LENGTH_SHORT).show();
+
+        String name = fields.get("locationName");
+        String address = fields.get("locationAddress");
+        String website = fields.get("locationWebsite");
+        String phone = fields.get("locationPhone");
+        String id = fields.get("placeId");
+        UpdatePlaceBody body = new UpdatePlaceBody();
+        body.place_name = name;
+        body.web_address = website;
+        body.phone = phone;
+        updatePlace(body, id);
     }
 
     private void dismissChildFragment(String tag) {
