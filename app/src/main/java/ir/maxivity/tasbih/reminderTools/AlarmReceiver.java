@@ -59,8 +59,16 @@ public class AlarmReceiver extends BroadcastReceiver {
             List<Reminder> azanReminders = rb.getAzanReminders();
             String mTitle = reminder.getTitle();
             AzanPlayer player = AzanPlayer.getInstance(context);
+            int icon = R.drawable.ic_alarm;
             if (reminder.getActive().equals("false")) {
                 player.play();
+                icon = R.drawable.tasbihlogo_transparent;
+                Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+                mTitle = reminder.getTitle() + " " + "در ساعت : " + hour + ":" + minute;
+            } else {
+                icon = R.drawable.ic_alarm;
             }
 
             Intent homeIntent = new Intent(context, MainActivity.class);
@@ -73,7 +81,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             // Create Notification
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "Reminder")
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-                    .setSmallIcon(R.drawable.ic_alarm)
+                    .setSmallIcon(icon)
                     .setContentTitle(context.getResources().getString(R.string.app_name))
                     .setTicker(mTitle)
                     .setContentText(mTitle)

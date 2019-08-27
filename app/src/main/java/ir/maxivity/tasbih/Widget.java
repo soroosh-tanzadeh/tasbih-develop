@@ -16,6 +16,9 @@ import com.azan.astrologicalCalc.SimpleDate;
 
 import java.util.GregorianCalendar;
 
+import ir.mirrajabi.persiancalendar.PersianCalendarView;
+import ir.mirrajabi.persiancalendar.core.PersianCalendarHandler;
+import ir.mirrajabi.persiancalendar.core.models.PersianDate;
 import tools.Utilities;
 
 /**
@@ -81,8 +84,17 @@ public class Widget extends AppWidgetProvider {
             location.setLongitude(iranDefaultLon);
         }
 
+        PersianCalendarView calendarView = new PersianCalendarView(context);
+        PersianCalendarHandler calendarHandler = calendarView.getCalendar();
+        PersianDate todaydate = calendarHandler.getToday();
+
+        int month = todaydate.getMonth();
+        double gmtDiff = 3.5;
+        if (month <= 6) {
+            gmtDiff = 4.5;
+        }
         com.azan.astrologicalCalc.Location azanLocation = new com.azan.astrologicalCalc.Location(location.getLatitude()
-                , location.getLongitude(), 4.5, 0);
+                , location.getLongitude(), gmtDiff, 0);
         SimpleDate today = new SimpleDate(new GregorianCalendar());
         Azan azan = new Azan(azanLocation, Method.Companion.getKARACHI_SHAF());
         return azan.getPrayerTimes(today);
