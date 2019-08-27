@@ -120,6 +120,28 @@ public class Utilities {
         }
     }
 
+    public static int getLocationType(Context context, String type) {
+        if (context.getString(R.string.coffee_shop).equals(type)) {
+            return 1;
+        } else if (context.getString(R.string.hospital).equals(type)) {
+            return 2;
+        } else if (context.getString(R.string.gym).equals(type)) {
+            return 3;
+        } else if (context.getString(R.string.dentistry).equals(type)) {
+            return 4;
+        } else if (context.getString(R.string.hotel).equals(type)) {
+            return 5;
+        } else if (context.getString(R.string.mosque).equals(type)) {
+            return 6;
+        } else if (context.getString(R.string.university).equals(type)) {
+            return 7;
+        } else if (context.getString(R.string.shop).equals(type)) {
+            return 8;
+        } else {
+            return 9;
+        }
+    }
+
     public static String getJalaliDate(Context context, PersianDate date) {
         PersianCalendarHandler calendar = PersianCalendarHandler.getInstance(context);
         String space = " ";

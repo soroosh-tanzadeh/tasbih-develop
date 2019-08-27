@@ -192,6 +192,44 @@
                     android:textColor="@color/gray_900"
                     android:background="@android:color/transparent"
                     android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:id="@+id/event_wrapper">
+
+                <ImageView
+                    android:id="@+id/event_image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp" />
+
+                <TextView
+                    android:id="@+id/event_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray_900"
+                    android:layout_toLeftOf="@id/event_image"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="adfadf"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/event_staus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray_700"
+                    android:layout_toLeftOf="@id/event_image"
+                    android:layout_below="@id/event_description"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:text="adsfadf" />
             </RelativeLayout>
 
             <LinearLayout

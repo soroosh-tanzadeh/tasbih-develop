@@ -16,12 +16,16 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -85,6 +89,7 @@ import ir.maxivity.tasbih.models.AddNewEvent;
 import ir.maxivity.tasbih.models.AddNewEventBody;
 import ir.maxivity.tasbih.models.AddNewLocationBody;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
+import ir.maxivity.tasbih.models.GetEventResponse;
 import ir.maxivity.tasbih.models.GetPlaceBody;
 import ir.maxivity.tasbih.models.GetPlaces;
 import ir.maxivity.tasbih.models.GetPlacesBody;
@@ -129,6 +134,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
     private Boolean onAddLocationProgress = false;
 
     private Boolean onFilterSelect = false;
+    private Boolean onNameSearch = false;
     private String filterName = "";
 
 
@@ -147,6 +153,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
     private Marker newLocationMarker;
     private ArrayList<Marker> mapMarkers;
     private static final double MAP_ZOOM = 17;
+    private StringBuilder filterBuilder = new StringBuilder("");
 
     //VIEWS///
     FloatingActionButton actionButton, addLocationButton;
@@ -154,6 +161,8 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
     private RelativeLayout bottomSheet;
     private BottomSheetBehavior behavior;
     private RelativeLayout searchBar;
+    private EditText searchEditText;
+    private TextView deleteFilters;
 
 
     @Override
@@ -203,6 +212,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
 
         onAddLocationProgress = true;
     }
+
     public boolean onBackPressed() {
         if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -222,6 +232,38 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
         behavior = BottomSheetBehavior.from(bottomSheet);
         searchBar = view.findViewById(R.id.search_bar_wrapper);
         filterImage = view.findViewById(R.id.filter_icon);
+        searchEditText = view.findViewById(R.id.search_edt_text);
+        deleteFilters = view.findViewById(R.id.delete_filters);
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().isEmpty()) {
+                    onNameSearch = false;
+                    filterBuilder = new StringBuilder();
+                } else {
+                    onNameSearch = true;
+                    getPlaceByName(editable.toString());
+                }
+            }
+        });
+
+        deleteFilters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFilterSelect = false;
+            }
+        });
 
         filterImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -601,6 +643,8 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
             if (!onAddLocationProgress) {
                 if (onFilterSelect) {
                     getPlacesByFilter(filterName);
+                } else if (onNameSearch) {
+                    getPlaceByName(searchEditText.getText().toString());
                 } else {
                     getPlaces();
                 }
@@ -612,37 +656,82 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
 
     }
 
-    private void getPlacesByFilter(String name) {
+    private void getPlaceByName(String name) {
         final MainActivity main = (MainActivity) getActivity();
         GetPlaceBody body = new GetPlaceBody();
         body.place_name = name;
+        body.distance = "" + 200;
+        body.ulong = "" + map.getMapCenter().getLongitude();
+        body.ulat = "" + map.getMapCenter().getLatitude();
+        main.application.api.getPlace(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
+                .enqueue(new Callback<GetPlaces>() {
+                    @Override
+                    public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body() != null && response.body().result == 1) {
+                                map.getOverlays().clear();
+                                map.getOverlays().add(myLocationNewOverlay);
+                                map.invalidate();
+                                mapMarkers.clear();
+                                for (GetPlaces.response res : response.body().data) {
+                                    Double lat = Double.parseDouble(res.lat);
+                                    Double lon = Double.parseDouble(res.lon);
+                                    try {
+                                        Marker marker = createMarker(new GeoPoint(lat, lon),
+                                                Utilities.getMarkerOnType(Utilities.getLocationType(Integer.parseInt(res.type))),
+                                                res.id);
+                                        mapMarkers.add(marker);
+                                        addOrRemoveNewLocationMarker(false, marker);
+                                        onMarkersClickAction();
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GetPlaces> call, Throwable t) {
+                        Log.v(TAG, "body : " + t.getMessage());
+                    }
+                });
+    }
+
+    private void getPlacesByFilter(String name) {
+        final MainActivity main = (MainActivity) getActivity();
+        int type = Utilities.getLocationType(getContext(), name);
+        GetPlaceBody body = new GetPlaceBody();
+        body.type = type;
+        body.distance = "" + 200;
+        body.ulong = "" + map.getMapCenter().getLongitude();
+        body.ulat = "" + map.getMapCenter().getLatitude();
 
         main.application.api.getPlace(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
                 .enqueue(new Callback<GetPlaces>() {
                     @Override
                     public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
                         if (response.isSuccessful()) {
-                            if (response.isSuccessful()) {
-                                if (response.body().result == 1) {
-                                    map.getOverlays().clear();
-                                    map.getOverlays().add(myLocationNewOverlay);
-                                    map.invalidate();
-                                    mapMarkers.clear();
-                                    for (GetPlaces.response res : response.body().data) {
-                                        Double lat = Double.parseDouble(res.lat);
-                                        Double lon = Double.parseDouble(res.lon);
-                                        try {
-                                            Marker marker = createMarker(new GeoPoint(lat, lon),
-                                                    Utilities.getMarkerOnType(Utilities.getLocationType(Integer.parseInt(res.type))),
-                                                    res.id);
-                                            mapMarkers.add(marker);
-                                            addOrRemoveNewLocationMarker(false, marker);
-                                            onMarkersClickAction();
-                                        } catch (NullPointerException e) {
-                                            e.printStackTrace();
-                                        }
-
+                            if (response.body() != null && response.body().result == 1) {
+                                map.getOverlays().clear();
+                                map.getOverlays().add(myLocationNewOverlay);
+                                map.invalidate();
+                                mapMarkers.clear();
+                                for (GetPlaces.response res : response.body().data) {
+                                    Double lat = Double.parseDouble(res.lat);
+                                    Double lon = Double.parseDouble(res.lon);
+                                    try {
+                                        Marker marker = createMarker(new GeoPoint(lat, lon),
+                                                Utilities.getMarkerOnType(Utilities.getLocationType(Integer.parseInt(res.type))),
+                                                res.id);
+                                        mapMarkers.add(marker);
+                                        addOrRemoveNewLocationMarker(false, marker);
+                                        onMarkersClickAction();
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
                                     }
+
                                 }
                             }
                         }
@@ -709,7 +798,8 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                     public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
                         if (response.isSuccessful()) {
                             if (response.body().result == 1) {
-                                loadChildFragment(LocationInfoFragment.newInstance(response.body().data.get(0)), LOCATION_INFO_FRAGMENT, false);
+                                //loadChildFragment(LocationInfoFragment.newInstance(response.body().data.get(0)), LOCATION_INFO_FRAGMENT, false);
+                                getEventById(id, response.body().data.get(0));
                             }
                         }
                     }
@@ -721,6 +811,32 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                 });
     }
 
+    private void getEventById(final String id, final GetPlaces.response data) throws NullPointerException {
+        final MainActivity main = (MainActivity) getActivity();
+        RequestBody place_id = RequestBody.create(Utilities.TEXT, id);
+        RequestBody offset = RequestBody.create(Utilities.TEXT, "0");
+        RequestBody limit = RequestBody.create(Utilities.TEXT, "6");
+
+        main.application.api.getEvents(offset, limit, place_id).enqueue(new Callback<GetEventResponse>() {
+            @Override
+            public void onResponse(Call<GetEventResponse> call, Response<GetEventResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().result == 1) {
+                            loadChildFragment(LocationInfoFragment.newInstance(data, response.body()), LOCATION_INFO_FRAGMENT, false);
+                        } else {
+                            loadChildFragment(LocationInfoFragment.newInstance(data, response.body()), LOCATION_INFO_FRAGMENT, false);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetEventResponse> call, Throwable t) {
+
+            }
+        });
+    }
 
     private void onMarkersClickAction() {
         for (Marker marker : mapMarkers) {
@@ -856,9 +972,11 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
 
     @Override
     public void onSelectFilter(String name) {
+        map.getOverlays().clear();
+        map.invalidate();
         onFilterSelect = true;
-        filterName = name;
         dismissChildFragment(FILTER_FRAGMENT);
+        getPlacesByFilter(name);
     }
 
     @Override

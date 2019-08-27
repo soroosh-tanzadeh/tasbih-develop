@@ -14,6 +14,17 @@
         tools:layout_editor_absoluteX="-16dp"
         tools:layout_editor_absoluteY="520dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="حذف فیلتر ها"
+        android:padding="5dp"
+        android:background="@drawable/rounded_event_background"
+        android:textColor="@color/primary"
+        android:layout_below="@id/search_bar_wrapper"
+        android:layout_margin="8dp"
+        android:id="@+id/delete_filters" />
+
 
     <ImageView
         android:id="@+id/location_marker"
@@ -46,6 +57,7 @@
             android:layout_marginLeft="80dp"
             android:layout_marginRight="8dp"
             android:textColor="@color/gray_700"
+            android:gravity="right"
             app:backgroundTint="@color/gray_400"
             android:id="@+id/search_edt_text" />
 

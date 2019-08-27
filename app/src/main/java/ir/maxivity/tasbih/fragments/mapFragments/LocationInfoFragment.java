@@ -26,6 +26,7 @@ import java.util.HashMap;
 
 import ir.maxivity.tasbih.R;
 import ir.maxivity.tasbih.interfaces.MapListener;
+import ir.maxivity.tasbih.models.GetEventResponse;
 import ir.maxivity.tasbih.models.GetPlaces;
 
 /**
@@ -35,7 +36,9 @@ public class LocationInfoFragment extends Fragment {
 
 
     private static final String MODEL_KEY = "MODEL_KEY";
+    private static final String EVENT_KEY = "EVENT_KEY";
     private GetPlaces.response model;
+    private GetEventResponse eventResponse;
     private RelativeLayout bottomSheet;
     private ImageView arrow, locationImage;
     private TextView name, description, persianName;
@@ -44,9 +47,21 @@ public class LocationInfoFragment extends Fragment {
     private Button editBtn, addEventBtn;
     private LinearLayout webSiteWrapper, addFavoritePlaceWrapper;
     private MapListener listener;
+    private RelativeLayout eventWrapper;
+    private ImageView eventImage;
+    private TextView eventDescription, eventStatus;
 
     public LocationInfoFragment() {
         // Required empty public constructor
+    }
+
+    public static LocationInfoFragment newInstance(GetPlaces.response model, GetEventResponse eventResponse) {
+        LocationInfoFragment infoFragment = new LocationInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(MODEL_KEY, model);
+        bundle.putSerializable(EVENT_KEY, eventResponse);
+        infoFragment.setArguments(bundle);
+        return infoFragment;
     }
 
     public static LocationInfoFragment newInstance(GetPlaces.response model) {
@@ -60,8 +75,11 @@ public class LocationInfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        try {
             this.model = (GetPlaces.response) getArguments().getSerializable(MODEL_KEY);
+            this.eventResponse = (GetEventResponse) getArguments().getSerializable(EVENT_KEY);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -90,14 +108,35 @@ public class LocationInfoFragment extends Fragment {
         editBtn = view.findViewById(R.id.edit_btn);
         addEventBtn = view.findViewById(R.id.add_event_btn);
         webSiteWrapper = view.findViewById(R.id.website_wrapper);
+        eventWrapper = view.findViewById(R.id.event_wrapper);
+        eventImage = view.findViewById(R.id.event_image);
+        eventDescription = view.findViewById(R.id.event_description);
+        eventStatus = view.findViewById(R.id.event_staus);
 
         locationPhone.setEnabled(false);
         locationWebsite.setEnabled(false);
         locationAddress.setEnabled(false);
         locationName.setEnabled(false);
 
-
         viewActions();
+
+        try {
+            if (eventResponse.data.size() == 0) {
+                eventWrapper.setVisibility(View.GONE);
+            } else {
+                GetEventResponse.EventResponse event = eventResponse.data.get(0);
+                Picasso.get().load(event.thumbnail).fit().placeholder(R.drawable.placeholder).into(eventImage);
+                eventDescription.setText(event.offer_description);
+                if (Integer.parseInt(event.disable) == 1) {
+                    eventStatus.setText("منقضی شده");
+                } else {
+                    eventStatus.setText("فعال");
+                }
+            }
+        } catch (NullPointerException e) {
+            eventWrapper.setVisibility(View.GONE);
+
+        }
 
 
     }

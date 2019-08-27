@@ -4,6 +4,7 @@ import ir.maxivity.tasbih.models.AddFavortiePlace;
 import ir.maxivity.tasbih.models.AddNewEvent;
 import ir.maxivity.tasbih.models.AddNewPlaceResponse;
 import ir.maxivity.tasbih.models.GetBackgroundResponse;
+import ir.maxivity.tasbih.models.GetEventResponse;
 import ir.maxivity.tasbih.models.GetFavoritePlaces;
 import ir.maxivity.tasbih.models.GetMessages;
 import ir.maxivity.tasbih.models.GetPlaces;
@@ -91,4 +92,10 @@ public interface API {
                                   @Part("user_id") RequestBody user_id,
                                   @Part("pass") RequestBody pass,
                                   @Part("event_id") RequestBody event_id);
+
+    @Multipart
+    @POST("get-events.php")
+    Call<GetEventResponse> getEvents(@Part("offset") RequestBody offset,
+                                     @Part("limit") RequestBody limit,
+                                     @Part("place_id") RequestBody place_id);
 }

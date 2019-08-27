@@ -109,15 +109,15 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="69dp"
                 android:background="@drawable/shadow"
-                android:translationZ="100dp"
-                android:outlineAmbientShadowColor="#000"
-                android:outlineSpotShadowColor="#000"
-                android:showDividers="beginning"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:outlineAmbientShadowColor="#000"
+                android:outlineSpotShadowColor="#000"
+                android:padding="10dp"
+                android:showDividers="beginning"
+                android:translationZ="100dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -132,8 +132,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
-                        android:text="نمایش همه"
                         android:gravity="left|center"
+                        android:text="نمایش همه"
                         android:textColor="#3F51B5" />
 
                     <Button
@@ -142,12 +142,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
-                        android:text="رویدادها"
                         android:gravity="right|center"
+                        android:text="رویدادها"
                         android:textColor="#000" />
                 </LinearLayout>
 
-                <HorizontalScrollView
+                <!--  <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -215,9 +215,13 @@
                             android:layout_gravity="center" />
                     </LinearLayout>
 
-                </HorizontalScrollView>
-
+                </HorizontalScrollView>-->
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_event"
+                android:layout_width="match_parent"
+                android:layout_height="239dp" />
 
         </LinearLayout>
     </ScrollView>
