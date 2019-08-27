@@ -33,6 +33,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -164,6 +166,9 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
     private EditText searchEditText;
     private TextView deleteFilters;
 
+    //Viewmodel
+    HomeViewModel model;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -197,6 +202,16 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
         });
 
         goToMyLocationAtFirst = true;
+
+        model = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
+
+        model.getPlaceId().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.v("FUCK ON MAP", s);
+                getEventByPlaceId(s);
+            }
+        });
 
         return view;
     }
@@ -283,6 +298,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                 if (state == BottomSheetBehavior.STATE_COLLAPSED) {
                     searchBar.setVisibility(View.VISIBLE);
                     addLocationButton.show();
+                    onAddLocationProgress = false;
                     if (getCurrentFragment() instanceof AddLocationFragment) {
                         dismissChildFragment(ADD_LOCATION_TAG);
                         addLocationMarker.setVisibility(View.GONE);
@@ -811,6 +827,40 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                 });
     }
 
+    private void getEventByPlaceId(final String s) {
+        final MainActivity main = (MainActivity) getActivity();
+        GetPlaceBody body = new GetPlaceBody();
+        body.id = s;
+        addLocationButton.hide();
+        actionButton.hide();
+
+        main.application.api.getPlace(RequestBody.create(Utilities.JSON, Utilities.createBody(body)))
+                .enqueue(new Callback<GetPlaces>() {
+                    @Override
+                    public void onResponse(Call<GetPlaces> call, Response<GetPlaces> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().result == 1) {
+                                //loadChildFragment(LocationInfoFragment.newInstance(response.body().data.get(0)), LOCATION_INFO_FRAGMENT, false);
+                                onAddLocationProgress = true;
+                                try {
+                                    GeoPoint point = new GeoPoint(Double.parseDouble(response.body().data.get(0).lat), Double.parseDouble(response.body().data.get(0).lon));
+                                    map.getController().animateTo(point);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(getContext(), "در حال حاضر قادر به دریافت مکان این رویداد نیستیم.", Toast.LENGTH_SHORT).show();
+                                }
+                                getEventById(s, response.body().data.get(0));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GetPlaces> call, Throwable t) {
+                        Log.v(TAG, "body : " + t.getMessage());
+                    }
+                });
+    }
+
     private void getEventById(final String id, final GetPlaces.response data) throws NullPointerException {
         final MainActivity main = (MainActivity) getActivity();
         RequestBody place_id = RequestBody.create(Utilities.TEXT, id);
@@ -861,6 +911,40 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
                     return true;
                 }
             });
+        }
+    }
+
+    private void onEventClick(String id) {
+        for (Marker marker : mapMarkers) {
+            if (marker.getId().equals(id)) {
+                marker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker, MapView mapView) {
+                        Log.v(TAG, "marker :" + marker.getId());
+                        dissmissAllPreviousFragment();
+                        onAddLocationProgress = true;
+                        map.getController().animateTo(new GeoPoint(marker.getPosition()));
+                        try {
+                            if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            }
+                            if (getCurrentFragment() instanceof AddLocationFragment) {
+                                dismissChildFragment(ADD_LOCATION_TAG);
+                            }
+                            getPlaceById(marker.getId());
+                            addLocationButton.hide();
+                            actionButton.hide();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                        return true;
+                    }
+                });
+            } else {
+                Log.v(TAG, "no marker :" + marker.getId());
+                Toast.makeText(getContext(), "هیچ مکانی برای این رویداد ثبت نشده است.", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -1044,6 +1128,7 @@ public class Map extends BaseFragment implements MapListener, AddEventDialogFrag
 
 
     private void dissmissAllPreviousFragment() {
+        onAddLocationProgress = false;
         FragmentManager fm = getChildFragmentManager();
         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
             fm.popBackStack();

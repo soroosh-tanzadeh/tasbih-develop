@@ -22,10 +22,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     Context context;
     List<GetEventResponse.EventResponse> events;
     LayoutInflater inflater;
+    OnItemClickListener listener;
 
-    public EventAdapter(Context context, List<GetEventResponse.EventResponse> events) {
+    public EventAdapter(Context context, List<GetEventResponse.EventResponse> events, OnItemClickListener listener) {
         this.context = context;
         this.events = events;
+        this.listener = listener;
         inflater = LayoutInflater.from(context);
     }
 
@@ -56,9 +58,20 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             textView = itemView.findViewById(R.id.textView6);
         }
 
-        public void setData(GetEventResponse.EventResponse item) {
+        public void setData(final GetEventResponse.EventResponse item) {
             Picasso.get().load(item.thumbnail).fit().placeholder(R.drawable.placeholder).into(imageView);
             textView.setText(item.offer_description);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(item.place_id);
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String placeId);
     }
 }

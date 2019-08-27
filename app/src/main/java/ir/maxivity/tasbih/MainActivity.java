@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -43,6 +46,7 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
     private ListView drawerItemList;
     private FusedLocationProviderClient fusedLocationClient;
     private BottomNavigationView bottomNavigationView;
+    private HomeViewModel model;
     final Fragment start = new Start_freg();
     final Fragment home = new Podcasts();
     final Fragment map = new Map();
@@ -61,7 +65,7 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
+        model = ViewModelProviders.of(this).get(HomeViewModel.class);
         setContentView(R.layout.main_drawer_layout);
 
 
@@ -194,6 +198,15 @@ public class MainActivity extends BaseActivity implements BottomSheet.clickListe
         });
         bottomNavigationView.setSelectedItemId(R.id.navigation_start);
         initViews();
+
+        model.getPlaceId().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.v("FUCK ON EVENT CLICKED", s);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_map);
+                loadFragment(map);
+            }
+        });
     }
 
     private void initViews() {

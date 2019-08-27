@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +40,7 @@ public class Start_freg extends BaseFragment {
     private ImageButton volume;
     private RecyclerView eventsRecycler;
     private EventAdapter adapter;
+    private HomeViewModel model;
 
     TextView time;
 
@@ -51,6 +53,12 @@ public class Start_freg extends BaseFragment {
         the_view = inflater.inflate(R.layout.fragment_start_freg, container, false);
 
         return the_view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
     }
 
     @Override
@@ -154,7 +162,12 @@ public class Start_freg extends BaseFragment {
             public void onResponse(Call<GetEventResponse> call, Response<GetEventResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null && response.body().result == 1) {
-                        adapter = new EventAdapter(getContext(), response.body().data);
+                        adapter = new EventAdapter(getContext(), response.body().data, new EventAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(String placeId) {
+                                model.getPlaceId().setValue(placeId);
+                            }
+                        });
                         eventsRecycler.setAdapter(adapter);
                     }
                 }
